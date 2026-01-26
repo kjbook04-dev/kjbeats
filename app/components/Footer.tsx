@@ -1,0 +1,46 @@
+'use client';
+
+import { useTheme } from '../context/ThemeContext';
+
+export default function Footer() {
+  const { currentTheme } = useTheme();
+  return (
+    <footer className="bg-gray-900 py-8">
+      <div className="container mx-auto px-4">
+  <div className="grid grid-cols-1 md:grid-cols-3 items-start gap-8 md:gap-x-[2px]">
+          <div className="md:transform md:translate-x-[75px]">
+            <h3 className={`text-xl font-bold mb-4 bg-gradient-to-r ${currentTheme.gradient} text-transparent bg-clip-text`}>KJBeats</h3>
+            <p className="text-gray-300">Your ultimate destination for music exploration.</p>
+          </div>
+          <div className="justify-self-center text-center">
+            <h4 className={`text-lg font-semibold mb-4 ${currentTheme.text} ${currentTheme.textHover}`}>Quick Links</h4>
+            <ul className="space-y-2">
+              <li><a href="/about" className="text-gray-300 hover:text-white">About Us</a></li>
+              <li><a href="mailto:kjbook04@gmail.com" className="text-gray-300 hover:text-white">Contact</a></li>
+              <li><a href="/privacy" className="text-gray-300 hover:text-white">Privacy Policy</a></li>
+            </ul>
+          </div>
+          <div className="justify-self-end md:transform md:-translate-x-[125px]">
+            <div className="flex flex-col items-end">
+              <h4 className={`text-lg font-semibold mb-4 ${currentTheme.text} ${currentTheme.textHover} self-center md:transform md:-translate-x-2`}>Connect With Us</h4>
+              <div className="flex space-x-4">
+              <a href="#" className="text-gray-300 hover:text-white">
+                Twitter
+              </a>
+              <a href="https://instagram.com/kbook04" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white">
+                Instagram
+              </a>
+              <a href="#" className="text-gray-300 hover:text-white">
+                Facebook
+              </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400">
+          <p>&copy; {new Date().getFullYear()} KJBeats. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+  );
+}

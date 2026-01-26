@@ -1,0 +1,54 @@
+"use client";
+
+// The project has consolidated playback to `PersistentPlayer`.
+// Re-export it as the default for any imports that expect a
+// `UniversalPlayerComponent` while keeping a couple of small
+// helper functions used by legacy UI code.
+export { default } from './PersistentPlayer';
+
+import type { UniversalTrack } from '../context/UniversalPlayerContext';
+
+export function createUniversalTrack(
+  id: string,
+  title: string,
+  artist?: string,
+  platform?: string,
+  platformId?: string,
+  options: { thumbnail?: string; duration?: number; album?: string } = {}
+): UniversalTrack {
+  // Minimal normalized shape. We no longer support platform-specific
+  // IDs (like youtubeId) — the canonical player uses `audioUrl`.
+  return {
+    id,
+    title,
+    artist,
+    platform,
+    thumbnail: options.thumbnail,
+    audioUrl: platform === 'direct' ? platformId : undefined,
+  } as UniversalTrack;
+}
+
+export function convertLegacyTrack(legacyTrack: {
+  id: string;
+  title: string;
+  artist?: string;
+  platform?: string;
+  playableUrl?: string;
+  thumbnail?: string;
+  description?: string;
+}): UniversalTrack {
+  // Map older data shapes into the minimal `UniversalTrack` expected by
+  // the current player. For non-direct platforms (e.g. youtube) we leave
+  // `audioUrl` undefined since those platforms are no longer supported.
+  return createUniversalTrack(
+    legacyTrack.id,
+    legacyTrack.title,
+    legacyTrack.artist,
+    legacyTrack.platform,
+    legacyTrack.playableUrl,
+    {
+      thumbnail: legacyTrack.thumbnail,
+      album: legacyTrack.description,
+    }
+  );
+}

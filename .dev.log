@@ -1,0 +1,1303 @@
+
+> music-website@0.1.0 dev
+> next dev
+
+   ▲ Next.js 15.5.5
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.0.90:3000
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 783ms
+ ○ Compiling / ...
+ ✓ Compiled / in 501ms (656 modules)
+ HEAD / 200 in 722ms
+ GET / 200 in 39ms
+ HEAD / 200 in 25ms
+ ✓ Compiled /profile in 241ms (671 modules)
+ GET /profile 200 in 298ms
+ ✓ Compiled in 352ms (685 modules)
+ GET /profile 200 in 55ms
+ GET /profile 200 in 82ms
+ GET / 200 in 15ms
+ GET /profile 200 in 23ms
+ ✓ Compiled in 204ms (685 modules)
+ GET /profile 200 in 53ms
+ ✓ Compiled in 117ms (685 modules)
+ GET /profile 200 in 41ms
+ ✓ Compiled in 169ms (685 modules)
+ GET /profile 200 in 54ms
+ ✓ Compiled in 143ms (685 modules)
+ GET /profile 200 in 28ms
+ ✓ Compiled in 143ms (685 modules)
+ GET /profile 200 in 28ms
+ GET /profile 200 in 106ms
+ GET / 200 in 15ms
+ GET /profile 200 in 23ms
+ GET /profile 200 in 50ms
+ GET / 200 in 10ms
+ GET /profile 200 in 25ms
+ ✓ Compiled in 137ms (685 modules)
+ GET /profile 200 in 28ms
+ GET /profile 200 in 87ms
+ GET / 200 in 18ms
+ GET /profile 200 in 24ms
+ ✓ Compiled in 158ms (685 modules)
+ GET /profile 200 in 60ms
+ GET /profile 200 in 51ms
+ GET / 200 in 11ms
+ GET /profile 200 in 22ms
+ ✓ Compiled in 149ms (685 modules)
+ GET /profile 200 in 31ms
+ ⨯ ./app/profile/page.tsx
+Error:   [31mx[0m Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/profile/page.tsx[0m:220:1]
+ [2m217[0m |       {/* Your Music Library removed from profile page per request */}
+ [2m218[0m |     </div>
+ [2m219[0m |   );
+ [2m220[0m | }
+     : [35;1m^[0m
+     `----
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/profile/page.tsx[0m:220:1]
+ [2m217[0m |       {/* Your Music Library removed from profile page per request */}
+ [2m218[0m |     </div>
+ [2m219[0m |   );
+ [2m220[0m | }
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/profile/page.tsx
+ ○ Compiling /_not-found ...
+ ⨯ ./app/profile/page.tsx
+Error:   [31mx[0m Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/profile/page.tsx[0m:220:1]
+ [2m217[0m |       {/* Your Music Library removed from profile page per request */}
+ [2m218[0m |     </div>
+ [2m219[0m |   );
+ [2m220[0m | }
+     : [35;1m^[0m
+     `----
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/profile/page.tsx[0m:220:1]
+ [2m217[0m |       {/* Your Music Library removed from profile page per request */}
+ [2m218[0m |     </div>
+ [2m219[0m |   );
+ [2m220[0m | }
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/profile/page.tsx
+ ⨯ ./app/profile/page.tsx
+Error:   [31mx[0m Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/profile/page.tsx[0m:220:1]
+ [2m217[0m |       {/* Your Music Library removed from profile page per request */}
+ [2m218[0m |     </div>
+ [2m219[0m |   );
+ [2m220[0m | }
+     : [35;1m^[0m
+     `----
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/profile/page.tsx[0m:220:1]
+ [2m217[0m |       {/* Your Music Library removed from profile page per request */}
+ [2m218[0m |     </div>
+ [2m219[0m |   );
+ [2m220[0m | }
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/profile/page.tsx
+ GET /profile 500 in 4524ms
+ POST /api/client-error 500 in 4716ms
+ POST /api/client-error 500 in 4804ms
+ POST /api/client-error 500 in 4720ms
+ POST /api/client-error 500 in 4600ms
+ POST /api/client-error 500 in 3965ms
+ POST /api/client-error 500 in 17ms
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /profile 500 in 21ms
+ GET /profile 500 in 9ms
+ GET /profile 500 in 12ms
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/kaitlynbook/music-website/.next/cache/webpack/client-development-fallback/0.pack.gz_' -> '/Users/kaitlynbook/music-website/.next/cache/webpack/client-development-fallback/0.pack.gz'
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/kaitlynbook/music-website/.next/cache/webpack/client-development-fallback/0.pack.gz_' -> '/Users/kaitlynbook/music-website/.next/cache/webpack/client-development-fallback/0.pack.gz'
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/kaitlynbook/music-website/.next/cache/webpack/client-development-fallback/0.pack.gz_' -> '/Users/kaitlynbook/music-website/.next/cache/webpack/client-development-fallback/0.pack.gz'
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/kaitlynbook/music-website/.next/cache/webpack/client-development-fallback/0.pack.gz_' -> '/Users/kaitlynbook/music-website/.next/cache/webpack/client-development-fallback/0.pack.gz'
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /profile 500 in 85ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⨯ ./app/profile/page.tsx
+Error:   [31mx[0m Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/profile/page.tsx[0m:219:1]
+ [2m216[0m |       {/* Your Music Library removed from profile page per request */}
+ [2m217[0m |     </div>
+ [2m218[0m |   );
+ [2m219[0m | }
+     : [35;1m^[0m
+     `----
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/profile/page.tsx[0m:219:1]
+ [2m216[0m |       {/* Your Music Library removed from profile page per request */}
+ [2m217[0m |     </div>
+ [2m218[0m |   );
+ [2m219[0m | }
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/profile/page.tsx
+ GET /profile 200 in 64ms
+ GET /profile 500 in 6ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /profile 500 in 67ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⨯ ./app/profile/page.tsx
+Error:   [31mx[0m Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/profile/page.tsx[0m:219:1]
+ [2m216[0m |       {/* Your Music Library removed from profile page per request */}
+ [2m217[0m |     </div>
+ [2m218[0m |   );
+ [2m219[0m | }
+     : [35;1m^[0m
+     `----
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/profile/page.tsx[0m:219:1]
+ [2m216[0m |       {/* Your Music Library removed from profile page per request */}
+ [2m217[0m |     </div>
+ [2m218[0m |   );
+ [2m219[0m | }
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/profile/page.tsx
+ GET /profile 200 in 67ms
+ GET /profile 500 in 11ms
+ GET /profile 500 in 7ms
+ GET /profile 500 in 7ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /profile 500 in 69ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled /_error in 427ms (1012 modules)
+ GET /profile 200 in 70ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /profile 200 in 183ms
+ GET /profile 200 in 43ms
+ GET / 200 in 14ms
+ GET /profile 200 in 14ms
+ ✓ Compiled in 171ms (1024 modules)
+ GET /profile 200 in 42ms
+ ✓ Compiled in 99ms (1024 modules)
+ GET /profile 200 in 30ms
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ✓ Compiled in 107ms (1026 modules)
+ GET /profile 200 in 123ms
+ GET /profile 200 in 165ms
+ GET / 200 in 13ms
+ GET /profile 200 in 14ms
+ ✓ Compiled in 210ms (1026 modules)
+ GET /profile 200 in 63ms
+ ✓ Compiled in 109ms (1026 modules)
+ GET /profile 200 in 45ms
+ ✓ Compiled in 174ms (1026 modules)
+ GET /profile 200 in 34ms
+ GET /profile 200 in 74ms
+ GET / 200 in 14ms
+ GET /profile 200 in 25ms
+ ✓ Compiled in 158ms (1026 modules)
+ GET /profile 200 in 29ms
+ GET /profile 200 in 56ms
+ GET / 200 in 14ms
+ GET /profile 200 in 26ms
+ ✓ Compiled in 161ms (1026 modules)
+ GET /profile 200 in 30ms
+ ✓ Compiled in 105ms (1026 modules)
+ GET /profile 200 in 32ms
+ HEAD /profile 200 in 47ms
+ ✓ Compiled in 168ms (1026 modules)
+ GET /profile 200 in 34ms
+ ✓ Compiled in 100ms (1026 modules)
+ GET /profile 200 in 29ms
+ ✓ Compiled in 138ms (1026 modules)
+ GET /profile 200 in 33ms
+ HEAD /profile 200 in 43ms
+ ✓ Compiled in 194ms (1026 modules)
+ GET /profile 200 in 31ms
+ HEAD /profile 200 in 53ms
+ ✓ Compiled in 184ms (1026 modules)
+ GET /profile 200 in 33ms
+ HEAD /profile 200 in 49ms
+ ✓ Compiled in 174ms (1024 modules)
+ GET /profile 200 in 33ms
+ ✓ Compiled in 98ms (1024 modules)
+ GET /profile 200 in 28ms
+ ✓ Compiled in 97ms (1024 modules)
+ GET /profile 200 in 29ms
+ ✓ Compiled in 40ms (416 modules)
+ GET /profile 200 in 11ms
+ HEAD /profile 200 in 48ms
+ ✓ Compiled in 73ms (416 modules)
+ GET /profile 200 in 22ms
+ ✓ Compiled in 126ms (1024 modules)
+ GET /profile 200 in 43ms
+ HEAD /profile 200 in 63ms
+ ✓ Compiled in 161ms (1024 modules)
+ ✓ Compiled in 112ms (1024 modules)
+ HEAD /profile 200 in 66ms
+ GET /profile 200 in 25ms
+ GET / 200 in 15ms
+ GET /profile 200 in 22ms
+ GET /profile 200 in 38ms
+ GET / 200 in 11ms
+ GET /profile 200 in 26ms
+ GET /profile 200 in 52ms
+ GET / 200 in 13ms
+ GET /profile 200 in 25ms
+ GET /profile 200 in 54ms
+ GET / 200 in 13ms
+ GET /profile 200 in 28ms
+ GET /profile 200 in 26ms
+ GET / 200 in 11ms
+ GET / 200 in 29ms
+ GET / 200 in 28ms
+ GET / 200 in 38ms
+ GET /profile 200 in 23ms
+ ✓ Compiled in 223ms (1026 modules)
+ GET /profile 200 in 46ms
+ ✓ Compiled in 106ms (1024 modules)
+ GET /profile 200 in 31ms
+ ✓ Compiled in 94ms (1024 modules)
+ GET /profile 200 in 29ms
+ ✓ Compiled in 91ms (1024 modules)
+ GET /profile 200 in 31ms
+ GET /profile 200 in 68ms
+ GET / 200 in 16ms
+ GET /profile 200 in 20ms
+ ✓ Compiled in 179ms (1024 modules)
+ GET /profile 200 in 34ms
+ GET /profile 200 in 77ms
+ GET / 200 in 13ms
+ GET /profile 200 in 23ms
+ GET /profile 200 in 47ms
+ GET / 200 in 12ms
+ GET /profile 200 in 24ms
+ ✓ Compiled in 220ms (1026 modules)
+ GET /profile 200 in 49ms
+ ✓ Compiled in 135ms (1026 modules)
+ GET /profile 200 in 30ms
+ ✓ Compiled in 109ms (1026 modules)
+ GET /profile 200 in 29ms
+ ✓ Compiled in 91ms (1026 modules)
+ GET /profile 200 in 30ms
+ GET /profile 200 in 81ms
+ GET / 200 in 13ms
+ GET /profile 200 in 28ms
+ ✓ Compiled in 214ms (1026 modules)
+ GET /profile 200 in 33ms
+ ✓ Compiled in 117ms (1026 modules)
+ GET /profile 200 in 31ms
+ ✓ Compiled in 107ms (1026 modules)
+ GET /profile 200 in 29ms
+ GET /profile 200 in 51ms
+ GET / 200 in 11ms
+ GET /profile 200 in 20ms
+ ✓ Compiled in 125ms (1026 modules)
+ GET /profile 200 in 44ms
+ ✓ Compiled in 197ms (1026 modules)
+ GET /profile 200 in 31ms
+ GET /profile 200 in 54ms
+ GET / 200 in 11ms
+ GET /profile 200 in 26ms
+ ✓ Compiled in 187ms (1026 modules)
+ GET /profile 200 in 32ms
+ GET /profile 200 in 53ms
+ GET / 200 in 11ms
+ GET /profile 200 in 19ms
+ ✓ Compiled in 178ms (1026 modules)
+ GET /profile 200 in 35ms
+ ✓ Compiled in 122ms (1026 modules)
+ GET /profile 200 in 47ms
+ ✓ Compiled in 104ms (1026 modules)
+ GET /profile 200 in 30ms
+ GET /profile 200 in 48ms
+ GET / 200 in 14ms
+ GET /profile 200 in 22ms
+ ✓ Compiled in 185ms (1026 modules)
+ GET /profile 200 in 33ms
+ ✓ Compiled in 107ms (1026 modules)
+ GET /profile 200 in 30ms
+ GET /profile 200 in 69ms
+ GET / 200 in 12ms
+ GET /profile 200 in 26ms
+ ✓ Compiled in 184ms (1026 modules)
+ GET /profile 200 in 34ms
+ GET /profile 200 in 73ms
+ GET / 200 in 11ms
+ GET /profile 200 in 21ms
+ ✓ Compiled in 190ms (1026 modules)
+ GET /profile 200 in 33ms
+ ✓ Compiled in 103ms (1026 modules)
+ GET /profile 200 in 29ms
+ ✓ Compiled in 176ms (1026 modules)
+ GET /profile 200 in 32ms
+ ✓ Compiled in 161ms (1026 modules)
+ GET /profile 200 in 46ms
+ ✓ Compiled in 190ms (1026 modules)
+ GET /profile 200 in 33ms
+ ✓ Compiled in 122ms (1026 modules)
+ GET /profile 200 in 31ms
+ ✓ Compiled in 112ms (1026 modules)
+ GET /profile 200 in 25ms
+ GET /profile 200 in 81ms
+ GET / 200 in 14ms
+ GET /profile 200 in 14ms
+ ✓ Compiled in 108ms (1026 modules)
+ GET /profile 200 in 31ms
+ GET /profile 200 in 82ms
+ GET / 200 in 14ms
+ GET /profile 200 in 22ms
+ ✓ Compiled in 187ms (1026 modules)
+ GET /profile 200 in 34ms
+ ✓ Compiled in 115ms (1026 modules)
+ GET /profile 200 in 29ms
+ ✓ Compiled in 109ms (1026 modules)
+ GET /profile 200 in 32ms
+ ✓ Compiled in 106ms (1026 modules)
+ GET /profile 200 in 31ms
+ ✓ Compiled in 125ms (1026 modules)
+ GET /profile 200 in 35ms
+ ✓ Compiled in 207ms (1026 modules)
+ GET /profile 200 in 43ms
+ GET /profile 200 in 59ms
+ GET / 200 in 14ms
+ GET /profile 200 in 24ms
+ ✓ Compiled in 211ms (1026 modules)
+ GET /profile 200 in 38ms
+ ✓ Compiled in 182ms (1026 modules)
+ GET /profile 200 in 55ms
+ ✓ Compiled in 113ms (1026 modules)
+ GET /profile 200 in 35ms
+ ✓ Compiled in 172ms (1026 modules)
+ ✓ Compiled in 159ms (1026 modules)
+ ✓ Compiled in 100ms (1026 modules)
+ GET /profile 200 in 102ms
+ GET / 200 in 13ms
+ GET /profile 200 in 26ms
+ ✓ Compiled in 175ms (1026 modules)
+ GET /profile 200 in 44ms
+ GET /profile 200 in 64ms
+ GET / 200 in 14ms
+ GET /profile 200 in 25ms
+ ✓ Compiled in 175ms (1026 modules)
+ GET /profile 200 in 42ms
+ GET /profile 200 in 56ms
+ GET / 200 in 12ms
+ GET /profile 200 in 24ms
+ ✓ Compiled in 102ms (1026 modules)
+ GET /profile 200 in 30ms
+ ✓ Compiled in 173ms (1026 modules)
+ GET /profile 200 in 42ms
+ ✓ Compiled in 108ms (1026 modules)
+ GET /profile 200 in 30ms
+ ✓ Compiled in 93ms (1026 modules)
+ GET /profile 200 in 30ms
+ ✓ Compiled in 106ms (1026 modules)
+ GET /profile 200 in 23ms
+ ✓ Compiled in 186ms (1026 modules)
+ GET /profile 200 in 41ms
+ ✓ Compiled in 143ms (1026 modules)
+ GET /profile 200 in 38ms
+ GET /profile 200 in 9ms
+ GET /profile 200 in 9ms
+ ✓ Compiled in 112ms (1026 modules)
+ GET /profile 200 in 30ms
+ ✓ Compiled in 164ms (1026 modules)
+ GET /profile 200 in 47ms
+ ✓ Compiled in 171ms (1026 modules)
+ GET /profile 200 in 40ms
+ ✓ Compiled in 172ms (1026 modules)
+ GET /profile 200 in 42ms
+ ✓ Compiled in 127ms (1026 modules)
+ GET /profile 200 in 28ms
+ ✓ Compiled in 177ms (1026 modules)
+ GET /profile 200 in 41ms
+ ✓ Compiled in 110ms (1026 modules)
+ GET /profile 200 in 30ms
+ ✓ Compiled in 108ms (1026 modules)
+ GET /profile 200 in 30ms
+ GET /profile 200 in 79ms
+ GET / 200 in 13ms
+ GET /profile 200 in 22ms
+ ✓ Compiled in 152ms (1026 modules)
+ GET /profile 200 in 51ms
+ ✓ Compiled in 163ms (1026 modules)
+ GET /profile 200 in 52ms
+ ✓ Compiled in 124ms (1026 modules)
+ GET /profile 200 in 30ms
+ ✓ Compiled in 168ms (1026 modules)
+ ✓ Compiled in 110ms (1026 modules)
+ ✓ Compiled in 98ms (1026 modules)
+ GET /profile 200 in 102ms
+ GET / 200 in 16ms
+ GET /profile 200 in 20ms
+ ✓ Compiled in 155ms (1026 modules)
+ GET /profile 200 in 48ms
+ GET /profile 200 in 77ms
+ GET / 200 in 12ms
+ GET /profile 200 in 23ms
+ ✓ Compiled in 136ms (1026 modules)
+ GET /profile 200 in 34ms
+ ✓ Compiled in 108ms (1026 modules)
+ GET /profile 200 in 23ms
+ ✓ Compiled in 147ms (1026 modules)
+ GET /profile 200 in 41ms
+ ✓ Compiled in 134ms (1026 modules)
+ GET /profile 200 in 40ms
+ ✓ Compiled in 121ms (1026 modules)
+ GET /profile 200 in 28ms
+ ✓ Compiled in 186ms (1026 modules)
+ GET /profile 200 in 47ms
+ ✓ Compiled in 150ms (1026 modules)
+ GET /profile 200 in 41ms
+ ✓ Compiled in 167ms (1026 modules)
+ GET /profile 200 in 51ms
+ ✓ Compiled in 118ms (1026 modules)
+ GET /profile 200 in 31ms
+ GET /profile 200 in 81ms
+ GET / 200 in 13ms
+ GET /profile 200 in 21ms
+ ✓ Compiled in 169ms (1026 modules)
+ GET /profile 200 in 44ms
+ GET /profile 200 in 85ms
+ GET / 200 in 12ms
+ GET /profile 200 in 20ms
+ ✓ Compiled in 176ms (1026 modules)
+ GET /profile 200 in 84ms
+ GET / 200 in 13ms
+ GET /profile 200 in 13ms
+ ✓ Compiled in 213ms (1026 modules)
+ GET /profile 200 in 47ms
+ ✓ Compiled in 182ms (1026 modules)
+ GET /profile 200 in 45ms
+ ✓ Compiled in 102ms (1026 modules)
+ GET /profile 200 in 28ms
+ ✓ Compiled in 114ms (1026 modules)
+ GET /profile 200 in 28ms
+ ✓ Compiled in 169ms (1026 modules)
+ GET /profile 200 in 46ms
+ ✓ Compiled in 111ms (1026 modules)
+ GET /profile 200 in 31ms
+ ✓ Compiled in 177ms (1026 modules)
+ GET /profile 200 in 47ms
+ GET /profile 200 in 66ms
+ GET / 200 in 14ms
+ GET /profile 200 in 24ms
+ ✓ Compiled in 161ms (1026 modules)
+ GET /profile 200 in 46ms
+ ✓ Compiled in 112ms (1026 modules)
+ GET /profile 200 in 30ms
+ ✓ Compiled in 146ms (1026 modules)
+ GET /profile 200 in 39ms
+ ✓ Compiled in 195ms (1026 modules)
+ GET /profile 200 in 52ms
+ ✓ Compiled in 134ms (1026 modules)
+ GET /profile 200 in 67ms
+ ✓ Compiled in 199ms (1026 modules)
+ GET /profile 200 in 48ms
+ ✓ Compiled in 100ms (1026 modules)
+ GET /profile 200 in 33ms
+ ✓ Compiled in 209ms (1026 modules)
+ GET /profile 200 in 43ms
+ GET /profile 200 in 62ms
+ GET / 200 in 13ms
+ GET /profile 200 in 21ms
+ ✓ Compiled in 129ms (1026 modules)
+ GET /profile 200 in 34ms
+ GET /profile 200 in 60ms
+ GET / 200 in 15ms
+ GET /profile 200 in 21ms
+ ✓ Compiled in 191ms (1026 modules)
+ GET /profile 200 in 53ms
+ ✓ Compiled in 186ms (1026 modules)
+ GET /profile 200 in 49ms
+ ✓ Compiled /about in 231ms (1019 modules)
+ GET /about 200 in 273ms
+ GET /profile 200 in 29ms
+ GET /about 200 in 23ms
+ ✓ Compiled in 124ms (1033 modules)
+ GET /about 200 in 29ms
+ GET /about 200 in 62ms
+ ✓ Compiled /_not-found in 140ms (1024 modules)
+ GET /contact 404 in 227ms
+ GET /about 200 in 56ms
+ GET /privacy 404 in 39ms
+ GET /about 200 in 35ms
+ ✓ Compiled /manage in 215ms (1033 modules)
+ GET /manage 200 in 248ms
+ ✓ Compiled in 263ms (1042 modules)
+ GET /manage 200 in 31ms
+ GET /manage 200 in 33ms
+ GET /manage 200 in 29ms
+ ✓ Compiled in 90ms (422 modules)
+ GET /manage 200 in 23ms
+ GET /manage 200 in 47ms
+ ✓ Compiled in 294ms (1028 modules)
+ GET /manage 200 in 63ms
+ ✓ Compiled in 53ms (422 modules)
+ GET /manage 200 in 13ms
+ ✓ Compiled /privacy in 172ms (1035 modules)
+ GET /privacy 200 in 158ms
+ ✓ Compiled /_not-found in 176ms (1040 modules)
+ GET /contact 404 in 260ms
+ GET /manage 200 in 34ms
+ ✓ Compiled in 187ms (1054 modules)
+ GET /manage 200 in 36ms
+ GET /manage 200 in 55ms
+ ✓ Compiled in 230ms (1049 modules)
+ GET /manage 200 in 59ms
+ GET /manage 200 in 77ms
+ GET /profile 200 in 33ms
+ GET /manage 200 in 24ms
+ GET /profile 200 in 10ms
+ GET /profile 200 in 11ms
+ GET /manage 200 in 25ms
+ GET /profile 200 in 12ms
+ GET /profile 200 in 14ms
+ GET /manage 200 in 29ms
+ GET /profile 200 in 13ms
+ ✓ Compiled in 260ms (1049 modules)
+ GET /profile 200 in 30ms
+ GET /profile 200 in 53ms
+ GET / 200 in 17ms
+ GET /profile 200 in 23ms
+ ✓ Compiled /popular in 234ms (1047 modules)
+ GET /popular 200 in 348ms
+ GET /manage 200 in 21ms
+ GET /manage 200 in 10ms
+ GET /popular 200 in 30ms
+ GET /manage 200 in 16ms
+ GET /manage 200 in 12ms
+ GET /popular 200 in 23ms
+ GET /manage 200 in 21ms
+ GET /manage 200 in 12ms
+ ✓ Compiled /library in 176ms (1049 modules)
+ GET /library 200 in 237ms
+ GET /manage 200 in 36ms
+ GET /manage 200 in 11ms
+ ✓ Compiled /playlists in 151ms (1058 modules)
+ GET /playlists 200 in 182ms
+ GET /library 200 in 27ms
+ GET /manage 200 in 19ms
+ GET /manage 200 in 11ms
+ GET /manage 200 in 20ms
+ GET /manage 200 in 19ms
+ GET /popular 200 in 28ms
+ GET /manage 200 in 17ms
+ GET /manage 200 in 15ms
+ GET /about 200 in 35ms
+ GET /profile 200 in 26ms
+ GET /profile 200 in 123ms
+ GET / 200 in 16ms
+ GET /profile 200 in 20ms
+ GET / 200 in 26ms
+ GET /profile 200 in 24ms
+ GET /library 200 in 28ms
+ GET /manage 200 in 18ms
+ GET /manage 200 in 17ms
+ GET /manage 200 in 32ms
+ GET /playlists 200 in 19ms
+ GET /manage 200 in 18ms
+ GET /playlists 200 in 23ms
+ GET /library 200 in 24ms
+ GET /manage 200 in 15ms
+ GET /manage 200 in 11ms
+ GET /playlists 200 in 25ms
+ ✓ Compiled in 244ms (1070 modules)
+ GET /playlists 200 in 54ms
+ GET /playlists 200 in 71ms
+ GET / 200 in 37ms
+ GET /library 200 in 34ms
+ GET /manage 200 in 25ms
+ GET /manage 200 in 12ms
+ GET /manage 200 in 22ms
+ GET /profile 200 in 32ms
+ GET /about 200 in 37ms
+ GET /manage 200 in 22ms
+ GET /playlists 200 in 20ms
+ GET /library 200 in 25ms
+ GET /manage 200 in 20ms
+ GET /manage 200 in 11ms
+ ✓ Compiled in 225ms (1070 modules)
+ GET /manage 200 in 53ms
+ GET /manage 200 in 82ms
+ GET /about 200 in 32ms
+ GET /manage 200 in 22ms
+ ✓ Compiled in 271ms (1048 modules)
+ GET /manage 200 in 102ms
+ GET /manage 200 in 120ms
+ ✓ Compiled in 297ms (1048 modules)
+ GET /manage 200 in 65ms
+ ✓ Compiled /profile in 100ms (631 modules)
+ GET /profile 200 in 209ms
+ GET /manage 200 in 12ms
+ ✓ Compiled in 136ms (1053 modules)
+ GET /manage 200 in 41ms
+ GET /manage 200 in 116ms
+ GET /profile 200 in 30ms
+ GET /manage 200 in 27ms
+ ✓ Compiled in 264ms (1053 modules)
+ GET /manage 200 in 46ms
+ ✓ Compiled /favicon.ico in 168ms (643 modules)
+ GET /favicon.ico 200 in 286ms
+ ✓ Compiled in 229ms (1070 modules)
+ GET /manage 200 in 70ms
+ ✓ Compiled in 182ms (1070 modules)
+ GET /manage 200 in 65ms
+ ✓ Compiled /library in 218ms (655 modules)
+ GET /library 200 in 323ms
+ GET /manage 200 in 16ms
+ GET /manage 200 in 10ms
+ GET /library 200 in 31ms
+ GET /manage 200 in 16ms
+ GET /manage 200 in 11ms
+ GET /library 200 in 20ms
+ GET /manage 200 in 21ms
+ GET /manage 200 in 12ms
+ GET /library 200 in 23ms
+ GET /manage 200 in 22ms
+ GET /manage 200 in 10ms
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ✓ Compiled in 343ms (1053 modules)
+ GET /manage 200 in 291ms
+ GET /manage 200 in 492ms
+ ✓ Compiled /api/client-error in 102ms (645 modules)
+📣 CLIENT ERROR REPORT: {
+  "type": "console.error",
+  "args": [
+    "Audio URL:",
+    "blob:http://localhost:3000/4ce9a68c-9514-4223-9a40-99afb059187a"
+  ]
+}
+📣 CLIENT ERROR REPORT: {
+  "type": "console.error",
+  "args": [
+    "Error details:",
+    {}
+  ]
+}
+📣 CLIENT ERROR REPORT: {
+  "type": "console.error",
+  "args": [
+    "Audio error for:",
+    "Girls feat Chance the Rapper"
+  ]
+}
+ POST /api/client-error 200 in 196ms
+ POST /api/client-error 200 in 196ms
+ POST /api/client-error 200 in 198ms
+ ✓ Compiled /favicon.ico in 117ms (647 modules)
+ GET /favicon.ico 200 in 136ms
+ GET /manage 200 in 139ms
+ GET /manage 200 in 23ms
+📣 CLIENT ERROR REPORT: {
+  "type": "console.error",
+  "args": [
+    "Audio error for:",
+    "Girls feat Chance the Rapper"
+  ]
+}
+ POST /api/client-error 200 in 16ms
+📣 CLIENT ERROR REPORT: {
+  "type": "console.error",
+  "args": [
+    "Audio URL:",
+    "blob:http://localhost:3000/4e362993-d078-4164-bf6d-a0362e3df70a"
+  ]
+}
+📣 CLIENT ERROR REPORT: {
+  "type": "console.error",
+  "args": [
+    "Error details:",
+    {}
+  ]
+}
+ POST /api/client-error 200 in 18ms
+ POST /api/client-error 200 in 18ms
+ ✓ Compiled in 289ms (1053 modules)
+ GET /manage 200 in 102ms
+ ✓ Compiled /api/client-error in 82ms (645 modules)
+📣 CLIENT ERROR REPORT: {
+  "type": "console.error",
+  "args": [
+    "Audio URL:",
+    "blob:http://localhost:3000/4e362993-d078-4164-bf6d-a0362e3df70a"
+  ]
+}
+📣 CLIENT ERROR REPORT: {
+  "type": "console.error",
+  "args": [
+    "Error details:",
+    {}
+  ]
+}
+📣 CLIENT ERROR REPORT: {
+  "type": "console.error",
+  "args": [
+    "Audio error for:",
+    "Girls feat Chance the Rapper"
+  ]
+}
+ POST /api/client-error 200 in 156ms
+ POST /api/client-error 200 in 156ms
+ POST /api/client-error 200 in 157ms
+ ✓ Compiled in 146ms (1072 modules)
+ GET /manage 200 in 71ms
+📣 CLIENT ERROR REPORT: {
+  "type": "console.error",
+  "args": [
+    "Audio error for:",
+    "Girls feat Chance the Rapper"
+  ]
+}
+ POST /api/client-error 200 in 7ms
+📣 CLIENT ERROR REPORT: {
+  "type": "console.error",
+  "args": [
+    "Audio URL:",
+    "blob:http://localhost:3000/4e362993-d078-4164-bf6d-a0362e3df70a"
+  ]
+}
+📣 CLIENT ERROR REPORT: {
+  "type": "console.error",
+  "args": [
+    "Error details:",
+    {}
+  ]
+}
+ POST /api/client-error 200 in 12ms
+ POST /api/client-error 200 in 12ms
+ ✓ Compiled in 238ms (1053 modules)
+ GET /manage 200 in 122ms
+ ✓ Compiled in 141ms (1053 modules)
+ GET /manage 200 in 35ms
+ ✓ Compiled in 147ms (1053 modules)
+ GET /manage 200 in 33ms
+ ✓ Compiled in 153ms (1053 modules)
+ GET /manage 200 in 32ms
+ ✓ Compiled /api/client-error in 160ms (645 modules)
+📣 CLIENT ERROR REPORT: {
+  "type": "console.error",
+  "args": [
+    "❌ Cannot play uploaded song:",
+    {
+      "hasPlayTrack": false,
+      "hasAudioUrl": true,
+      "audioUrl": "blob:http://localhost:3000/93cabf56-9e64-4c87-9fc8-fb6e971c318c"
+    }
+  ]
+}
+ POST /api/client-error 200 in 277ms
+📣 CLIENT ERROR REPORT: {
+  "type": "console.error",
+  "args": [
+    "❌ Cannot play uploaded song:",
+    {
+      "hasPlayTrack": false,
+      "hasAudioUrl": true,
+      "audioUrl": "blob:http://localhost:3000/93cabf56-9e64-4c87-9fc8-fb6e971c318c"
+    }
+  ]
+}
+ POST /api/client-error 200 in 14ms
+ GET /manage 200 in 139ms
+ GET /manage 200 in 28ms
+ ✓ Compiled /favicon.ico in 115ms (647 modules)
+ GET /favicon.ico 200 in 136ms
+ ✓ Compiled in 207ms (1074 modules)
+ GET /manage 200 in 54ms
+ ✓ Compiled in 241ms (1053 modules)
+ GET /manage 200 in 120ms
+ ✓ Compiled in 158ms (1053 modules)
+ GET /manage 200 in 55ms
+ ✓ Compiled in 236ms (1053 modules)
+ GET /manage 200 in 48ms
+ GET /manage 200 in 94ms
+ ✓ Compiled /favicon.ico in 91ms (643 modules)
+ GET /favicon.ico 200 in 158ms
+ GET /profile 200 in 48ms
+ ✓ Compiled in 315ms (1053 modules)
+ GET /profile 200 in 104ms
+ GET /manage 200 in 36ms
+ ✓ Compiled in 326ms (1053 modules)
+ GET /manage 200 in 35ms
+ ✓ Compiled in 134ms (1053 modules)
+ GET /manage 200 in 35ms
+ GET /manage 200 in 92ms
+ ✓ Compiled /api/client-error in 107ms (645 modules)
+📣 CLIENT ERROR REPORT: {
+  "type": "console.error",
+  "args": [
+    "Audio URL:",
+    "blob:http://localhost:3000/bf9b82ef-7ce6-4a9b-9a93-0ffa70772b61"
+  ]
+}
+📣 CLIENT ERROR REPORT: {
+  "type": "console.error",
+  "args": [
+    "Error details:",
+    {}
+  ]
+}
+📣 CLIENT ERROR REPORT: {
+  "type": "console.error",
+  "args": [
+    "Audio error for:",
+    "Girls feat Chance the Rapper"
+  ]
+}
+ POST /api/client-error 200 in 195ms
+ POST /api/client-error 200 in 195ms
+ POST /api/client-error 200 in 199ms
+ ✓ Compiled in 255ms (1072 modules)
+ GET /manage 200 in 71ms
+ ✓ Compiled in 168ms (1072 modules)
+ GET /manage 200 in 42ms
+ ✓ Compiled in 156ms (1053 modules)
+ GET /manage 200 in 105ms
+ ✓ Compiled in 144ms (1053 modules)
+ GET /manage 200 in 42ms
+ GET /manage 200 in 120ms
+ GET /profile 200 in 37ms
+ GET /manage 200 in 27ms
+ ✓ Compiled /favicon.ico in 91ms (643 modules)
+ GET /favicon.ico 200 in 167ms
+ ✓ Compiled in 245ms (1053 modules)
+ GET /manage 200 in 121ms
+ ✓ Compiled in 141ms (1053 modules)
+ GET /manage 200 in 48ms
+ GET /manage 200 in 97ms
+ ✓ Compiled /api/client-error in 141ms (645 modules)
+📣 CLIENT ERROR REPORT: {
+  "type": "console.error",
+  "args": [
+    "Audio URL:",
+    "blob:http://localhost:3000/fbc32b98-009f-42ec-bf77-9614edf7b67a"
+  ]
+}
+📣 CLIENT ERROR REPORT: {
+  "type": "console.error",
+  "args": [
+    "Error details:",
+    {}
+  ]
+}
+📣 CLIENT ERROR REPORT: {
+  "type": "console.error",
+  "args": [
+    "Audio error for:",
+    "Girls feat Chance the Rapper"
+  ]
+}
+ POST /api/client-error 200 in 241ms
+ POST /api/client-error 200 in 222ms
+ POST /api/client-error 200 in 247ms
+ ✓ Compiled /favicon.ico in 116ms (647 modules)
+ GET /favicon.ico 200 in 146ms
+ ✓ Compiled in 293ms (1053 modules)
+ GET /manage 200 in 130ms
+ ✓ Compiled in 244ms (1053 modules)
+ GET /manage 200 in 76ms
+ GET /manage 200 in 88ms
+ ✓ Compiled /favicon.ico in 88ms (643 modules)
+ GET /favicon.ico 200 in 169ms
+ ✓ Compiled in 257ms (1053 modules)
+ GET /manage 200 in 125ms
+ GET /manage 200 in 114ms
+ ✓ Compiled /favicon.ico in 86ms (643 modules)
+ GET /favicon.ico 200 in 152ms
+ GET /playlists 200 in 52ms
+ GET /playlists 200 in 11ms
+ GET /manage 200 in 30ms
+ ✓ Compiled in 100ms (427 modules)
+ GET /manage 200 in 26ms
+ GET /manage 200 in 119ms
+ ✓ Compiled in 252ms (1053 modules)
+ GET /manage 200 in 127ms
+ ✓ Compiled in 238ms (1053 modules)
+ GET /manage 200 in 68ms
+ ✓ Compiled in 159ms (1053 modules)
+ GET /manage 200 in 28ms
+ ✓ Compiled in 161ms (1053 modules)
+ GET /manage 200 in 40ms
+ ✓ Compiled in 256ms (1053 modules)
+ GET /manage 200 in 46ms
+ ✓ Compiled in 169ms (1053 modules)
+ GET /manage 200 in 43ms
+ ✓ Compiled in 151ms (1053 modules)
+ GET /manage 200 in 32ms
+ ✓ Compiled in 151ms (1053 modules)
+ GET /manage 200 in 32ms
+ ✓ Compiled in 204ms (1053 modules)
+ GET /manage 200 in 46ms
+ ✓ Compiled in 249ms (1053 modules)
+ GET /manage 200 in 46ms
+ ✓ Compiled in 163ms (1053 modules)
+ GET /manage 200 in 33ms
+ GET /profile 200 in 19ms
+ GET /manage 200 in 30ms
+ ✓ Compiled in 276ms (1053 modules)
+ GET /manage 200 in 49ms
+ GET /playlists 200 in 35ms
+ GET /manage 200 in 29ms
+ GET /profile 200 in 35ms
+ ✓ Compiled /about in 193ms (631 modules)
+ GET /about 200 in 241ms
+ ✓ Compiled in 266ms (1058 modules)
+ GET /about 200 in 46ms
+ GET /profile 200 in 17ms
+ GET /manage 200 in 36ms
+ GET / 200 in 38ms
+ GET /profile 200 in 27ms
+ ✓ Compiled /favicon.ico in 163ms (643 modules)
+ GET /favicon.ico 200 in 269ms
+ ✓ Compiled in 241ms (1053 modules)
+ GET /profile 200 in 129ms
+ ✓ Compiled in 226ms (1053 modules)
+ GET /profile 200 in 37ms
+ ✓ Compiled in 178ms (1053 modules)
+ GET /profile 200 in 56ms
+ ✓ Compiled in 261ms (1053 modules)
+ GET /profile 200 in 50ms
+ ✓ Compiled in 264ms (1053 modules)
+ GET /profile 200 in 51ms
+ ✓ Compiled in 237ms (1053 modules)
+ GET /profile 200 in 49ms
+ ✓ Compiled in 168ms (1053 modules)
+ GET /profile 200 in 38ms
+ ✓ Compiled in 156ms (1053 modules)
+ GET /profile 200 in 36ms
+ ✓ Compiled in 169ms (1053 modules)
+ GET /profile 200 in 56ms
+ ✓ Compiled in 305ms (1053 modules)
+ GET /profile 200 in 52ms
+ ✓ Compiled in 243ms (1053 modules)
+ GET /profile 200 in 53ms
+ ✓ Compiled in 170ms (1053 modules)
+ GET /profile 200 in 37ms
+ ✓ Compiled in 155ms (1053 modules)
+ GET /profile 200 in 49ms
+ GET /manage 200 in 21ms
+ GET /manage 200 in 115ms
+ ✓ Compiled /favicon.ico in 226ms (643 modules)
+ GET /favicon.ico 200 in 323ms
+ GET /profile 200 in 62ms
+ GET /manage 200 in 39ms
+ GET /about 200 in 18ms
+ GET /playlists 200 in 37ms
+ GET / 200 in 34ms
+ GET /playlists 200 in 42ms
+ GET / 200 in 30ms
+ GET /playlists 200 in 20ms
+ GET /profile 200 in 21ms
+ GET /playlists 200 in 31ms
+ GET /manage 200 in 29ms
+ ✓ Compiled in 288ms (1053 modules)
+ GET /manage 200 in 155ms
+ ✓ Compiled /api/client-error in 111ms (645 modules)
+📣 CLIENT ERROR REPORT: {
+  "type": "console.error",
+  "args": [
+    "The final argument passed to %s changed size between renders. The order and size of this array must remain constant.\n\nPrevious: %s\nIncoming: %s",
+    "useEffect",
+    "[function () { [native code] }, function () { [native code] }]",
+    "[(song)=>{\n            console.log('playAudio called with song:', song.title);\n            setCurrentSong(song);\n            setIsPlaying(true);\n        }, async ()=>{\n            if (!currentSong) return;\n            // No special handling for any platform; control audio element directly\n            if (!audioRef.current) return;\n            console.log('togglePlay called:', {\n                isPlaying,\n                readyState: audioRef.current.readyState\n            });\n            try {\n                if (isPlaying) {\n                    // Pause\n                    console.log('Pausing audio');\n                    audioRef.current.pause();\n                    setIsPlaying(false);\n                } else {\n                    // Play\n                    console.log('Attempting to play audio');\n                    if (audioRef.current.readyState >= 2) {\n                        // Audio is ready\n                        await audioRef.current.play();\n                        setIsPlaying(true);\n                        console.log('Audio started playing');\n                    } else {\n                        // Audio is still loading, wait for it to be ready\n                        console.log('Audio not ready, waiting...');\n                        const playWhenReady = {\n                            \"PersistentPlayer.useCallback[togglePlay].playWhenReady\": async ()=>{\n                                try {\n                                    var _audioRef_current;\n                                    await ((_audioRef_current = audioRef.current) === null || _audioRef_current === void 0 ? void 0 : _audioRef_current.play());\n                                    setIsPlaying(true);\n                                    console.log('Audio started playing after loading');\n                                } catch (error) {\n                                    console.error('Failed to play audio:', error);\n                                    setIsPlaying(false);\n                                }\n                            }\n                        }[\"PersistentPlayer.useCallback[togglePlay].playWhenReady\"];\n                        audioRef.current.addEventListener('canplay', playWhenReady, {\n                            once: true\n                        });\n                    }\n                }\n            } catch (error) {\n                console.error('Audio playback error:', error);\n                setIsPlaying(false);\n            }\n        }, function () { [native code] }, function () { [native code] }]"
+  ]
+}
+ POST /api/client-error 200 in 194ms
+ ✓ Compiled in 318ms (1053 modules)
+ ✓ Compiled in 57ms (427 modules)
+ ✓ Compiled in 45ms (427 modules)
+ ✓ Compiled in 211ms (1039 modules)
+ GET /manage 200 in 200ms
+ ✓ Compiled /friends in 277ms (1046 modules)
+ GET /friends 200 in 347ms
+ GET /profile 200 in 17ms
+ GET /profile 200 in 12ms
+ ✓ Compiled /api/client-error in 90ms (645 modules)
+📣 CLIENT ERROR REPORT: {
+  "type": "console.error",
+  "args": [
+    "Audio URL:",
+    "blob:http://localhost:3000/66d937e6-4a15-4113-b048-3fc903993da4"
+  ]
+}
+📣 CLIENT ERROR REPORT: {
+  "type": "console.error",
+  "args": [
+    "Error details:",
+    {}
+  ]
+}
+📣 CLIENT ERROR REPORT: {
+  "type": "console.error",
+  "args": [
+    "Audio error for:",
+    "Girls feat Chance the Rapper"
+  ]
+}
+ POST /api/client-error 200 in 173ms
+ POST /api/client-error 200 in 171ms
+ POST /api/client-error 200 in 176ms
+ GET /about 200 in 65ms
+ GET /friends 200 in 28ms
+ GET /about 200 in 32ms
+ GET /friends 200 in 25ms
+ GET /manage 200 in 11ms
+ GET /friends 200 in 28ms
+ GET /about 200 in 33ms
+ GET /manage 200 in 25ms
+ ✓ Compiled /playlists in 111ms (650 modules)
+ GET /playlists 200 in 155ms
+ ✓ Compiled in 327ms (1055 modules)
+ GET /playlists 200 in 126ms
+ ✓ Compiled in 164ms (1055 modules)
+ GET /playlists 200 in 37ms
+ ✓ Compiled in 481ms (1055 modules)
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /playlists 200 in 54ms
+ GET /playlists 200 in 107ms
+ ✓ Compiled in 197ms (1055 modules)
+ GET /playlists 200 in 48ms
+ ✓ Compiled in 147ms (1055 modules)
+ GET /playlists 200 in 29ms
+ ✓ Compiled in 145ms (1055 modules)
+ GET /playlists 200 in 38ms
+ ✓ Compiled in 147ms (1055 modules)
+ GET /playlists 200 in 35ms
+ ✓ Compiled in 49ms (429 modules)
+ GET /playlists 200 in 15ms
+ ✓ Compiled in 49ms (429 modules)
+ GET /playlists 200 in 12ms
+ ✓ Compiled in 149ms (1055 modules)
+ GET /playlists 200 in 34ms
+ ✓ Compiled in 144ms (1055 modules)
+ GET /playlists 200 in 37ms
+ ✓ Compiled in 53ms (429 modules)
+ GET /playlists 200 in 20ms
+ GET /manage 200 in 32ms
+ GET /manage 200 in 14ms
+ GET /playlists 200 in 39ms
+ ✓ Compiled in 404ms (1055 modules)
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /playlists 200 in 75ms
+ GET /playlists 200 in 93ms
+ ✓ Compiled in 157ms (1055 modules)
+ GET /playlists 200 in 70ms
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /playlists 200 in 85ms
+ ✓ Compiled in 160ms (1055 modules)
+ GET /playlists 200 in 35ms
+ GET /playlists 200 in 77ms
+ ✓ Compiled in 282ms (1055 modules)
+ GET /playlists 200 in 46ms
+ GET /profile 200 in 29ms
+ GET /friends 200 in 47ms
+ GET /manage 200 in 43ms
+ GET /playlists 200 in 38ms
+ ✓ Compiled / in 221ms (631 modules)
+ GET / 200 in 276ms
+ ✓ Compiled /api/client-error in 176ms (650 modules)
+📣 CLIENT ERROR REPORT: {
+  "type": "console.error",
+  "args": [
+    "Audio URL:",
+    "blob:http://localhost:3000/66d937e6-4a15-4113-b048-3fc903993da4"
+  ]
+}
+📣 CLIENT ERROR REPORT: {
+  "type": "console.error",
+  "args": [
+    "Error details:",
+    {}
+  ]
+}
+📣 CLIENT ERROR REPORT: {
+  "type": "console.error",
+  "args": [
+    "Audio error for:",
+    "Girls feat Chance the Rapper"
+  ]
+}
+ POST /api/client-error 200 in 272ms
+ POST /api/client-error 200 in 270ms
+ POST /api/client-error 200 in 276ms
+ GET /manage 200 in 37ms
+ GET / 200 in 39ms
+ ✓ Compiled in 403ms (1050 modules)
+ GET / 200 in 101ms
+ ⨯ ./app/page.tsx
+Error:   [31mx[0m Unexpected eof
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/page.tsx[0m:126:6]
+ [2m124[0m |                 </div>
+ [2m125[0m |               </div>
+ [2m126[0m |   );
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ○ Compiling /_not-found ...
+ ⨯ ./app/page.tsx
+Error:   [31mx[0m Unexpected eof
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/page.tsx[0m:126:6]
+ [2m124[0m |                 </div>
+ [2m125[0m |               </div>
+ [2m126[0m |   );
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ GET / 500 in 387ms
+ ⨯ ./app/page.tsx
+Error:   [31mx[0m Unexpected eof
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/page.tsx[0m:126:6]
+ [2m124[0m |                 </div>
+ [2m125[0m |               </div>
+ [2m126[0m |   );
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error:   [31mx[0m Unexpected eof
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/page.tsx[0m:126:6]
+ [2m124[0m |                 </div>
+ [2m125[0m |               </div>
+ [2m126[0m |   );
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ POST /api/client-error 500 in 964ms
+ POST /api/client-error 500 in 678ms
+ POST /api/client-error 500 in 473ms
+ POST /api/client-error 500 in 301ms
+ POST /api/client-error 500 in 216ms
+ GET / 500 in 307ms
+ POST /api/client-error 500 in 21ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⨯ ./app/page.tsx
+Error:   [31mx[0m Expected '}', got '<eof>'
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/page.tsx[0m:146:1]
+ [2m143[0m |         </div>
+ [2m144[0m |       </section>
+ [2m145[0m |     </div>
+ [2m146[0m |   );
+     : [35;1m    ^[0m
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ GET / 200 in 92ms
+ GET / 500 in 15ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled /_not-found in 584ms (1054 modules)
+ GET / 200 in 94ms
+ GET / 200 in 238ms
+ ✓ Compiled /popular in 292ms (635 modules)
+ GET /popular 200 in 451ms
+ GET /popular 200 in 25ms
+ GET /manage 200 in 38ms
+ GET /manage 200 in 16ms
+ GET / 200 in 22ms
+ ✓ Compiled in 369ms (1054 modules)
+ GET / 200 in 103ms
+ ✓ Compiled in 331ms (1054 modules)
+ GET / 200 in 54ms
+ ✓ Compiled in 266ms (1054 modules)
+ GET / 200 in 54ms
+ ✓ Compiled in 314ms (1054 modules)
+ GET / 200 in 49ms
+ ✓ Compiled in 380ms (1054 modules)
+ GET / 200 in 64ms
+ ✓ Compiled in 164ms (1054 modules)
+ GET / 200 in 40ms
+ ✓ Compiled in 276ms (1054 modules)
+ GET / 200 in 53ms
+ ✓ Compiled in 148ms (1054 modules)
+ GET / 200 in 58ms
+ ✓ Compiled in 271ms (1050 modules)
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET / 200 in 74ms
+ ✓ Compiled /api/client-error in 161ms (640 modules)
+📣 CLIENT ERROR REPORT: {
+  "type": "window.error",
+  "message": "Uncaught ReferenceError: TrackList is not defined",
+  "filename": "webpack-internal:///(app-pages-browser)/./app/page.tsx",
+  "lineno": 213,
+  "colno": 132,
+  "error": "ReferenceError: TrackList is not defined\n    at Home (webpack-internal:///(app-pages-browser)/./app/page.tsx:213:132)\n    at Object.react_stack_bottom_frame (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:23584:20)\n    at renderWithHooks (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:6793:22)\n    at updateFunctionComponent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:9247:19)\n    at beginWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:10858:18)\n    at runWithFiberInDEV (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:872:30)\n    at performUnitOfWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15727:22)\n    at workLoopSync (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15547:41)\n    at renderRootSync (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15527:11)\n    at performWorkOnRoot (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:14991:13)\n    at performSyncWorkOnRoot (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:16831:7)\n    at flushSyncWorkAcrossRoots_impl (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:16677:21)\n    at flushSyncWork$1 (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15297:12)\n    at Object.scheduleRefresh (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:114:9)\n    at eval (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-refresh/cjs/react-refresh-runtime.development.js:265:17)\n    at Set.forEach (<anonymous>)\n    at Object.performReactRefresh (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-refresh/cjs/react-refresh-runtime.development.js:254:26)\n    at applyUpdate (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/@next/react-refresh-utils/dist/internal/helpers.js:139:31)\n    at statusHandler (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/@next/react-refresh-utils/dist/internal/helpers.js:156:13)\n    at setStatus (http://localhost:3000/_next/static/chunks/webpack.js?v=1769460505959:498:55)\n    at http://localhost:3000/_next/static/chunks/webpack.js?v=1769460505959:667:21"
+}
+ POST /api/client-error 200 in 320ms
+ GET / 200 in 421ms
+📣 CLIENT ERROR REPORT: {
+  "type": "window.error",
+  "message": "Uncaught ReferenceError: TrackList is not defined",
+  "filename": "webpack-internal:///(app-pages-browser)/./app/page.tsx",
+  "lineno": 213,
+  "colno": 132,
+  "error": "ReferenceError: TrackList is not defined\n    at Home (webpack-internal:///(app-pages-browser)/./app/page.tsx:213:132)\n    at Object.react_stack_bottom_frame (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:23584:20)\n    at renderWithHooks (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:6793:22)\n    at updateFunctionComponent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:9247:19)\n    at beginWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:10858:18)\n    at runWithFiberInDEV (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:872:30)\n    at performUnitOfWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15727:22)\n    at workLoopSync (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15547:41)\n    at renderRootSync (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15527:11)\n    at performWorkOnRoot (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15034:44)\n    at performWorkOnRootViaSchedulerTask (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:16816:7)\n    at MessagePort.performWorkUntilDeadline (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:45:48)"
+}
+ POST /api/client-error 200 in 18ms
+ ✓ Compiled in 154ms (1069 modules)
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET / 200 in 174ms
+ GET /playlists 200 in 22ms
+ GET /playlists 200 in 9ms
+ GET /playlists 200 in 11ms
+ GET /manage 200 in 28ms
+ GET / 200 in 22ms
+ GET /playlists 200 in 24ms
+ GET /manage 200 in 28ms
+ ✓ Compiled /profile in 188ms (650 modules)
+ GET /profile 200 in 335ms
+ GET /friends 200 in 36ms
+ GET /profile 200 in 24ms
+ ✓ Compiled in 341ms (1055 modules)
+ GET /profile 200 in 125ms
+ GET /friends 200 in 45ms
+ GET /profile 200 in 32ms
+ GET /friends 200 in 31ms
+ GET / 200 in 45ms

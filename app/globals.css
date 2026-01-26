@@ -1,26 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+/* Import tailwind after fonts */
 @import "tailwindcss";
 
+/* Modern design tokens */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #0b1020; /* deep slate */
+  --surface: rgba(255,255,255,0.03);
+  --muted: #9ca3af;
+  --accent: #ec4899; /* default pink accent */
+  --glass: rgba(255,255,255,0.04);
+  --radius: 14px;
+  --radius-sm: 8px;
+  --card-shadow: 0 6px 20px rgba(2,6,23,0.6);
+  --glass-border: rgba(255,255,255,0.04);
+  --focus-ring: 0 0 0 4px rgba(236,72,153,0.12);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --bg: #f7fafc;
+    --surface: rgba(2,6,23,0.03);
+    --muted: #6b7280;
+    --accent: #ec4899;
+    --glass: rgba(2,6,23,0.03);
+    --card-shadow: 0 8px 24px rgba(15,23,42,0.06);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Smooth utility animation used site-wide */
+@keyframes slide-in {
+  from { transform: translateY(8px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
+.animate-slide-in { animation: slide-in 260ms cubic-bezier(.2,.9,.3,1) both; }
+
+/* Base page styles */
+html, body, #__next { height: 100%; }
+body {
+  background: radial-gradient(1200px 600px at 10% 10%, rgba(236,72,153,0.05), transparent 10%),
+              radial-gradient(800px 400px at 90% 90%, rgba(59,130,246,0.03), transparent 12%),
+              var(--bg);
+  color: #e6eef7;
+  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.45;
+}
+
+/* Container tweak to keep content centered and modern */
+.container { max-width: 1200px; margin-left: auto; margin-right: auto; padding-left: 1rem; padding-right: 1rem; }
+
+/* Card (modern, slightly glassy) */
+.card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-radius: var(--radius);
+  padding: 1rem;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--glass-border);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: .5rem; padding: .5rem .9rem; border-radius: 10px; font-weight: 600;
+  transition: transform .14s ease, box-shadow .14s ease, opacity .12s ease;
+  cursor: pointer; user-select: none; border: none;
+}
+.btn:active { transform: translateY(1px); }
+.btn:focus { box-shadow: var(--focus-ring); outline: none; }
+.btn-primary {
+  /* Use theme CSS variables for exact accent colors (no hardcoded pink)
+     --accent and --accent-secondary are set by ThemeProvider. */
+  background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
+  color: #071028; box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+.btn-ghost {
+  background: transparent; color: #e6eef7; border: 1px solid rgba(255,255,255,0.04);
+}
+
+/* Inputs */
+.input {
+  background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04);
+  padding: .6rem .8rem; border-radius: 10px; color: inherit; width: 100%;
+}
+.input:focus { box-shadow: var(--focus-ring); outline: none; }
+
+/* Subtle panel surface used for small inline panels to match input background */
+.panel-surface {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.04);
+}
+
+/* Card header helpers */
+.card-title { font-size: 1.1rem; font-weight: 700; color: #fff; }
+
+.card-sub { color: var(--muted); font-size: .95rem; }
+/* Ensure card-sub uses same font and boldness as other headings for consistency */
+.card-sub, .card-title {
+  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  font-weight: 700;
+}
+
+/* Make all headings consistent font and boldness across the app */
+h1, h2, h3, h4, h5, h6, .card-title {
+  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  font-weight: 700;
+  letter-spacing: 0.15px;
+}
+
+/* Player range thumb styled to match modern theme */
+.player-range { --player-thumb-color: var(--accent); height: 6px; }
+.player-range::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none; width: 14px; height: 14px; border-radius: 9999px;
+  background: linear-gradient(180deg, #fff, rgba(255,255,255,0.9));
+  border: 3px solid var(--player-thumb-color); box-shadow: 0 6px 18px rgba(3,6,23,0.6);
+  cursor: pointer; margin-top: -4px;
+}
+.player-range::-webkit-slider-runnable-track { height: 6px; background: rgba(255,255,255,0.04); border-radius: 9999px; }
+.player-range::-moz-range-thumb { width: 14px; height: 14px; border-radius: 9999px; background: #fff; border: 3px solid var(--player-thumb-color); transform: translateY(-4px); }
+.player-range::-moz-range-track { height: 6px; background: rgba(255,255,255,0.04); border-radius: 9999px; }
+
+/* Utility spacing tweaks */
+.muted { color: var(--muted); }
+.rounded-lg { border-radius: var(--radius); }
+
+/* Keep previous comment about removed black theme for history */
+/* Note: black theme removed per user preference; any previous
+   .theme-black rules were deleted to avoid applying black-specific
+   outlines or text-strokes. */

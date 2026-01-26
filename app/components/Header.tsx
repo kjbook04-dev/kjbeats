@@ -1,0 +1,169 @@
+'use client';
+
+import Link from 'next/link';
+import { useState } from 'react';
+import { useUser } from '../context/UserContext';
+import { useTheme } from '../context/ThemeContext';
+import { usePathname } from 'next/navigation';
+import { AuthModal } from './AuthModal';
+
+export default function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
+  const { user, logout } = useUser();
+  const { currentTheme } = useTheme();
+  // Make the top/header logout a subtle see-through/ghost button on every page.
+  const logoutClass = 'bg-transparent hover:bg-white/5 text-white px-3 py-1 rounded-md text-sm transition-colors border border-white/10';
+
+  return (
+    <header className="bg-gray-900 p-4">
+      <div className="container mx-auto flex justify-between items-center">
+        <Link href="/" className={`text-2xl font-bold bg-gradient-to-r ${currentTheme.gradient} text-transparent bg-clip-text flex items-center`}>
+          <svg
+            aria-hidden="true"
+            role="img"
+            className="w-8 h-8 mr-2 flex-shrink-0"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <title>KJBeats headphones</title>
+            <defs>
+              <linearGradient id="kjbeats-logo-grad" x1="0" x2="1">
+                <stop offset="0%" stopColor={currentTheme.primary} />
+                <stop offset="100%" stopColor={currentTheme.secondary} />
+              </linearGradient>
+            </defs>
+            {/* band */}
+            <path d="M4 12a8 8 0 0116 0v1" stroke="url(#kjbeats-logo-grad)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+            {/* left earcup */}
+            <path d="M5 13.5v2.5a2 2 0 002 2h0a1 1 0 001-1v-3a2 2 0 00-2-2H6a1 1 0 00-1 1z" stroke="url(#kjbeats-logo-grad)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+            {/* right earcup */}
+            <path d="M19 13.5v2.5a2 2 0 01-2 2h0a1 1 0 01-1-1v-3a2 2 0 012-2h0a1 1 0 011 1z" stroke="url(#kjbeats-logo-grad)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+          </svg>
+          <span>KJBeats</span>
+        </Link>
+
+        {/* Mobile menu button */}
+        <button
+          className="md:hidden"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            {isMenuOpen ? (
+              <path d="M6 18L18 6M6 6l12 12" />
+            ) : (
+              <path d="M4 6h16M4 12h16M4 18h16" />
+            )}
+          </svg>
+        </button>
+
+        {/* Navigation links */}
+        <nav
+          className={`${
+            isMenuOpen ? 'block' : 'hidden'
+          } md:block absolute md:relative top-16 md:top-0 left-0 right-0 bg-black md:bg-transparent`}
+        >
+          <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-8 p-4 md:p-0">
+            <ul className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8">
+              <li>
+                <Link href="/" className={`${currentTheme.text} ${currentTheme.textHover}`}>
+                  Home
+                </Link>
+              </li>
+              {/* Library tab removed per request */}
+              <li>
+                <Link href="/playlists" className={`${currentTheme.text} ${currentTheme.textHover}`}>
+                  Playlists
+                </Link>
+              </li>
+              {user && (
+                <li>
+                  <Link href="/manage" className={`${currentTheme.text} ${currentTheme.textHover}`}>
+                    Manage Music
+                  </Link>
+                </li>
+              )}
+              {user && (
+                <li>
+                  <Link href="/friends" className={`${currentTheme.text} ${currentTheme.textHover}`}>
+                    Friends
+                  </Link>
+                </li>
+              )}
+              <li>
+                <Link href="/about" className={`${currentTheme.text} ${currentTheme.textHover}`}>
+                  About
+                </Link>
+              </li>
+            </ul>
+            
+            {/* Auth Section */}
+            <div className="flex items-center space-x-4">
+              {user ? (
+                <div className="flex items-center space-x-4">
+                  <Link href="/profile" className={`flex items-center space-x-2 ${currentTheme.text} ${currentTheme.textHover} transition-colors`}>
+                    {user.profilePicture ? (
+                      <img
+                        src={user.profilePicture}
+                        alt={user.firstName || user.username}
+                        className={`w-8 h-8 rounded-full object-cover border-2 ${currentTheme.border}`}
+                      />
+                    ) : (
+                      <div className={`w-8 h-8 ${currentTheme.gradient} rounded-full flex items-center justify-center text-sm font-bold text-white`}>
+                        {(user.firstName || user.username || 'U').charAt(0).toUpperCase()}
+                      </div>
+                    )}
+                    <span>{user.firstName || user.username}</span>
+                  </Link>
+                  <button
+                    onClick={logout}
+                    className={logoutClass}
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <div className="flex space-x-2">
+                  <button
+                    onClick={() => {
+                      setAuthMode('login');
+                      setShowAuthModal(true);
+                    }}
+                    className={`${currentTheme.text} ${currentTheme.textHover} px-3 py-1 text-sm`}
+                  >
+                    Login
+                  </button>
+                  <button
+                    onClick={() => {
+                      setAuthMode('signup');
+                      setShowAuthModal(true);
+                    }}
+                    className={`${currentTheme.bg} ${currentTheme.bgHover} text-white px-3 py-1 rounded-md text-sm transition-colors`}
+                  >
+                    Sign Up
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </nav>
+        
+        <AuthModal
+          isOpen={showAuthModal}
+          onClose={() => setShowAuthModal(false)}
+          initialMode={authMode}
+        />
+      </div>
+    </header>
+  );
+}

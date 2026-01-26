@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Users</title>
+</head>
+<body>
+    <h1>User Data Debug</h1>
+    <div id="output"></div>
+    
+    <script>
+        const users = JSON.parse(localStorage.getItem('kjbeats_users') || '[]');
+        const currentUser = JSON.parse(localStorage.getItem('kjbeats_user') || 'null');
+        
+        document.getElementById('output').innerHTML = `
+            <h2>All Users:</h2>
+            <pre>${JSON.stringify(users, null, 2)}</pre>
+            
+            <h2>Current User:</h2>
+            <pre>${JSON.stringify(currentUser, null, 2)}</pre>
+            
+            <h2>Actions:</h2>
+            <button onclick="clearAll()">Clear All Data</button>
+            <button onclick="addFirstName()">Add FirstName to Existing Users</button>
+        `;
+        
+        function clearAll() {
+            localStorage.removeItem('kjbeats_users');
+            localStorage.removeItem('kjbeats_user');
+            alert('All data cleared! Refresh the page.');
+        }
+        
+        function addFirstName() {
+            const users = JSON.parse(localStorage.getItem('kjbeats_users') || '[]');
+            const updatedUsers = users.map(user => {
+                if (!user.firstName) {
+                    user.firstName = user.username; // Use username as firstName if missing
+                }
+                return user;
+            });
+            localStorage.setItem('kjbeats_users', JSON.stringify(updatedUsers));
+            alert('FirstName added to all users! Refresh the page.');
+        }
+    </script>
+</body>
+</html>

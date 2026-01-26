@@ -1,0 +1,10 @@
+"use client";
+
+// YouTube player removed per request.
+// This file is retained as a lightweight stub to avoid import errors in
+// places that may reference `YouTubePlayer`. If you prefer the file to be
+// deleted entirely, I can remove it — currently it returns null.
+
+export default function YouTubePlayer() {
+  return null;
+}

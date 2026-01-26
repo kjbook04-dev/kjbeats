@@ -1,0 +1,5 @@
+"use client";
+
+// Centralized playback: re-export the retained player implementation so any imports of
+// `WebsitePlayer` receive the canonical `PersistentPlayer` implementation.
+export { default } from './PersistentPlayer';

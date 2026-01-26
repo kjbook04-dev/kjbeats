@@ -1,0 +1,26 @@
+[
+  {
+    "id": "youtube_G7KNmW9a75Y_1761063167720",
+    "source": "youtube",
+    "externalId": "G7KNmW9a75Y",
+    "title": "Flowers - Miley Cyrus",
+    "artist": "MileyCyrusVEVO",
+    "thumbnail": "https://i.ytimg.com/vi/G7KNmW9a75Y/mqdefault.jpg",
+    "addedBy": "user",
+    "addedAt": "2025-10-21T16:12:47.720Z",
+    "playCount": 9,
+    "approved": true
+  },
+  {
+    "id": "youtube_mQEVfhSxFNw_1761078518790",
+    "source": "youtube",
+    "externalId": "mQEVfhSxFNw",
+    "title": "Heat Waves - Glass Animals",
+    "artist": "GlassAnimalsVEVO",
+    "thumbnail": "https://i.ytimg.com/vi/mQEVfhSxFNw/mqdefault.jpg",
+    "addedBy": "user",
+    "addedAt": "2025-10-21T20:28:38.790Z",
+    "playCount": 3,
+    "approved": true
+  }
+]

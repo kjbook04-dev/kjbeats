@@ -1,103 +1,277 @@
-import Image from "next/image";
+"use client";
+import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { useLastPlayed } from './context/LastPlayedContext';
+import { useTheme } from './context/ThemeContext';
+// compact list UI on home page; reuse TrackList elsewhere
+import { useMusicLibrary } from './context/MusicLibraryContext';
+import { usePlaylist } from './context/PlaylistContext';
+// All-in-one music search removed
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const { lastPlayed, playAudio, setCurrentSong, setIsPlaying } = useLastPlayed();
+  const { currentTheme } = useTheme();
+  const bgImage = lastPlayed?.coverUrl;
+  const [pageBgColor, setPageBgColor] = useState<string>('transparent');
+  const { songs } = useMusicLibrary();
+  const { playlists } = usePlaylist();
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const handlePlayPlaylist = (playlist: any) => {
+    if (!playlist.songs || playlist.songs.length === 0) {
+      // nothing to play
+      return;
+    }
+
+    const firstSong = playlist.songs[0];
+
+    try {
+      // prefer global playTrack (for local files)
+      if (firstSong.audioUrl && (window as any).playTrack) {
+        (window as any).playTrack!({
+          title: firstSong.title,
+          artist: firstSong.artist,
+          audioUrl: firstSong.audioUrl,
+          id: firstSong.id,
+        });
+        return;
+      }
+
+      if (playAudio) {
+        playAudio(firstSong);
+        return;
+      }
+
+      // fallback
+      setCurrentSong(firstSong);
+      setIsPlaying(true);
+    } catch (e) {
+      console.error('Failed to play playlist from home:', e);
+    }
+  };
+
+  const handlePlaySong = (song: any) => {
+    if (!song) return;
+    try {
+      if (song.audioUrl && (window as any).playTrack) {
+        (window as any).playTrack!({
+          title: song.title,
+          artist: song.artist,
+          audioUrl: song.audioUrl,
+          id: song.id,
+        });
+        return;
+      }
+
+      if (playAudio) {
+        playAudio(song);
+        return;
+      }
+
+      setCurrentSong(song);
+      setIsPlaying(true);
+    } catch (e) {
+      console.error('Failed to play song from home:', e);
+    }
+  };
+
+  // helpers to compute total playlist duration (durations are strings like "3:45" or "1:02:30")
+  const parseDurationToSeconds = (durStr: string) => {
+    if (!durStr) return 0;
+    const parts = durStr.split(':').map(p => parseInt(p, 10));
+    if (parts.length === 3) {
+      return parts[0] * 3600 + parts[1] * 60 + parts[2];
+    }
+    if (parts.length === 2) {
+      return parts[0] * 60 + parts[1];
+    }
+    return parts[0] || 0;
+  };
+
+  const formatSeconds = (secs: number) => {
+    if (secs >= 3600) {
+      const h = Math.floor(secs / 3600);
+      const m = Math.floor((secs % 3600) / 60).toString().padStart(2, '0');
+      const s = Math.floor(secs % 60).toString().padStart(2, '0');
+      return `${h}:${m}:${s}`;
+    }
+    const m = Math.floor(secs / 60);
+    const s = Math.floor(secs % 60).toString().padStart(2, '0');
+    return `${m}:${s}`;
+  };
+
+  useEffect(() => {
+    try {
+      const color = getComputedStyle(document.body).backgroundColor;
+      setPageBgColor(color || 'transparent');
+    } catch (e) {
+      // SSR safeguard
+      setPageBgColor('transparent');
+    }
+  }, [bgImage]);
+  return (
+    <div
+      className="min-h-screen"
+      style={bgImage ? {
+        backgroundImage: `url(${bgImage})`,
+        backgroundPosition: 'center',
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+        backgroundAttachment: 'fixed',
+        transition: 'background 0.5s',
+      } : undefined}
+    >
+      {/* Hero Section */}
+      <section className={bgImage ? "bg-black/70 py-20" : "bg-gray-900 py-20"}>
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center">
+            <h1 className={`text-5xl font-bold mb-6 bg-gradient-to-r ${currentTheme.gradient} text-transparent bg-clip-text`}>Welcome to KJBeats</h1>
+              <p className="text-gray-300 text-xl mb-8">
+              Search popular music, save your favorites, and play full songs from multiple platforms.
+            </p>
+            <Link
+              href="/popular"
+              className={`bg-gradient-to-r ${currentTheme.gradientHover} text-gray-900 px-8 py-3 rounded-full font-semibold hover:scale-105 transition-all`}>
+              Discover Music
+            </Link>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+
+      {/* Featured Sections */}
+      <section className={bgImage ? "py-16 bg-black/70" : "py-16"}>
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-8 text-center">Featured Content</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Music Library */}
+            <div className="bg-gray-800 rounded-lg shadow-md p-6 border border-gray-700 flex flex-col justify-between">
+              <h3 className={`text-xl font-semibold mb-4 bg-gradient-to-r ${currentTheme.gradient} text-transparent bg-clip-text`}>Your Music Library</h3>
+              <div className="flex-grow">
+                {songs.length === 0 ? (
+                  <div className={`${currentTheme.text} text-center py-8`}>No songs added yet.</div>
+                ) : (
+                  <div className="grid grid-cols-1 gap-3">
+                    {songs.slice(0, 5).map((s: any) => (
+                      <div key={s.id} className="bg-gray-900 p-4 rounded border border-gray-700">
+                        <div className="flex items-center justify-between">
+                          <div className="min-w-0">
+                            <p className="text-white truncate font-medium">{s.title}</p>
+                            <p className="text-gray-400 text-sm truncate">{s.artist}</p>
+                          </div>
+                          <div className="flex items-center space-x-3">
+                            <div className="text-gray-500 text-xs">{s.duration}</div>
+                            <button
+                              onClick={() => handlePlaySong(s)}
+                              title={`Play ${s.title}`}
+                              className={`w-8 h-8 rounded-full ${currentTheme.bg} ${currentTheme.bgHover} ${currentTheme.text} flex items-center justify-center hover:scale-105 transition-transform`}
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-4 h-4" aria-hidden="true">
+                                <path d="M5 3v18l15-9L5 3z" fill="currentColor" />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    {songs.length > 5 && (
+                      <p className="text-gray-500 text-xs">+{songs.length - 5} more songs</p>
+                    )}
+                  </div>
+                )}
+              </div>
+              <div className="mt-4">
+                <a
+                  href="/library"
+                  className={`inline-block bg-gradient-to-r ${currentTheme.gradient} px-4 py-2 rounded-lg text-sm font-medium hover:scale-105 transition-all`}
+                >
+                  <span style={{ color: pageBgColor }}>View Library</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Playlists */}
+            <div className="bg-gray-800 rounded-lg shadow-md p-6 border border-gray-700 flex flex-col justify-between">
+              <h3 className={`text-xl font-semibold mb-4 bg-gradient-to-r ${currentTheme.gradient} text-transparent bg-clip-text`}>Playlists</h3>
+              <div className="flex-grow">
+                {playlists.length === 0 ? (
+                  <div className={`${currentTheme.text} text-center py-8`}>No playlists yet.</div>
+                ) : (
+                  <div className="grid grid-cols-1 gap-3">
+                    {playlists.slice(0, 5).map((pl) => {
+                      // compute total duration
+                      const totalSecs = (pl.songs || []).reduce((acc: number, s: any) => acc + parseDurationToSeconds(s.duration || ''), 0);
+                      const totalStr = formatSeconds(totalSecs);
+                      return (
+                        <div key={pl.id} className="bg-gray-900 p-4 rounded border border-gray-700">
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <h4 className={`font-medium ${currentTheme.text}`}>{pl.title}</h4>
+                              {pl.description && <p className="text-gray-400 text-sm">{pl.description}</p>}
+                              <p className="text-gray-500 text-xs mt-1">{pl.songs.length} songs • {totalStr}</p>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <button
+                                onClick={() => handlePlayPlaylist(pl)}
+                                title={`Play ${pl.title}`}
+                                className={`w-8 h-8 rounded-full ${currentTheme.bg} ${currentTheme.bgHover} ${currentTheme.text} flex items-center justify-center hover:scale-105 transition-transform`}
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-4 h-4" aria-hidden="true">
+                                  <path d="M5 3v18l15-9L5 3z" fill="currentColor" />
+                                </svg>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+              <div className="mt-4">
+                <a
+                  href="/playlists"
+                  className={`inline-block bg-gradient-to-r ${currentTheme.gradient} px-4 py-2 rounded-lg text-sm font-medium hover:scale-105 transition-all`}
+                >
+                  <span style={{ color: pageBgColor }}>View All Playlists</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Last Played */}
+          <div className="mt-12">
+            <h2 className={`text-3xl font-bold mb-6 text-center bg-gradient-to-r ${currentTheme.gradient} text-transparent bg-clip-text`}>Last Played</h2>
+            <div className="max-w-4xl mx-auto">
+              <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 text-center">
+                {lastPlayed ? (
+                  <div>
+                    <h3 className={`text-xl font-semibold ${currentTheme.text}`}>{lastPlayed.title}</h3>
+                    <p className="text-gray-400">{lastPlayed.artist}</p>
+                    <div className="mt-4">
+                      <button
+                        onClick={() => {
+                          if (!lastPlayed) return;
+                          if (playAudio) {
+                            playAudio(lastPlayed);
+                          } else {
+                            setCurrentSong(lastPlayed);
+                            setIsPlaying(true);
+                          }
+                        }}
+                        className={`inline-block bg-gradient-to-r ${currentTheme.gradient} text-gray-900 px-4 py-2 rounded-lg text-sm font-medium hover:scale-105 transition-all`}
+                      >
+                        Play
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="text-gray-400">No recently played songs.</p>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
+
 }
