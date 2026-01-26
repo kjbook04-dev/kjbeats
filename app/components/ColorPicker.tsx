@@ -11,27 +11,23 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ className = '' }) => {
   const { currentTheme, changeTheme, availableThemes } = useTheme();
 
   return (
-    <div className={`${className} h-full flex flex-col`}>
-      {/* move only the swatches and label down 12px without affecting the outer card */}
-  <div style={{ transform: 'translateY(14px)' }} className="w-full">
-        <div className="flex-1 flex items-center justify-center">
-          <div className="grid grid-cols-4 gap-3 justify-center">
-          {Object.entries(availableThemes).map(([key, theme]) => (
+    <div className={`${className}`}>
+      <h3 className="text-lg font-semibold text-white mb-4">Choose Your Theme Color</h3>
+      <div className="grid grid-cols-4 gap-3">
+        {Object.entries(availableThemes).map(([key, theme]) => (
           <button
             key={key}
             onClick={() => changeTheme(key)}
             className={`
-              relative w-16 h-16 rounded-full transition-all duration-150 overflow-hidden
+              relative w-16 h-16 rounded-full transition-all duration-200
               ${currentTheme.name === theme.name 
-                ? 'ring-2 ring-white ring-opacity-60 scale-105' 
-                : 'hover:scale-102'
+                ? 'ring-4 ring-white ring-opacity-60 scale-110' 
+                : 'hover:scale-105'
               }
             `}
-            style={
-              theme.backgroundCss
-                ? { background: theme.backgroundCss }
-                : { background: `linear-gradient(135deg, ${theme.primary}, ${theme.secondary})` }
-            }
+            style={{
+              background: `linear-gradient(135deg, ${theme.primary}, ${theme.secondary})`
+            }}
             title={theme.name}
           >
             {currentTheme.name === theme.name && (
@@ -51,12 +47,10 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ className = '' }) => {
             )}
           </button>
         ))}
-          </div>
-        </div>
-        <p className="text-gray-400 text-sm mt-3 self-start">
-          Current theme: <span className="font-medium">{currentTheme.name}</span>
-        </p>
       </div>
+      <p className="text-gray-400 text-sm mt-3">
+        Current theme: <span className="font-medium">{currentTheme.name}</span>
+      </p>
     </div>
   );
 };

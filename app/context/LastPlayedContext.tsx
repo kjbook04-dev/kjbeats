@@ -5,8 +5,6 @@ import type { Song } from "../types/music";
 interface LastPlayedContextType {
   lastPlayed: Song | null;
   setLastPlayed: (song: Song) => void;
-  history: Song[];
-  clearHistory: () => void;
   currentSong: Song | null;
   setCurrentSong: (song: Song | null) => void;
   isPlaying: boolean;
@@ -27,7 +25,6 @@ export function useLastPlayed() {
 
 export function LastPlayedProvider({ children }: { children: ReactNode }) {
   const [lastPlayed, setLastPlayedState] = useState<Song | null>(null);
-  const [history, setHistory] = useState<Song[]>([]);
   const [currentSong, setCurrentSong] = useState<Song | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [playAudio, setPlayAudio] = useState<((song: Song) => void) | null>(null);
@@ -37,42 +34,17 @@ export function LastPlayedProvider({ children }: { children: ReactNode }) {
     // Load from localStorage on mount
     const stored = localStorage.getItem("lastPlayedSong");
     if (stored) setLastPlayedState(JSON.parse(stored));
-    const rawHistory = localStorage.getItem('kjbeats_play_history');
-    if (rawHistory) {
-      try {
-        setHistory(JSON.parse(rawHistory));
-      } catch (e) {
-        console.warn('Failed to parse play history', e);
-      }
-    }
   }, []);
 
   const setLastPlayed = (song: Song) => {
     setLastPlayedState(song);
     localStorage.setItem("lastPlayedSong", JSON.stringify(song));
-    try {
-      setHistory(prev => {
-        const dedup = [song, ...prev.filter(s => s.id !== song.id)];
-        const clipped = dedup.slice(0, 50);
-        localStorage.setItem('kjbeats_play_history', JSON.stringify(clipped));
-        return clipped;
-      });
-    } catch (e) {
-      console.warn('Failed to update play history', e);
-    }
-  };
-
-  const clearHistory = () => {
-    setHistory([]);
-    localStorage.removeItem('kjbeats_play_history');
   };
 
   return (
     <LastPlayedContext.Provider value={{ 
       lastPlayed, 
       setLastPlayed,
-      history,
-      clearHistory,
       currentSong,
       setCurrentSong,
       isPlaying,

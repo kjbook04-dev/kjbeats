@@ -73,8 +73,7 @@ export default function UniversalPlayButton({
     <button
       onClick={handleClick}
       disabled={isLoading}
-      className={`inline-flex items-center justify-center w-10 h-10 rounded-full text-white shadow ${className}`}
-      style={{ background: 'var(--accent)', boxShadow: '0 6px 18px rgba(3,6,23,0.6)' }}
+      className={`inline-flex items-center justify-center w-10 h-10 rounded-full ${currentTheme.bg} ${currentTheme.bgHover} text-white shadow ${className}`}
       title={showTooltip ? `Play ${track.title}` : undefined}
       aria-label={`Play ${track.title}`}
     >

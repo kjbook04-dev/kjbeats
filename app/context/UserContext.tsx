@@ -10,10 +10,6 @@ export interface User {
   createdAt: string;
   profilePicture?: string;
   themeColor?: string;
-  friends?: string[];
-  bio?: string;
-  website?: string;
-  publicProfile?: boolean;
 }
 
 interface UserContextType {
@@ -23,11 +19,8 @@ interface UserContextType {
   logout: () => void;
   updateProfilePicture: (imageFile: File) => Promise<boolean>;
   updateUserTheme: (themeColor: string) => Promise<boolean>;
-  updateUserProfile: (data: { bio?: string; website?: string; publicProfile?: boolean }) => Promise<boolean>;
   clearAllUserData: () => void;
   isLoading: boolean;
-  addFriend: (friendUsername: string) => Promise<{success: boolean, error?: string}>;
-  removeFriend: (friendUsername: string) => Promise<{success: boolean, error?: string}>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -54,11 +47,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     if (savedUser) {
       try {
         const userData = JSON.parse(savedUser);
-        // ensure friends array exists
-        if (!userData.friends) userData.friends = [];
-        if (typeof userData.bio === 'undefined') userData.bio = '';
-        if (typeof userData.website === 'undefined') userData.website = '';
-        if (typeof userData.publicProfile === 'undefined') userData.publicProfile = false;
         // Handle backward compatibility for users without firstName
         if (!userData.firstName) {
           // Auto-migrate: use username as firstName for backward compatibility
@@ -169,10 +157,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       email,
       password, // In a real app, this would be hashed
       createdAt: new Date().toISOString(),
-      friends: [],
-      bio: '',
-      website: '',
-      publicProfile: false
     };
 
     users.push(newUser);
@@ -230,28 +214,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     return false;
   };
 
-  const updateUserProfile = async (data: { bio?: string; website?: string; publicProfile?: boolean }): Promise<boolean> => {
-    if (!user) return false;
-    try {
-      const users = JSON.parse(localStorage.getItem('kjbeats_users') || '[]');
-      const userIndex = users.findIndex((u: User) => u.id === user.id);
-
-      const updatedUser = { ...user, ...data } as User;
-
-      if (userIndex !== -1) {
-        users[userIndex] = { ...users[userIndex], ...data };
-        localStorage.setItem('kjbeats_users', JSON.stringify(users));
-      }
-
-      setUser(updatedUser);
-      localStorage.setItem('kjbeats_user', JSON.stringify(updatedUser));
-      return true;
-    } catch (e) {
-      console.error('updateUserProfile failed', e);
-      return false;
-    }
-  };
-
   const updateProfilePicture = async (imageFile: File): Promise<boolean> => {
     if (!user) return false;
 
@@ -269,7 +231,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         
         // Update current user session
         const updatedUser = { ...user, profilePicture: imageUrl };
-  if (!updatedUser.friends) updatedUser.friends = [];
         setUser(updatedUser);
         localStorage.setItem('kjbeats_user', JSON.stringify(updatedUser));
         
@@ -289,53 +250,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     return false;
   };
 
-  const addFriend = async (friendUsername: string): Promise<{success: boolean, error?: string}> => {
-    if (!user) return { success: false, error: 'Not signed in' };
-    try {
-      const users = JSON.parse(localStorage.getItem('kjbeats_users') || '[]');
-      const found = users.find((u: any) => u.username === friendUsername);
-      if (!found) return { success: false, error: 'User not found' };
-
-      const updatedUser = { ...user, friends: Array.from(new Set([...(user.friends || []), friendUsername])) };
-
-      // update users list if present
-      const idx = users.findIndex((u: any) => u.id === user.id);
-      if (idx !== -1) {
-        users[idx].friends = updatedUser.friends;
-        localStorage.setItem('kjbeats_users', JSON.stringify(users));
-      }
-
-      setUser(updatedUser);
-      localStorage.setItem('kjbeats_user', JSON.stringify(updatedUser));
-      return { success: true };
-    } catch (e) {
-      console.error('addFriend failed', e);
-      return { success: false, error: 'Failed to add friend' };
-    }
-  };
-
-  const removeFriend = async (friendUsername: string): Promise<{success: boolean, error?: string}> => {
-    if (!user) return { success: false, error: 'Not signed in' };
-    try {
-      const users = JSON.parse(localStorage.getItem('kjbeats_users') || '[]');
-      const updatedFriends = (user.friends || []).filter(f => f !== friendUsername);
-      const updatedUser = { ...user, friends: updatedFriends };
-
-      const idx = users.findIndex((u: any) => u.id === user.id);
-      if (idx !== -1) {
-        users[idx].friends = updatedFriends;
-        localStorage.setItem('kjbeats_users', JSON.stringify(users));
-      }
-
-      setUser(updatedUser);
-      localStorage.setItem('kjbeats_user', JSON.stringify(updatedUser));
-      return { success: true };
-    } catch (e) {
-      console.error('removeFriend failed', e);
-      return { success: false, error: 'Failed to remove friend' };
-    }
-  };
-
   return (
     <UserContext.Provider value={{
       user,
@@ -344,10 +258,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       logout,
       updateProfilePicture,
       updateUserTheme,
-      updateUserProfile,
       clearAllUserData,
-      addFriend,
-      removeFriend,
       isLoading
     }}>
       {children}

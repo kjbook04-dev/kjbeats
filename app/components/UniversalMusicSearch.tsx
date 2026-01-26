@@ -52,7 +52,7 @@ export default function UniversalMusicSearch() {
     setIsSearching(true);
     const searchTerm = query.toLowerCase();
     
-  const results = musicDatabase.filter(song => {
+    let results = musicDatabase.filter(song => {
       // Direct matches
       if (song.title.toLowerCase().includes(searchTerm) || 
           song.artist.toLowerCase().includes(searchTerm) ||
@@ -76,9 +76,20 @@ export default function UniversalMusicSearch() {
       );
     });
 
-    // Do not inject 'popular' fallback results; if there are no matches
-    // the UI will simply show no search results and allow the user to
-    // try a different query or use the genre quick-search buttons.
+    // If no results, show popular songs from that genre
+    if (results.length === 0) {
+      if (searchTerm.includes('hip') || searchTerm.includes('rap') || searchTerm.includes('goosebumps')) {
+        results = musicDatabase.filter(song => song.genre === 'hip-hop');
+      } else if (searchTerm.includes('rock')) {
+        results = musicDatabase.filter(song => song.genre === 'rock');
+      } else if (searchTerm.includes('alternative') || searchTerm.includes('indie')) {
+        results = musicDatabase.filter(song => song.genre === 'alternative');
+      } else {
+        // Show popular songs
+        results = musicDatabase.slice(0, 6);
+      }
+    }
+
     setSearchResults(results);
     setIsSearching(false);
   };
