@@ -2,12 +2,14 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useUser } from '../context/UserContext';
 import { useTheme } from '../context/ThemeContext';
 import { usePathname } from 'next/navigation';
 import { AuthModal } from './AuthModal';
 
 export default function Header() {
+  const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
@@ -16,10 +18,19 @@ export default function Header() {
   // Make the top/header logout a subtle see-through/ghost button on every page.
   const logoutClass = 'bg-transparent hover:bg-white/5 text-white px-3 py-1 rounded-md text-sm transition-colors border border-white/10';
 
+  // If the theme provides a multi-stop gradient, prefer it for text/background
+  const hasMultiStop = !!currentTheme.backgroundCss;
+  const gradientTextStyle: React.CSSProperties = hasMultiStop ? {
+    backgroundImage: 'var(--theme-gradient)',
+    WebkitBackgroundClip: 'text',
+    backgroundClip: 'text',
+    color: 'transparent'
+  } : {};
+
   return (
     <header className="bg-gray-900 p-4">
       <div className="container mx-auto flex justify-between items-center">
-        <Link href="/" className={`text-2xl font-bold bg-gradient-to-r ${currentTheme.gradient} text-transparent bg-clip-text flex items-center`}>
+        <Link href="/" className={`text-2xl font-bold flex items-center`} style={gradientTextStyle}>
           <svg
             aria-hidden="true"
             role="img"
@@ -42,7 +53,7 @@ export default function Header() {
             {/* right earcup */}
             <path d="M19 13.5v2.5a2 2 0 01-2 2h0a1 1 0 01-1-1v-3a2 2 0 012-2h0a1 1 0 011 1z" stroke="url(#kjbeats-logo-grad)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" fill="none" />
           </svg>
-          <span>KJBeats</span>
+          <span style={gradientTextStyle}>KJBeats</span>
         </Link>
 
         {/* Mobile menu button */}
@@ -77,13 +88,13 @@ export default function Header() {
             <ul className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8">
               <li>
                 <Link href="/" className={`${currentTheme.text} ${currentTheme.textHover}`}>
-                  Home
+                  <span style={gradientTextStyle}>Home</span>
                 </Link>
               </li>
               {/* Library tab removed per request */}
               <li>
                 <Link href="/playlists" className={`${currentTheme.text} ${currentTheme.textHover}`}>
-                  Playlists
+                  <span style={gradientTextStyle}>Playlists</span>
                 </Link>
               </li>
               {user && (
@@ -112,18 +123,34 @@ export default function Header() {
               {user ? (
                 <div className="flex items-center space-x-4">
                   <Link href="/profile" className={`flex items-center space-x-2 ${currentTheme.text} ${currentTheme.textHover} transition-colors`}>
-                    {user.profilePicture ? (
-                      <img
-                        src={user.profilePicture}
-                        alt={user.firstName || user.username}
-                        className={`w-8 h-8 rounded-full object-cover border-2 ${currentTheme.border}`}
-                      />
-                    ) : (
-                      <div className={`w-8 h-8 ${currentTheme.gradient} rounded-full flex items-center justify-center text-sm font-bold text-white`}>
-                        {(user.firstName || user.username || 'U').charAt(0).toUpperCase()}
-                      </div>
-                    )}
-                    <span>{user.firstName || user.username}</span>
+                              {user.profilePicture ? (
+                                // Show a small bordered circular avatar whose inner color matches the current theme
+                                <div
+                                  className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${currentTheme.border} shadow-sm cursor-pointer`}
+                                  role="button"
+                                  tabIndex={0}
+                                  onClick={() => router.push('/profile')}
+                                  onKeyDown={(e) => { if (e.key === 'Enter') router.push('/profile'); }}
+                                >
+                                    {/* centered dark "cutout" inner circle to match header background */}
+                                    <div className="w-6 h-6 rounded-full bg-gray-900" />
+                                  </div>
+                              ) : (
+                                // Match the profile page's "circle-in-a-circle" placeholder but scaled for the header.
+                                <div
+                                  className={`w-8 h-8 rounded-full border-2 ${currentTheme.border} shadow-sm overflow-hidden relative flex items-center justify-center cursor-pointer`}
+                                  role="button"
+                                  tabIndex={0}
+                                  onClick={() => router.push('/profile')}
+                                  onKeyDown={(e) => { if (e.key === 'Enter') router.push('/profile'); }}
+                                >
+                                  {/* inner dark "cutout" circle to match header background (gradient ring effect) */}
+                                  <div className="w-6 h-6 rounded-full bg-gray-900" />
+                                  {/* subtle crescent shadow at top-left to mimic profile shading */}
+                                  <div className="absolute -top-0.5 -left-0.5 w-3 h-3 rounded-full bg-black/30 transform rotate-6" />
+                                </div>
+                              )}
+                    <span style={gradientTextStyle}>{user.firstName || user.username}</span>
                   </Link>
                   <button
                     onClick={logout}

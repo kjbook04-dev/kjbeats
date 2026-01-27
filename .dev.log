@@ -1307,3 +1307,14 @@ Import trace for requested module:
 <w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/kaitlynbook/music-website/.next/cache/webpack/client-development-fallback/0.pack.gz_' -> '/Users/kaitlynbook/music-website/.next/cache/webpack/client-development-fallback/0.pack.gz'
 <w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/kaitlynbook/music-website/.next/cache/webpack/client-development-fallback/0.pack.gz_' -> '/Users/kaitlynbook/music-website/.next/cache/webpack/client-development-fallback/0.pack.gz'
 <w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/kaitlynbook/music-website/.next/cache/webpack/client-development-fallback/0.pack.gz_' -> '/Users/kaitlynbook/music-website/.next/cache/webpack/client-development-fallback/0.pack.gz'
+ ✓ Compiled in 269ms (1055 modules)
+ ✓ Compiled in 331ms (1055 modules)
+ ✓ Compiled in 148ms (1055 modules)
+ ✓ Compiled in 338ms (1055 modules)
+ ✓ Compiled in 148ms (1055 modules)
+ ✓ Compiled in 145ms (1055 modules)
+ ✓ Compiled in 140ms (1055 modules)
+ ✓ Compiled /_not-found in 379ms (1046 modules)
+ GET / 404 in 532ms
+ ✓ Compiled in 489ms (1055 modules)
+[?25h

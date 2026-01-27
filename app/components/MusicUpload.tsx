@@ -194,8 +194,8 @@ export default function MusicUpload() {
             {uploadedSongs.map((song) => (
               <div key={song.id} className="flex items-center justify-between p-3 bg-gray-900 rounded border border-gray-700">
                 <div className="flex-1">
-                  <p className="text-gray-200 font-medium">{song.title}</p>
-                  <p className={`${currentTheme.text} text-sm`}>{song.artist} • {song.duration}</p>
+                  <p className="text-white font-semibold">{song.title}</p>
+                  <p className={`${(song.artist === 'Local Upload' || (song as any).audioUrl && (song as any).audioUrl.startsWith('blob:')) ? 'text-gray-300' : currentTheme.text} text-sm`}>{song.artist} • {song.duration}</p>
                 </div>
                 <div className="flex items-center gap-2">
                   {(() => {

@@ -88,7 +88,7 @@ export default function SpotifySearch() {
               />
             )}
             <div className="flex-1">
-              <h4 className="text-white font-medium">{track.name}</h4>
+              <h4 className="text-white font-semibold truncate">{track.name}</h4>
               <p className="text-gray-400">{track.artists.map(a => a.name).join(', ')}</p>
               <p className="text-gray-500 text-sm">{track.album.name}</p>
             </div>

@@ -71,7 +71,7 @@ export default function ProfilePage() {
             <div className="w-24 h-24 md:w-28 md:h-28 rounded-full border-4 border-white shadow-lg overflow-hidden bg-gray-800 relative -mt-1 z-20">
               <ProfilePictureUpload onImageSelect={handleProfilePictureUpdate} />
             </div>
-            <div>
+            <div className="mt-2 md:mt-3">
               <h1 className="text-2xl md:text-3xl font-bold text-white">{user.firstName || user.username}</h1>
               <p className="muted">@{user.username} • Member since {formatDate(user.createdAt)}</p>
             </div>

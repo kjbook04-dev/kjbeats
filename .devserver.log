@@ -1,0 +1,1939 @@
+
+> music-website@0.1.0 dev
+> next dev
+
+   ▲ Next.js 15.5.5
+   - Local:        http://localhost:3000
+   - Network:      http://172.16.100.42:3000
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 1027ms
+ ✓ Compiled / in 474ms (654 modules)
+ GET / 200 in 681ms
+ GET / 200 in 47ms
+ ✓ Compiled /api/client-error in 195ms (674 modules)
+📣 CLIENT ERROR REPORT: {
+  "type": "window.error",
+  "message": "Uncaught TypeError: Cannot read properties of undefined (reading 'gradient')",
+  "filename": "webpack-internal:///(app-pages-browser)/./app/components/Header.tsx",
+  "lineno": 36,
+  "colno": 91,
+  "error": "TypeError: Cannot read properties of undefined (reading 'gradient')\n    at Header (webpack-internal:///(app-pages-browser)/./app/components/Header.tsx:36:91)\n    at Object.react_stack_bottom_frame (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:23584:20)\n    at renderWithHooks (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:6793:22)\n    at updateFunctionComponent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:9247:19)\n    at beginWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:10858:18)\n    at runWithFiberInDEV (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:872:30)\n    at performUnitOfWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15727:22)\n    at workLoopSync (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15547:41)\n    at renderRootSync (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15527:11)\n    at performWorkOnRoot (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15034:44)\n    at performWorkOnRootViaSchedulerTask (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:16816:7)\n    at MessagePort.performWorkUntilDeadline (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:45:48)"
+}
+ POST /api/client-error 200 in 282ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET / 200 in 106ms
+📣 CLIENT ERROR REPORT: {
+  "type": "window.error",
+  "message": "Uncaught TypeError: Cannot read properties of undefined (reading 'gradient')",
+  "filename": "webpack-internal:///(app-pages-browser)/./app/components/Header.tsx",
+  "lineno": 36,
+  "colno": 91,
+  "error": "TypeError: Cannot read properties of undefined (reading 'gradient')\n    at Header (webpack-internal:///(app-pages-browser)/./app/components/Header.tsx:36:91)\n    at Object.react_stack_bottom_frame (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:23584:20)\n    at renderWithHooks (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:6793:22)\n    at updateFunctionComponent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:9247:19)\n    at beginWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:10858:18)\n    at runWithFiberInDEV (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:872:30)\n    at performUnitOfWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15727:22)\n    at workLoopSync (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15547:41)\n    at renderRootSync (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15527:11)\n    at performWorkOnRoot (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15034:44)\n    at performWorkOnRootViaSchedulerTask (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:16816:7)\n    at MessagePort.performWorkUntilDeadline (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:45:48)"
+}
+ POST /api/client-error 200 in 19ms
+ ✓ Compiled in 338ms (669 modules)
+ GET / 200 in 168ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled /api/client-error in 41ms (430 modules)
+📣 CLIENT ERROR REPORT: {
+  "type": "window.error",
+  "message": "Uncaught TypeError: Cannot read properties of undefined (reading 'text')",
+  "filename": "webpack-internal:///(app-pages-browser)/./app/components/Header.tsx",
+  "lineno": 186,
+  "colno": 79,
+  "error": "TypeError: Cannot read properties of undefined (reading 'text')\n    at Header (webpack-internal:///(app-pages-browser)/./app/components/Header.tsx:186:79)\n    at Object.react_stack_bottom_frame (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:23584:20)\n    at renderWithHooks (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:6793:22)\n    at updateFunctionComponent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:9247:19)\n    at beginWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:10858:18)\n    at runWithFiberInDEV (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:872:30)\n    at performUnitOfWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15727:22)\n    at workLoopSync (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15547:41)\n    at renderRootSync (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15527:11)\n    at performWorkOnRoot (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15034:44)\n    at performWorkOnRootViaSchedulerTask (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:16816:7)\n    at MessagePort.performWorkUntilDeadline (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:45:48)"
+}
+ POST /api/client-error 200 in 111ms
+ GET / 200 in 127ms
+ ✓ Compiled in 141ms (688 modules)
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET / 200 in 140ms
+📣 CLIENT ERROR REPORT: {
+  "type": "window.error",
+  "message": "Uncaught TypeError: Cannot read properties of undefined (reading 'border')",
+  "filename": "webpack-internal:///(app-pages-browser)/./app/components/Header.tsx",
+  "lineno": 276,
+  "colno": 130,
+  "error": "TypeError: Cannot read properties of undefined (reading 'border')\n    at Header (webpack-internal:///(app-pages-browser)/./app/components/Header.tsx:276:130)\n    at Object.react_stack_bottom_frame (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:23584:20)\n    at renderWithHooks (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:6793:22)\n    at updateFunctionComponent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:9247:19)\n    at beginWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:10858:18)\n    at runWithFiberInDEV (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:872:30)\n    at performUnitOfWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15727:22)\n    at workLoopSync (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15547:41)\n    at renderRootSync (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15527:11)\n    at performWorkOnRoot (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15034:44)\n    at performWorkOnRootViaSchedulerTask (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:16816:7)\n    at MessagePort.performWorkUntilDeadline (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:45:48)"
+}
+ POST /api/client-error 200 in 27ms
+ GET / 200 in 25ms
+ ✓ Compiled in 149ms (669 modules)
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET / 200 in 207ms
+ ✓ Compiled /api/client-error in 39ms (430 modules)
+📣 CLIENT ERROR REPORT: {
+  "type": "window.error",
+  "message": "Uncaught TypeError: Cannot read properties of undefined (reading 'border')",
+  "filename": "webpack-internal:///(app-pages-browser)/./app/components/Header.tsx",
+  "lineno": 276,
+  "colno": 130,
+  "error": "TypeError: Cannot read properties of undefined (reading 'border')\n    at Header (webpack-internal:///(app-pages-browser)/./app/components/Header.tsx:276:130)\n    at Object.react_stack_bottom_frame (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:23584:20)\n    at renderWithHooks (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:6793:22)\n    at updateFunctionComponent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:9247:19)\n    at beginWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:10858:18)\n    at runWithFiberInDEV (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:872:30)\n    at performUnitOfWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15727:22)\n    at workLoopSync (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15547:41)\n    at renderRootSync (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15527:11)\n    at performWorkOnRoot (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15034:44)\n    at performWorkOnRootViaSchedulerTask (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:16816:7)\n    at MessagePort.performWorkUntilDeadline (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:45:48)"
+}
+ POST /api/client-error 200 in 103ms
+ ✓ Compiled in 86ms (688 modules)
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET / 200 in 136ms
+📣 CLIENT ERROR REPORT: {
+  "type": "window.error",
+  "message": "Uncaught TypeError: Cannot read properties of undefined (reading 'gradient')",
+  "filename": "webpack-internal:///(app-pages-browser)/./app/page.tsx",
+  "lineno": 144,
+  "colno": 108,
+  "error": "TypeError: Cannot read properties of undefined (reading 'gradient')\n    at Home (webpack-internal:///(app-pages-browser)/./app/page.tsx:144:108)\n    at Object.react_stack_bottom_frame (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:23584:20)\n    at renderWithHooks (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:6793:22)\n    at updateFunctionComponent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:9247:19)\n    at beginWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:10858:18)\n    at runWithFiberInDEV (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:872:30)\n    at performUnitOfWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15727:22)\n    at workLoopSync (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15547:41)\n    at renderRootSync (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15527:11)\n    at performWorkOnRoot (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15034:44)\n    at performWorkOnRootViaSchedulerTask (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:16816:7)\n    at MessagePort.performWorkUntilDeadline (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:45:48)"
+}
+ POST /api/client-error 200 in 20ms
+ GET / 200 in 31ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 173ms (688 modules)
+ GET / 200 in 224ms
+📣 CLIENT ERROR REPORT: {
+  "type": "window.error",
+  "message": "Uncaught TypeError: Cannot read properties of undefined (reading 'gradient')",
+  "filename": "webpack-internal:///(app-pages-browser)/./app/page.tsx",
+  "lineno": 144,
+  "colno": 108,
+  "error": "TypeError: Cannot read properties of undefined (reading 'gradient')\n    at Home (webpack-internal:///(app-pages-browser)/./app/page.tsx:144:108)\n    at Object.react_stack_bottom_frame (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:23584:20)\n    at renderWithHooks (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:6793:22)\n    at updateFunctionComponent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:9247:19)\n    at beginWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:10858:18)\n    at runWithFiberInDEV (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:872:30)\n    at performUnitOfWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15727:22)\n    at workLoopSync (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15547:41)\n    at renderRootSync (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15527:11)\n    at performWorkOnRoot (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15034:44)\n    at performWorkOnRootViaSchedulerTask (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:16816:7)\n    at MessagePort.performWorkUntilDeadline (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:45:48)"
+}
+ POST /api/client-error 200 in 19ms
+ GET / 200 in 27ms
+ ✓ Compiled in 129ms (669 modules)
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET / 200 in 199ms
+ GET / 200 in 26ms
+ ✓ Compiled /manage in 203ms (666 modules)
+ GET /manage 200 in 254ms
+ GET / 200 in 35ms
+ ✓ Compiled /about in 211ms (673 modules)
+ GET /about 200 in 243ms
+ ✓ Compiled /privacy in 118ms (680 modules)
+ GET /privacy 200 in 212ms
+ GET /about 200 in 33ms
+ GET / 200 in 36ms
+ ✓ Compiled in 225ms (689 modules)
+ GET / 200 in 58ms
+ GET / 200 in 103ms
+ GET / 200 in 21ms
+ GET /manage 200 in 34ms
+ GET / 200 in 24ms
+ GET /manage 200 in 23ms
+ GET / 200 in 20ms
+ GET /about 200 in 38ms
+ GET / 200 in 24ms
+ GET /manage 200 in 22ms
+ ✓ Compiled in 169ms (689 modules)
+ GET /manage 200 in 55ms
+ GET / 200 in 36ms
+ GET /manage 200 in 25ms
+ ✓ Compiled /profile in 276ms (692 modules)
+ GET /profile 200 in 379ms
+ GET / 200 in 37ms
+ GET /manage 200 in 32ms
+ ✓ Compiled in 159ms (706 modules)
+ GET /manage 200 in 65ms
+ ✓ Compiled in 221ms (697 modules)
+ GET /manage 200 in 64ms
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /manage 200 in 88ms
+ ✓ Compiled in 101ms (697 modules)
+ GET /manage 200 in 37ms
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /manage 200 in 82ms
+ ✓ Compiled in 126ms (697 modules)
+ GET /manage 200 in 37ms
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /manage 200 in 64ms
+ ✓ Compiled in 100ms (697 modules)
+ GET /manage 200 in 33ms
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /manage 200 in 51ms
+ ✓ Compiled in 208ms (697 modules)
+ GET /manage 200 in 37ms
+ GET /manage 200 in 76ms
+ GET / 200 in 39ms
+ GET /manage 200 in 24ms
+ GET / 200 in 18ms
+ GET / 200 in 23ms
+ ✓ Compiled in 204ms (697 modules)
+ GET / 200 in 45ms
+ GET / 200 in 56ms
+ GET /manage 200 in 20ms
+ GET / 200 in 25ms
+ ✓ Compiled in 212ms (697 modules)
+ GET / 200 in 88ms
+ ✓ Compiled in 186ms (697 modules)
+ GET / 200 in 69ms
+ ✓ Compiled in 172ms (697 modules)
+ GET / 200 in 66ms
+ ✓ Compiled in 167ms (697 modules)
+ GET / 200 in 53ms
+ ✓ Compiled in 164ms (697 modules)
+ GET / 200 in 52ms
+ ✓ Compiled in 110ms (697 modules)
+ GET / 200 in 31ms
+ ✓ Compiled in 108ms (697 modules)
+ GET / 200 in 41ms
+ ✓ Compiled in 124ms (697 modules)
+ GET / 200 in 30ms
+ ✓ Compiled in 136ms (697 modules)
+ GET / 200 in 36ms
+ ✓ Compiled in 176ms (697 modules)
+ GET / 200 in 37ms
+ ✓ Compiled in 41ms (273 modules)
+ GET / 200 in 11ms
+ ✓ Compiled in 138ms (697 modules)
+ GET / 200 in 33ms
+ ✓ Compiled in 40ms (273 modules)
+ GET / 200 in 19ms
+ ✓ Compiled in 177ms (697 modules)
+ GET / 200 in 70ms
+ ✓ Compiled in 70ms (273 modules)
+ GET / 200 in 21ms
+ ✓ Compiled in 35ms (273 modules)
+ GET / 200 in 13ms
+ ✓ Compiled in 177ms (697 modules)
+ GET / 200 in 31ms
+ ✓ Compiled in 114ms (697 modules)
+ GET / 200 in 32ms
+ ✓ Compiled in 37ms (273 modules)
+ GET / 200 in 11ms
+ ✓ Compiled in 119ms (697 modules)
+ GET / 200 in 28ms
+ ✓ Compiled in 37ms (273 modules)
+ GET / 200 in 11ms
+ ✓ Compiled in 53ms (273 modules)
+ GET / 200 in 13ms
+ ✓ Compiled in 121ms (697 modules)
+ GET / 200 in 32ms
+ ✓ Compiled in 48ms (273 modules)
+ GET / 200 in 15ms
+ ✓ Compiled in 101ms (697 modules)
+ GET / 200 in 28ms
+ ✓ Compiled in 38ms (273 modules)
+ GET / 200 in 12ms
+ ✓ Compiled in 37ms (273 modules)
+ GET / 200 in 15ms
+ GET /about 200 in 97ms
+ GET / 200 in 25ms
+ ✓ Compiled /privacy in 119ms (429 modules)
+ GET /privacy 200 in 196ms
+ GET /about 200 in 29ms
+ GET / 200 in 18ms
+ GET /manage 200 in 34ms
+ GET / 200 in 10ms
+ GET / 200 in 19ms
+ ✓ Compiled /playlists in 223ms (695 modules)
+ GET /playlists 200 in 269ms
+ ✓ Compiled in 209ms (709 modules)
+ GET /playlists 200 in 51ms
+ ✓ Compiled in 39ms (275 modules)
+ GET /playlists 200 in 13ms
+ GET / 200 in 17ms
+ GET /playlists 200 in 21ms
+ GET / 200 in 10ms
+ GET / 200 in 9ms
+ GET /playlists 200 in 27ms
+ GET /manage 200 in 34ms
+ ✓ Compiled /friends in 212ms (702 modules)
+ GET /friends 200 in 267ms
+ GET /manage 200 in 26ms
+ GET /friends 200 in 25ms
+ ✓ Compiled in 161ms (716 modules)
+ GET /friends 200 in 46ms
+ GET /playlists 200 in 17ms
+ GET / 200 in 35ms
+ GET /friends 200 in 22ms
+ GET /about 200 in 32ms
+ GET /friends 200 in 17ms
+ ✓ Compiled in 214ms (716 modules)
+ GET /friends 200 in 27ms
+ GET /playlists 200 in 17ms
+ ✓ Compiled in 39ms (277 modules)
+ GET /playlists 200 in 11ms
+ GET /playlists 200 in 11ms
+ GET / 200 in 31ms
+ GET /playlists 200 in 20ms
+ ✓ Compiled in 137ms (716 modules)
+ GET /playlists 200 in 48ms
+ GET /friends 200 in 18ms
+ ✓ Compiled /profile in 176ms (448 modules)
+ GET /profile 200 in 227ms
+ GET /friends 200 in 33ms
+ GET /manage 200 in 38ms
+ GET /friends 200 in 23ms
+ GET /profile 200 in 27ms
+ GET /friends 200 in 27ms
+ GET /playlists 200 in 40ms
+ ✓ Compiled in 238ms (720 modules)
+ GET /playlists 200 in 63ms
+ ✓ Compiled / in 97ms (448 modules)
+ GET / 200 in 133ms
+ ✓ Compiled in 189ms (725 modules)
+ GET / 200 in 37ms
+ GET /playlists 200 in 14ms
+ GET / 200 in 20ms
+ ✓ Compiled in 39ms (277 modules)
+ GET / 200 in 13ms
+ GET /playlists 200 in 21ms
+ GET / 200 in 22ms
+ GET /playlists 200 in 27ms
+ GET / 200 in 12ms
+ GET /profile 200 in 12ms
+ ✓ Compiled in 237ms (714 modules)
+ GET /profile 200 in 51ms
+ ✓ Compiled in 45ms (277 modules)
+ GET /profile 200 in 11ms
+ ✓ Compiled in 132ms (714 modules)
+ GET /profile 200 in 32ms
+ GET /playlists 200 in 34ms
+ GET / 200 in 31ms
+ GET /playlists 200 in 27ms
+ GET / 200 in 8ms
+ GET /playlists 200 in 26ms
+ GET / 200 in 24ms
+ GET /playlists 200 in 10ms
+ GET / 200 in 26ms
+ GET /playlists 200 in 17ms
+ GET / 200 in 26ms
+ GET /playlists 200 in 30ms
+ GET / 200 in 27ms
+ GET /playlists 200 in 27ms
+ GET / 200 in 9ms
+ ✓ Compiled in 245ms (714 modules)
+ GET / 200 in 47ms
+ ✓ Compiled in 45ms (277 modules)
+ GET / 200 in 11ms
+ GET /profile 200 in 25ms
+ GET / 200 in 22ms
+ GET / 200 in 70ms
+ GET /playlists 200 in 35ms
+ GET / 200 in 24ms
+ ✓ Compiled in 206ms (714 modules)
+ GET / 200 in 36ms
+ GET /playlists 200 in 11ms
+ GET /playlists 200 in 9ms
+ GET / 200 in 26ms
+ GET /playlists 200 in 24ms
+ GET / 200 in 24ms
+ GET /playlists 200 in 24ms
+ GET / 200 in 23ms
+ GET /playlists 200 in 25ms
+ GET / 200 in 25ms
+ ✓ Compiled in 66ms (277 modules)
+ GET / 200 in 19ms
+ ✓ Compiled in 166ms (714 modules)
+ GET / 200 in 47ms
+ ✓ Compiled in 65ms (277 modules)
+ GET / 200 in 15ms
+ ✓ Compiled in 44ms (277 modules)
+ GET / 200 in 11ms
+ ✓ Compiled in 175ms (714 modules)
+ GET / 200 in 48ms
+ ✓ Compiled in 66ms (277 modules)
+ GET / 200 in 22ms
+ GET /playlists 200 in 19ms
+ GET / 200 in 25ms
+ GET /playlists 200 in 12ms
+ ✓ Compiled /manage in 217ms (443 modules)
+ GET /manage 200 in 264ms
+ GET /playlists 200 in 13ms
+ GET / 200 in 36ms
+ ✓ Compiled in 67ms (277 modules)
+ GET / 200 in 24ms
+ GET /playlists 200 in 9ms
+ GET /manage 200 in 27ms
+ GET / 200 in 24ms
+ GET /playlists 200 in 16ms
+ GET /manage 200 in 17ms
+ GET /playlists 200 in 13ms
+ GET /manage 200 in 11ms
+ GET /playlists 200 in 23ms
+ GET /friends 200 in 27ms
+ ✓ Compiled /about in 153ms (443 modules)
+ GET /about 200 in 202ms
+ GET /friends 200 in 34ms
+ GET /about 200 in 19ms
+ GET /friends 200 in 23ms
+ GET /manage 200 in 27ms
+ GET / 200 in 15ms
+ GET /playlists 200 in 29ms
+ GET /manage 200 in 23ms
+ GET /friends 200 in 22ms
+ GET /manage 200 in 24ms
+ GET / 200 in 21ms
+ GET /playlists 200 in 23ms
+ GET / 200 in 28ms
+ GET /playlists 200 in 19ms
+ GET / 200 in 23ms
+ GET /playlists 200 in 12ms
+ ✓ Compiled in 224ms (715 modules)
+ GET /playlists 200 in 38ms
+ GET / 200 in 23ms
+ GET /playlists 200 in 25ms
+ GET /manage 200 in 34ms
+ GET / 200 in 26ms
+ GET /manage 200 in 26ms
+ GET / 200 in 25ms
+ GET /playlists 200 in 27ms
+ GET / 200 in 10ms
+ GET / 200 in 11ms
+ GET /manage 200 in 14ms
+ GET /playlists 200 in 15ms
+ GET / 200 in 23ms
+ GET /manage 200 in 30ms
+ ⨯ ./app/playlists/page.tsx
+Error:   [31mx[0m Expected '</', got ')'
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/playlists/page.tsx[0m:302:1]
+ [2m299[0m |                 View Details
+ [2m300[0m |               </button>
+ [2m301[0m |             </div>
+ [2m302[0m |           ))}
+     : [35;1m           ^[0m
+ [2m303[0m |         </div>
+ [2m304[0m |       )}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/playlists/page.tsx
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|dependencyType=|esm|path=|/Users/kaitlynbook/music-website|request=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/runtime.js from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|dependencyType=|esm|path=|/Users/kaitlynbook/music-website|request=|./node_modules/next/dist/client/dev/amp-dev from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|dependencyType=|esm|path=|/Users/kaitlynbook/music-website|request=|./node_modules/next/dist/client/next-dev.js from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|dependencyType=|esm|path=|/Users/kaitlynbook/music-website|request=|./node_modules/next/dist/client/app-next-dev.js from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|loader|default|path=|/Users/kaitlynbook/music-website|request=|next-client-pages-loader from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|dependencyType=|esm|path=|/Users/kaitlynbook/music-website|request=|/Users/kaitlynbook/music-website/node_modules/next/dist/client/router.js from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|loader|default|path=|/Users/kaitlynbook/music-website|request=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|loader|default|path=|/Users/kaitlynbook/music-website|request=|next-flight-client-module-loader from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|loader|default|path=|/Users/kaitlynbook/music-website|request=|next-swc-loader from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|next=|/Users/kaitlynbook/music-website/node_modules/next|]|fallback=[|assert=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/assert/assert.js|buffer=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/buffer/index.js|constants=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/domain-browser/index.js|http=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-http/index.js|https=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/https-browserify/index.js|os=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/punycode/punycode.js|process=|/Users/kaitlynbook/music-website/node_modules/next/dist/build/polyfills/process.js|querystring=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|timers=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|vm=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/events/events.js|setImmediate=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|commonjs|path=|/Users/kaitlynbook/music-website|request=|next/dist/pages/_app from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|next=|/Users/kaitlynbook/music-website/node_modules/next|]|fallback=[|assert=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/assert/assert.js|buffer=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/buffer/index.js|constants=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/domain-browser/index.js|http=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-http/index.js|https=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/https-browserify/index.js|os=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/punycode/punycode.js|process=|/Users/kaitlynbook/music-website/node_modules/next/dist/build/polyfills/process.js|querystring=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|timers=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|vm=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/events/events.js|setImmediate=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|commonjs|path=|/Users/kaitlynbook/music-website|request=|next/dist/pages/_error from pack: Error: incorrect header check
+ ○ Compiling /_not-found ...
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|next=|/Users/kaitlynbook/music-website/node_modules/next|]|fullySpecified=|false|fallback=[|assert=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/assert/assert.js|buffer=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/buffer/index.js|constants=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/domain-browser/index.js|http=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-http/index.js|https=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/https-browserify/index.js|os=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/punycode/punycode.js|process=|/Users/kaitlynbook/music-website/node_modules/next/dist/build/polyfills/process.js|querystring=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|timers=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|vm=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/events/events.js|setImmediate=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|unknown|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/lib|request=|private-next-instrumentation-client from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|/Users/kaitlynbook/music-website/node_modules/next/head.js=|next/dist/client/components/noop-head|/Users/kaitlynbook/music-website/node_modules/next/image.js=|next/dist/api/image|/Users/kaitlynbook/music-website/node_modules/next/constants.js=|next/dist/api/constants|/Users/kaitlynbook/music-website/node_modules/next/router.js=|next/dist/api/router|/Users/kaitlynbook/music-website/node_modules/next/dynamic.js=|next/dist/api/app-dynamic|/Users/kaitlynbook/music-website/node_modules/next/script.js=|next/dist/api/script|/Users/kaitlynbook/music-website/node_modules/next/link.js=|next/dist/client/app-dir/link|/Users/kaitlynbook/music-website/node_modules/next/form.js=|next/dist/client/app-dir/form|/Users/kaitlynbook/music-website/node_modules/next/navigation.js=|next/dist/api/navigation|/Users/kaitlynbook/music-website/node_modules/next/headers.js=|next/dist/api/headers|/Users/kaitlynbook/music-website/node_modules/next/og.js=|next/dist/api/og|/Users/kaitlynbook/music-website/node_modules/next/server.js=|next/dist/api/server|/Users/kaitlynbook/music-website/node_modules/next/document.js=|next/dist/api/document|/Users/kaitlynbook/music-website/node_modules/next/app.js=|next/dist/api/app|react$=|next/dist/compiled/react|react/compiler-runtime$=|next/dist/compiled/react/compiler-runtime|react/jsx-dev-runtime$=|next/dist/compiled/react/jsx-dev-runtime|react/jsx-runtime$=|next/dist/compiled/react/jsx-runtime|react-dom$=|next/dist/compiled/react-dom|react-dom/client$=|next/dist/compiled/react-dom/client|react-dom/server$=|next/dist/compiled/react-dom/server.browser|react-dom/server.browser$=|next/dist/compiled/react-dom/server.browser|react-dom/server.edge$=|next/dist/build/webpack/alias/react-dom-server.js|react-dom/static$=|next/dist/compiled/react-dom/static.browser|react-dom/static.browser$=|next/dist/compiled/react-dom/static.browser|react-dom/static.edge$=|next/dist/compiled/react-dom/static.edge|react-server-dom-webpack/client$=|next/dist/compiled/react-server-dom-webpack/client.browser|react-server-dom-webpack/server$=|next/dist/compiled/react-server-dom-webpack/server.browser|react-server-dom-webpack/server.node$=|next/dist/compiled/react-server-dom-webpack/server.node|react-server-dom-webpack/static$=|next/dist/compiled/react-server-dom-webpack/static.browser|@vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts=|next/dist/client/dev/noop-turbopack-hmr|next=|/Users/kaitlynbook/music-website/node_modules/next|]|fullySpecified=|false|mainFields=[|0=|browser|1=|module|2=|main|]|fallback=[|assert=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/assert/assert.js|buffer=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/buffer/index.js|constants=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/domain-browser/index.js|http=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-http/index.js|https=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/https-browserify/index.js|os=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/punycode/punycode.js|process=|/Users/kaitlynbook/music-website/node_modules/next/dist/build/polyfills/process.js|querystring=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|timers=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|vm=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/events/events.js|setImmediate=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|unknown|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/lib|request=|private-next-instrumentation-client from pack: Error: incorrect header check
+ ⨯ ./app/playlists/page.tsx
+Error:   [31mx[0m Expected '</', got ')'
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/playlists/page.tsx[0m:302:1]
+ [2m299[0m |                 View Details
+ [2m300[0m |               </button>
+ [2m301[0m |             </div>
+ [2m302[0m |           ))}
+     : [35;1m           ^[0m
+ [2m303[0m |         </div>
+ [2m304[0m |       )}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/playlists/page.tsx
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|dependencyType=|esm|path=|/Users/kaitlynbook/music-website|request=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/runtime.js from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|dependencyType=|esm|path=|/Users/kaitlynbook/music-website|request=|./node_modules/next/dist/client/dev/amp-dev from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|dependencyType=|esm|path=|/Users/kaitlynbook/music-website|request=|./node_modules/next/dist/client/next-dev.js from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|dependencyType=|esm|path=|/Users/kaitlynbook/music-website|request=|./node_modules/next/dist/client/app-next-dev.js from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|loader|default|path=|/Users/kaitlynbook/music-website|request=|next-client-pages-loader from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|dependencyType=|esm|path=|/Users/kaitlynbook/music-website|request=|/Users/kaitlynbook/music-website/node_modules/next/dist/client/router.js from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|dependencyType=|esm|path=|/Users/kaitlynbook/music-website|request=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/runtime.js from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|dependencyType=|esm|path=|/Users/kaitlynbook/music-website|request=|./node_modules/next/dist/client/dev/amp-dev from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|dependencyType=|esm|path=|/Users/kaitlynbook/music-website|request=|./node_modules/next/dist/client/next-dev.js from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|dependencyType=|esm|path=|/Users/kaitlynbook/music-website|request=|./node_modules/next/dist/client/app-next-dev.js from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|loader|default|path=|/Users/kaitlynbook/music-website|request=|next-client-pages-loader from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|dependencyType=|esm|path=|/Users/kaitlynbook/music-website|request=|/Users/kaitlynbook/music-website/node_modules/next/dist/client/router.js from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|dependencyType=|esm|path=|/Users/kaitlynbook/music-website|request=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/runtime.js from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|dependencyType=|esm|path=|/Users/kaitlynbook/music-website|request=|./node_modules/next/dist/client/dev/amp-dev from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|dependencyType=|esm|path=|/Users/kaitlynbook/music-website|request=|./node_modules/next/dist/client/next-dev.js from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|dependencyType=|esm|path=|/Users/kaitlynbook/music-website|request=|./node_modules/next/dist/client/app-next-dev.js from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|loader|default|path=|/Users/kaitlynbook/music-website|request=|next-client-pages-loader from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|dependencyType=|esm|path=|/Users/kaitlynbook/music-website|request=|/Users/kaitlynbook/music-website/node_modules/next/dist/client/router.js from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|dependencyType=|esm|path=|/Users/kaitlynbook/music-website|request=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/runtime.js from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|dependencyType=|esm|path=|/Users/kaitlynbook/music-website|request=|./node_modules/next/dist/client/dev/amp-dev from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|dependencyType=|esm|path=|/Users/kaitlynbook/music-website|request=|./node_modules/next/dist/client/next-dev.js from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|dependencyType=|esm|path=|/Users/kaitlynbook/music-website|request=|./node_modules/next/dist/client/app-next-dev.js from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|loader|default|path=|/Users/kaitlynbook/music-website|request=|next-client-pages-loader from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|dependencyType=|esm|path=|/Users/kaitlynbook/music-website|request=|/Users/kaitlynbook/music-website/node_modules/next/dist/client/router.js from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|loader|default|path=|/Users/kaitlynbook/music-website|request=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|loader|default|path=|/Users/kaitlynbook/music-website|request=|next-swc-loader from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|loader|default|path=|/Users/kaitlynbook/music-website|request=|next-flight-client-module-loader from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|loader|default|path=|/Users/kaitlynbook/music-website|request=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|loader|default|path=|/Users/kaitlynbook/music-website|request=|next-swc-loader from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|loader|default|path=|/Users/kaitlynbook/music-website|request=|next-flight-client-module-loader from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|loader|default|path=|/Users/kaitlynbook/music-website|request=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|loader|default|path=|/Users/kaitlynbook/music-website|request=|next-swc-loader from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|loader|default|path=|/Users/kaitlynbook/music-website|request=|next-flight-client-module-loader from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|dependencyType=|esm|path=|/Users/kaitlynbook/music-website|request=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/runtime.js from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|dependencyType=|esm|path=|/Users/kaitlynbook/music-website|request=|./node_modules/next/dist/client/dev/amp-dev from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|dependencyType=|esm|path=|/Users/kaitlynbook/music-website|request=|./node_modules/next/dist/client/next-dev.js from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|dependencyType=|esm|path=|/Users/kaitlynbook/music-website|request=|./node_modules/next/dist/client/app-next-dev.js from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|loader|default|path=|/Users/kaitlynbook/music-website|request=|next-client-pages-loader from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|dependencyType=|esm|path=|/Users/kaitlynbook/music-website|request=|/Users/kaitlynbook/music-website/node_modules/next/dist/client/router.js from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|loader|default|path=|/Users/kaitlynbook/music-website|request=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|loader|default|path=|/Users/kaitlynbook/music-website|request=|next-swc-loader from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|loader|default|path=|/Users/kaitlynbook/music-website|request=|next-flight-client-module-loader from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|next=|/Users/kaitlynbook/music-website/node_modules/next|]|fallback=[|assert=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/assert/assert.js|buffer=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/buffer/index.js|constants=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/domain-browser/index.js|http=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-http/index.js|https=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/https-browserify/index.js|os=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/punycode/punycode.js|process=|/Users/kaitlynbook/music-website/node_modules/next/dist/build/polyfills/process.js|querystring=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|timers=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|vm=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/events/events.js|setImmediate=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|commonjs|path=|/Users/kaitlynbook/music-website|request=|next/dist/pages/_app from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|next=|/Users/kaitlynbook/music-website/node_modules/next|]|fallback=[|assert=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/assert/assert.js|buffer=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/buffer/index.js|constants=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/domain-browser/index.js|http=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-http/index.js|https=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/https-browserify/index.js|os=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/punycode/punycode.js|process=|/Users/kaitlynbook/music-website/node_modules/next/dist/build/polyfills/process.js|querystring=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|timers=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|vm=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/events/events.js|setImmediate=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|commonjs|path=|/Users/kaitlynbook/music-website|request=|next/dist/pages/_error from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|next=|/Users/kaitlynbook/music-website/node_modules/next|]|fallback=[|assert=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/assert/assert.js|buffer=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/buffer/index.js|constants=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/domain-browser/index.js|http=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-http/index.js|https=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/https-browserify/index.js|os=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/punycode/punycode.js|process=|/Users/kaitlynbook/music-website/node_modules/next/dist/build/polyfills/process.js|querystring=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|timers=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|vm=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/events/events.js|setImmediate=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|commonjs|path=|/Users/kaitlynbook/music-website|request=|next/dist/pages/_app from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|next=|/Users/kaitlynbook/music-website/node_modules/next|]|fallback=[|assert=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/assert/assert.js|buffer=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/buffer/index.js|constants=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/domain-browser/index.js|http=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-http/index.js|https=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/https-browserify/index.js|os=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/punycode/punycode.js|process=|/Users/kaitlynbook/music-website/node_modules/next/dist/build/polyfills/process.js|querystring=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|timers=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|vm=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/events/events.js|setImmediate=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|commonjs|path=|/Users/kaitlynbook/music-website|request=|next/dist/pages/_error from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|next=|/Users/kaitlynbook/music-website/node_modules/next|]|fallback=[|assert=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/assert/assert.js|buffer=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/buffer/index.js|constants=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/domain-browser/index.js|http=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-http/index.js|https=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/https-browserify/index.js|os=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/punycode/punycode.js|process=|/Users/kaitlynbook/music-website/node_modules/next/dist/build/polyfills/process.js|querystring=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|timers=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|vm=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/events/events.js|setImmediate=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|commonjs|path=|/Users/kaitlynbook/music-website|request=|next/dist/pages/_app from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|next=|/Users/kaitlynbook/music-website/node_modules/next|]|fallback=[|assert=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/assert/assert.js|buffer=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/buffer/index.js|constants=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/domain-browser/index.js|http=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-http/index.js|https=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/https-browserify/index.js|os=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/punycode/punycode.js|process=|/Users/kaitlynbook/music-website/node_modules/next/dist/build/polyfills/process.js|querystring=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|timers=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|vm=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/events/events.js|setImmediate=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|commonjs|path=|/Users/kaitlynbook/music-website|request=|next/dist/pages/_error from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|next=|/Users/kaitlynbook/music-website/node_modules/next|]|fallback=[|assert=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/assert/assert.js|buffer=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/buffer/index.js|constants=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/domain-browser/index.js|http=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-http/index.js|https=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/https-browserify/index.js|os=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/punycode/punycode.js|process=|/Users/kaitlynbook/music-website/node_modules/next/dist/build/polyfills/process.js|querystring=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|timers=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|vm=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/events/events.js|setImmediate=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|commonjs|path=|/Users/kaitlynbook/music-website|request=|next/dist/pages/_app from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|next=|/Users/kaitlynbook/music-website/node_modules/next|]|fallback=[|assert=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/assert/assert.js|buffer=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/buffer/index.js|constants=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/domain-browser/index.js|http=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-http/index.js|https=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/https-browserify/index.js|os=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/punycode/punycode.js|process=|/Users/kaitlynbook/music-website/node_modules/next/dist/build/polyfills/process.js|querystring=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|timers=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|vm=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/events/events.js|setImmediate=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|commonjs|path=|/Users/kaitlynbook/music-website|request=|next/dist/pages/_error from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|next=|/Users/kaitlynbook/music-website/node_modules/next|]|fullySpecified=|false|fallback=[|assert=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/assert/assert.js|buffer=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/buffer/index.js|constants=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/domain-browser/index.js|http=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-http/index.js|https=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/https-browserify/index.js|os=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/punycode/punycode.js|process=|/Users/kaitlynbook/music-website/node_modules/next/dist/build/polyfills/process.js|querystring=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|timers=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|vm=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/events/events.js|setImmediate=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|unknown|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/lib|request=|private-next-instrumentation-client from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|/Users/kaitlynbook/music-website/node_modules/next/head.js=|next/dist/client/components/noop-head|/Users/kaitlynbook/music-website/node_modules/next/image.js=|next/dist/api/image|/Users/kaitlynbook/music-website/node_modules/next/constants.js=|next/dist/api/constants|/Users/kaitlynbook/music-website/node_modules/next/router.js=|next/dist/api/router|/Users/kaitlynbook/music-website/node_modules/next/dynamic.js=|next/dist/api/app-dynamic|/Users/kaitlynbook/music-website/node_modules/next/script.js=|next/dist/api/script|/Users/kaitlynbook/music-website/node_modules/next/link.js=|next/dist/client/app-dir/link|/Users/kaitlynbook/music-website/node_modules/next/form.js=|next/dist/client/app-dir/form|/Users/kaitlynbook/music-website/node_modules/next/navigation.js=|next/dist/api/navigation|/Users/kaitlynbook/music-website/node_modules/next/headers.js=|next/dist/api/headers|/Users/kaitlynbook/music-website/node_modules/next/og.js=|next/dist/api/og|/Users/kaitlynbook/music-website/node_modules/next/server.js=|next/dist/api/server|/Users/kaitlynbook/music-website/node_modules/next/document.js=|next/dist/api/document|/Users/kaitlynbook/music-website/node_modules/next/app.js=|next/dist/api/app|react$=|next/dist/compiled/react|react/compiler-runtime$=|next/dist/compiled/react/compiler-runtime|react/jsx-dev-runtime$=|next/dist/compiled/react/jsx-dev-runtime|react/jsx-runtime$=|next/dist/compiled/react/jsx-runtime|react-dom$=|next/dist/compiled/react-dom|react-dom/client$=|next/dist/compiled/react-dom/client|react-dom/server$=|next/dist/compiled/react-dom/server.browser|react-dom/server.browser$=|next/dist/compiled/react-dom/server.browser|react-dom/server.edge$=|next/dist/build/webpack/alias/react-dom-server.js|react-dom/static$=|next/dist/compiled/react-dom/static.browser|react-dom/static.browser$=|next/dist/compiled/react-dom/static.browser|react-dom/static.edge$=|next/dist/compiled/react-dom/static.edge|react-server-dom-webpack/client$=|next/dist/compiled/react-server-dom-webpack/client.browser|react-server-dom-webpack/server$=|next/dist/compiled/react-server-dom-webpack/server.browser|react-server-dom-webpack/server.node$=|next/dist/compiled/react-server-dom-webpack/server.node|react-server-dom-webpack/static$=|next/dist/compiled/react-server-dom-webpack/static.browser|@vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts=|next/dist/client/dev/noop-turbopack-hmr|next=|/Users/kaitlynbook/music-website/node_modules/next|]|fullySpecified=|false|mainFields=[|0=|browser|1=|module|2=|main|]|fallback=[|assert=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/assert/assert.js|buffer=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/buffer/index.js|constants=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/domain-browser/index.js|http=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-http/index.js|https=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/https-browserify/index.js|os=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/punycode/punycode.js|process=|/Users/kaitlynbook/music-website/node_modules/next/dist/build/polyfills/process.js|querystring=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|timers=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|vm=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/events/events.js|setImmediate=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|unknown|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/lib|request=|private-next-instrumentation-client from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|next=|/Users/kaitlynbook/music-website/node_modules/next|]|fullySpecified=|false|fallback=[|assert=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/assert/assert.js|buffer=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/buffer/index.js|constants=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/domain-browser/index.js|http=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-http/index.js|https=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/https-browserify/index.js|os=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/punycode/punycode.js|process=|/Users/kaitlynbook/music-website/node_modules/next/dist/build/polyfills/process.js|querystring=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|timers=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|vm=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/events/events.js|setImmediate=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|unknown|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/lib|request=|private-next-instrumentation-client from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|/Users/kaitlynbook/music-website/node_modules/next/head.js=|next/dist/client/components/noop-head|/Users/kaitlynbook/music-website/node_modules/next/image.js=|next/dist/api/image|/Users/kaitlynbook/music-website/node_modules/next/constants.js=|next/dist/api/constants|/Users/kaitlynbook/music-website/node_modules/next/router.js=|next/dist/api/router|/Users/kaitlynbook/music-website/node_modules/next/dynamic.js=|next/dist/api/app-dynamic|/Users/kaitlynbook/music-website/node_modules/next/script.js=|next/dist/api/script|/Users/kaitlynbook/music-website/node_modules/next/link.js=|next/dist/client/app-dir/link|/Users/kaitlynbook/music-website/node_modules/next/form.js=|next/dist/client/app-dir/form|/Users/kaitlynbook/music-website/node_modules/next/navigation.js=|next/dist/api/navigation|/Users/kaitlynbook/music-website/node_modules/next/headers.js=|next/dist/api/headers|/Users/kaitlynbook/music-website/node_modules/next/og.js=|next/dist/api/og|/Users/kaitlynbook/music-website/node_modules/next/server.js=|next/dist/api/server|/Users/kaitlynbook/music-website/node_modules/next/document.js=|next/dist/api/document|/Users/kaitlynbook/music-website/node_modules/next/app.js=|next/dist/api/app|react$=|next/dist/compiled/react|react/compiler-runtime$=|next/dist/compiled/react/compiler-runtime|react/jsx-dev-runtime$=|next/dist/compiled/react/jsx-dev-runtime|react/jsx-runtime$=|next/dist/compiled/react/jsx-runtime|react-dom$=|next/dist/compiled/react-dom|react-dom/client$=|next/dist/compiled/react-dom/client|react-dom/server$=|next/dist/compiled/react-dom/server.browser|react-dom/server.browser$=|next/dist/compiled/react-dom/server.browser|react-dom/server.edge$=|next/dist/build/webpack/alias/react-dom-server.js|react-dom/static$=|next/dist/compiled/react-dom/static.browser|react-dom/static.browser$=|next/dist/compiled/react-dom/static.browser|react-dom/static.edge$=|next/dist/compiled/react-dom/static.edge|react-server-dom-webpack/client$=|next/dist/compiled/react-server-dom-webpack/client.browser|react-server-dom-webpack/server$=|next/dist/compiled/react-server-dom-webpack/server.browser|react-server-dom-webpack/server.node$=|next/dist/compiled/react-server-dom-webpack/server.node|react-server-dom-webpack/static$=|next/dist/compiled/react-server-dom-webpack/static.browser|@vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts=|next/dist/client/dev/noop-turbopack-hmr|next=|/Users/kaitlynbook/music-website/node_modules/next|]|fullySpecified=|false|mainFields=[|0=|browser|1=|module|2=|main|]|fallback=[|assert=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/assert/assert.js|buffer=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/buffer/index.js|constants=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/domain-browser/index.js|http=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-http/index.js|https=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/https-browserify/index.js|os=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/punycode/punycode.js|process=|/Users/kaitlynbook/music-website/node_modules/next/dist/build/polyfills/process.js|querystring=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|timers=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|vm=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/events/events.js|setImmediate=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|unknown|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/lib|request=|private-next-instrumentation-client from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|next=|/Users/kaitlynbook/music-website/node_modules/next|]|fullySpecified=|false|fallback=[|assert=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/assert/assert.js|buffer=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/buffer/index.js|constants=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/domain-browser/index.js|http=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-http/index.js|https=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/https-browserify/index.js|os=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/punycode/punycode.js|process=|/Users/kaitlynbook/music-website/node_modules/next/dist/build/polyfills/process.js|querystring=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|timers=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|vm=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/events/events.js|setImmediate=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|unknown|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/lib|request=|private-next-instrumentation-client from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|/Users/kaitlynbook/music-website/node_modules/next/head.js=|next/dist/client/components/noop-head|/Users/kaitlynbook/music-website/node_modules/next/image.js=|next/dist/api/image|/Users/kaitlynbook/music-website/node_modules/next/constants.js=|next/dist/api/constants|/Users/kaitlynbook/music-website/node_modules/next/router.js=|next/dist/api/router|/Users/kaitlynbook/music-website/node_modules/next/dynamic.js=|next/dist/api/app-dynamic|/Users/kaitlynbook/music-website/node_modules/next/script.js=|next/dist/api/script|/Users/kaitlynbook/music-website/node_modules/next/link.js=|next/dist/client/app-dir/link|/Users/kaitlynbook/music-website/node_modules/next/form.js=|next/dist/client/app-dir/form|/Users/kaitlynbook/music-website/node_modules/next/navigation.js=|next/dist/api/navigation|/Users/kaitlynbook/music-website/node_modules/next/headers.js=|next/dist/api/headers|/Users/kaitlynbook/music-website/node_modules/next/og.js=|next/dist/api/og|/Users/kaitlynbook/music-website/node_modules/next/server.js=|next/dist/api/server|/Users/kaitlynbook/music-website/node_modules/next/document.js=|next/dist/api/document|/Users/kaitlynbook/music-website/node_modules/next/app.js=|next/dist/api/app|react$=|next/dist/compiled/react|react/compiler-runtime$=|next/dist/compiled/react/compiler-runtime|react/jsx-dev-runtime$=|next/dist/compiled/react/jsx-dev-runtime|react/jsx-runtime$=|next/dist/compiled/react/jsx-runtime|react-dom$=|next/dist/compiled/react-dom|react-dom/client$=|next/dist/compiled/react-dom/client|react-dom/server$=|next/dist/compiled/react-dom/server.browser|react-dom/server.browser$=|next/dist/compiled/react-dom/server.browser|react-dom/server.edge$=|next/dist/build/webpack/alias/react-dom-server.js|react-dom/static$=|next/dist/compiled/react-dom/static.browser|react-dom/static.browser$=|next/dist/compiled/react-dom/static.browser|react-dom/static.edge$=|next/dist/compiled/react-dom/static.edge|react-server-dom-webpack/client$=|next/dist/compiled/react-server-dom-webpack/client.browser|react-server-dom-webpack/server$=|next/dist/compiled/react-server-dom-webpack/server.browser|react-server-dom-webpack/server.node$=|next/dist/compiled/react-server-dom-webpack/server.node|react-server-dom-webpack/static$=|next/dist/compiled/react-server-dom-webpack/static.browser|@vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts=|next/dist/client/dev/noop-turbopack-hmr|next=|/Users/kaitlynbook/music-website/node_modules/next|]|fullySpecified=|false|mainFields=[|0=|browser|1=|module|2=|main|]|fallback=[|assert=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/assert/assert.js|buffer=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/buffer/index.js|constants=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/domain-browser/index.js|http=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-http/index.js|https=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/https-browserify/index.js|os=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/punycode/punycode.js|process=|/Users/kaitlynbook/music-website/node_modules/next/dist/build/polyfills/process.js|querystring=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|timers=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|vm=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/events/events.js|setImmediate=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|unknown|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/lib|request=|private-next-instrumentation-client from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|next=|/Users/kaitlynbook/music-website/node_modules/next|]|fullySpecified=|false|fallback=[|assert=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/assert/assert.js|buffer=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/buffer/index.js|constants=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/domain-browser/index.js|http=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-http/index.js|https=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/https-browserify/index.js|os=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/punycode/punycode.js|process=|/Users/kaitlynbook/music-website/node_modules/next/dist/build/polyfills/process.js|querystring=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|timers=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|vm=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/events/events.js|setImmediate=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|unknown|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/lib|request=|private-next-instrumentation-client from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|/Users/kaitlynbook/music-website/node_modules/next/head.js=|next/dist/client/components/noop-head|/Users/kaitlynbook/music-website/node_modules/next/image.js=|next/dist/api/image|/Users/kaitlynbook/music-website/node_modules/next/constants.js=|next/dist/api/constants|/Users/kaitlynbook/music-website/node_modules/next/router.js=|next/dist/api/router|/Users/kaitlynbook/music-website/node_modules/next/dynamic.js=|next/dist/api/app-dynamic|/Users/kaitlynbook/music-website/node_modules/next/script.js=|next/dist/api/script|/Users/kaitlynbook/music-website/node_modules/next/link.js=|next/dist/client/app-dir/link|/Users/kaitlynbook/music-website/node_modules/next/form.js=|next/dist/client/app-dir/form|/Users/kaitlynbook/music-website/node_modules/next/navigation.js=|next/dist/api/navigation|/Users/kaitlynbook/music-website/node_modules/next/headers.js=|next/dist/api/headers|/Users/kaitlynbook/music-website/node_modules/next/og.js=|next/dist/api/og|/Users/kaitlynbook/music-website/node_modules/next/server.js=|next/dist/api/server|/Users/kaitlynbook/music-website/node_modules/next/document.js=|next/dist/api/document|/Users/kaitlynbook/music-website/node_modules/next/app.js=|next/dist/api/app|react$=|next/dist/compiled/react|react/compiler-runtime$=|next/dist/compiled/react/compiler-runtime|react/jsx-dev-runtime$=|next/dist/compiled/react/jsx-dev-runtime|react/jsx-runtime$=|next/dist/compiled/react/jsx-runtime|react-dom$=|next/dist/compiled/react-dom|react-dom/client$=|next/dist/compiled/react-dom/client|react-dom/server$=|next/dist/compiled/react-dom/server.browser|react-dom/server.browser$=|next/dist/compiled/react-dom/server.browser|react-dom/server.edge$=|next/dist/build/webpack/alias/react-dom-server.js|react-dom/static$=|next/dist/compiled/react-dom/static.browser|react-dom/static.browser$=|next/dist/compiled/react-dom/static.browser|react-dom/static.edge$=|next/dist/compiled/react-dom/static.edge|react-server-dom-webpack/client$=|next/dist/compiled/react-server-dom-webpack/client.browser|react-server-dom-webpack/server$=|next/dist/compiled/react-server-dom-webpack/server.browser|react-server-dom-webpack/server.node$=|next/dist/compiled/react-server-dom-webpack/server.node|react-server-dom-webpack/static$=|next/dist/compiled/react-server-dom-webpack/static.browser|@vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts=|next/dist/client/dev/noop-turbopack-hmr|next=|/Users/kaitlynbook/music-website/node_modules/next|]|fullySpecified=|false|mainFields=[|0=|browser|1=|module|2=|main|]|fallback=[|assert=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/assert/assert.js|buffer=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/buffer/index.js|constants=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/domain-browser/index.js|http=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-http/index.js|https=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/https-browserify/index.js|os=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/punycode/punycode.js|process=|/Users/kaitlynbook/music-website/node_modules/next/dist/build/polyfills/process.js|querystring=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|timers=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|vm=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/events/events.js|setImmediate=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|unknown|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/lib|request=|private-next-instrumentation-client from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|loader|default|path=|/Users/kaitlynbook/music-website|request=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|loader|default|path=|/Users/kaitlynbook/music-website|request=|next-swc-loader from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|loader|default|path=|/Users/kaitlynbook/music-website|request=|next-flight-client-module-loader from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|next=|/Users/kaitlynbook/music-website/node_modules/next|]|fallback=[|assert=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/assert/assert.js|buffer=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/buffer/index.js|constants=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/domain-browser/index.js|http=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-http/index.js|https=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/https-browserify/index.js|os=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/punycode/punycode.js|process=|/Users/kaitlynbook/music-website/node_modules/next/dist/build/polyfills/process.js|querystring=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|timers=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|vm=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/events/events.js|setImmediate=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|commonjs|path=|/Users/kaitlynbook/music-website|request=|next/dist/pages/_app from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|next=|/Users/kaitlynbook/music-website/node_modules/next|]|fallback=[|assert=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/assert/assert.js|buffer=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/buffer/index.js|constants=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/domain-browser/index.js|http=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-http/index.js|https=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/https-browserify/index.js|os=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/punycode/punycode.js|process=|/Users/kaitlynbook/music-website/node_modules/next/dist/build/polyfills/process.js|querystring=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|timers=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|vm=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/events/events.js|setImmediate=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|commonjs|path=|/Users/kaitlynbook/music-website|request=|next/dist/pages/_error from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|next=|/Users/kaitlynbook/music-website/node_modules/next|]|fullySpecified=|false|fallback=[|assert=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/assert/assert.js|buffer=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/buffer/index.js|constants=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/domain-browser/index.js|http=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-http/index.js|https=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/https-browserify/index.js|os=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/punycode/punycode.js|process=|/Users/kaitlynbook/music-website/node_modules/next/dist/build/polyfills/process.js|querystring=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|timers=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|vm=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/events/events.js|setImmediate=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|unknown|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/lib|request=|private-next-instrumentation-client from pack: Error: incorrect header check
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|/Users/kaitlynbook/music-website/node_modules/next/head.js=|next/dist/client/components/noop-head|/Users/kaitlynbook/music-website/node_modules/next/image.js=|next/dist/api/image|/Users/kaitlynbook/music-website/node_modules/next/constants.js=|next/dist/api/constants|/Users/kaitlynbook/music-website/node_modules/next/router.js=|next/dist/api/router|/Users/kaitlynbook/music-website/node_modules/next/dynamic.js=|next/dist/api/app-dynamic|/Users/kaitlynbook/music-website/node_modules/next/script.js=|next/dist/api/script|/Users/kaitlynbook/music-website/node_modules/next/link.js=|next/dist/client/app-dir/link|/Users/kaitlynbook/music-website/node_modules/next/form.js=|next/dist/client/app-dir/form|/Users/kaitlynbook/music-website/node_modules/next/navigation.js=|next/dist/api/navigation|/Users/kaitlynbook/music-website/node_modules/next/headers.js=|next/dist/api/headers|/Users/kaitlynbook/music-website/node_modules/next/og.js=|next/dist/api/og|/Users/kaitlynbook/music-website/node_modules/next/server.js=|next/dist/api/server|/Users/kaitlynbook/music-website/node_modules/next/document.js=|next/dist/api/document|/Users/kaitlynbook/music-website/node_modules/next/app.js=|next/dist/api/app|react$=|next/dist/compiled/react|react/compiler-runtime$=|next/dist/compiled/react/compiler-runtime|react/jsx-dev-runtime$=|next/dist/compiled/react/jsx-dev-runtime|react/jsx-runtime$=|next/dist/compiled/react/jsx-runtime|react-dom$=|next/dist/compiled/react-dom|react-dom/client$=|next/dist/compiled/react-dom/client|react-dom/server$=|next/dist/compiled/react-dom/server.browser|react-dom/server.browser$=|next/dist/compiled/react-dom/server.browser|react-dom/server.edge$=|next/dist/build/webpack/alias/react-dom-server.js|react-dom/static$=|next/dist/compiled/react-dom/static.browser|react-dom/static.browser$=|next/dist/compiled/react-dom/static.browser|react-dom/static.edge$=|next/dist/compiled/react-dom/static.edge|react-server-dom-webpack/client$=|next/dist/compiled/react-server-dom-webpack/client.browser|react-server-dom-webpack/server$=|next/dist/compiled/react-server-dom-webpack/server.browser|react-server-dom-webpack/server.node$=|next/dist/compiled/react-server-dom-webpack/server.node|react-server-dom-webpack/static$=|next/dist/compiled/react-server-dom-webpack/static.browser|@vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts=|next/dist/client/dev/noop-turbopack-hmr|next=|/Users/kaitlynbook/music-website/node_modules/next|]|fullySpecified=|false|mainFields=[|0=|browser|1=|module|2=|main|]|fallback=[|assert=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/assert/assert.js|buffer=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/buffer/index.js|constants=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/domain-browser/index.js|http=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-http/index.js|https=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/https-browserify/index.js|os=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/punycode/punycode.js|process=|/Users/kaitlynbook/music-website/node_modules/next/dist/build/polyfills/process.js|querystring=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|timers=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/util/util.js|vm=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/events/events.js|setImmediate=|/Users/kaitlynbook/music-website/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|unknown|path=|/Users/kaitlynbook/music-website/node_modules/next/dist/lib|request=|private-next-instrumentation-client from pack: Error: incorrect header check
+ ⨯ ./app/playlists/page.tsx
+Error:   [31mx[0m Expected '</', got ')'
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/playlists/page.tsx[0m:302:1]
+ [2m299[0m |                 View Details
+ [2m300[0m |               </button>
+ [2m301[0m |             </div>
+ [2m302[0m |           ))}
+     : [35;1m           ^[0m
+ [2m303[0m |         </div>
+ [2m304[0m |       )}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/playlists/page.tsx
+ GET /manage 500 in 5556ms
+ POST /api/client-error 500 in 5723ms
+ POST /api/client-error 500 in 5555ms
+ POST /api/client-error 500 in 5867ms
+ POST /api/client-error 500 in 5722ms
+ POST /api/client-error 500 in 4857ms
+ POST /api/client-error 500 in 13ms
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /manage 500 in 19ms
+ GET /manage 500 in 9ms
+ GET /manage 200 in 7ms
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/kaitlynbook/music-website/.next/cache/webpack/client-development-fallback/0.pack.gz_' -> '/Users/kaitlynbook/music-website/.next/cache/webpack/client-development-fallback/0.pack.gz'
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/kaitlynbook/music-website/.next/cache/webpack/client-development-fallback/0.pack.gz_' -> '/Users/kaitlynbook/music-website/.next/cache/webpack/client-development-fallback/0.pack.gz'
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/kaitlynbook/music-website/.next/cache/webpack/client-development-fallback/0.pack.gz_' -> '/Users/kaitlynbook/music-website/.next/cache/webpack/client-development-fallback/0.pack.gz'
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/kaitlynbook/music-website/.next/cache/webpack/client-development-fallback/0.pack.gz_' -> '/Users/kaitlynbook/music-website/.next/cache/webpack/client-development-fallback/0.pack.gz'
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /manage 500 in 102ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⨯ ./app/playlists/page.tsx
+Error:   [31mx[0m Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/playlists/page.tsx[0m:233:1]
+ [2m230[0m |               )}
+ [2m231[0m |               <div className="flex justify-between items-start mb-4">
+ [2m232[0m |                 </div>
+ [2m233[0m |               })}
+     : [35;1m              ^[0m
+ [2m234[0m |                   {playlist.description && (
+ [2m235[0m |                     <p className="text-gray-400 text-sm mb-2">{playlist.description}</p>
+ [2m236[0m |                   )}
+     `----
+  [31mx[0m Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/playlists/page.tsx[0m:233:1]
+ [2m230[0m |               )}
+ [2m231[0m |               <div className="flex justify-between items-start mb-4">
+ [2m232[0m |                 </div>
+ [2m233[0m |               })}
+     : [35;1m                ^[0m
+ [2m234[0m |                   {playlist.description && (
+ [2m235[0m |                     <p className="text-gray-400 text-sm mb-2">{playlist.description}</p>
+ [2m236[0m |                   )}
+     `----
+  [31mx[0m Expected '</', got 'onClick'
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/playlists/page.tsx[0m:242:1]
+ [2m239[0m |       </p>
+ [2m240[0m |                 </div>
+ [2m241[0m |                 <button
+ [2m242[0m |                   onClick={() => deletePlaylist(playlist.id)}
+     : [35;1m                  ^^^^^^^[0m
+ [2m243[0m |                   className="text-red-400 hover:text-red-300 text-sm"
+ [2m244[0m |                 >
+ [2m245[0m |                   Delete
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/playlists/page.tsx
+ GET /manage 200 in 126ms
+ GET /manage 500 in 12ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⨯ ./app/playlists/page.tsx
+Error:   [31mx[0m Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/playlists/page.tsx[0m:234:1]
+ [2m231[0m |               <div className="flex justify-between items-start mb-4">
+ [2m232[0m |                 </div>
+ [2m233[0m |                 );
+ [2m234[0m |               })}
+     : [35;1m              ^[0m
+ [2m235[0m |                   {playlist.description && (
+ [2m236[0m |                     <p className="text-gray-400 text-sm mb-2">{playlist.description}</p>
+ [2m237[0m |                   )}
+     `----
+  [31mx[0m Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/playlists/page.tsx[0m:234:1]
+ [2m231[0m |               <div className="flex justify-between items-start mb-4">
+ [2m232[0m |                 </div>
+ [2m233[0m |                 );
+ [2m234[0m |               })}
+     : [35;1m                ^[0m
+ [2m235[0m |                   {playlist.description && (
+ [2m236[0m |                     <p className="text-gray-400 text-sm mb-2">{playlist.description}</p>
+ [2m237[0m |                   )}
+     `----
+  [31mx[0m Expected '</', got 'onClick'
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/playlists/page.tsx[0m:243:1]
+ [2m240[0m |       </p>
+ [2m241[0m |                 </div>
+ [2m242[0m |                 <button
+ [2m243[0m |                   onClick={() => deletePlaylist(playlist.id)}
+     : [35;1m                  ^^^^^^^[0m
+ [2m244[0m |                   className="text-red-400 hover:text-red-300 text-sm"
+ [2m245[0m |                 >
+ [2m246[0m |                   Delete
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/playlists/page.tsx
+ GET /manage 200 in 77ms
+ GET /manage 500 in 19ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /manage 500 in 76ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⨯ ./app/playlists/page.tsx
+Error:   [31mx[0m Expected ',', got 'Songs'
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/playlists/page.tsx[0m:105:1]
+ [2m102[0m |       ...prev,
+ [2m103[0m |       isVisible: false
+ [2m104[0m |                 >
+ [2m105[0m |                   Add Songs
+     : [35;1m                      ^^^^^[0m
+ [2m106[0m |                 </button>
+ [2m107[0m |               </div>
+ [2m108[0m |               <button
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/playlists/page.tsx
+ GET /manage 200 in 81ms
+ GET /manage 500 in 20ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /manage 500 in 59ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⨯ ./app/playlists/page.tsx
+Error:   [31mx[0m Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/playlists/page.tsx[0m:234:1]
+ [2m231[0m |               <div className="flex justify-between items-start mb-4">
+ [2m232[0m |                 </div>
+ [2m233[0m |                 );
+ [2m234[0m |               })}
+     : [35;1m              ^[0m
+ [2m235[0m |                   {playlist.description && (
+ [2m236[0m |                     <p className="text-gray-400 text-sm mb-2">{playlist.description}</p>
+ [2m237[0m |                   )}
+     `----
+  [31mx[0m Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/playlists/page.tsx[0m:234:1]
+ [2m231[0m |               <div className="flex justify-between items-start mb-4">
+ [2m232[0m |                 </div>
+ [2m233[0m |                 );
+ [2m234[0m |               })}
+     : [35;1m                ^[0m
+ [2m235[0m |                   {playlist.description && (
+ [2m236[0m |                     <p className="text-gray-400 text-sm mb-2">{playlist.description}</p>
+ [2m237[0m |                   )}
+     `----
+  [31mx[0m Expected '</', got 'onClick'
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/playlists/page.tsx[0m:243:1]
+ [2m240[0m |       </p>
+ [2m241[0m |                 </div>
+ [2m242[0m |                 <button
+ [2m243[0m |                   onClick={() => deletePlaylist(playlist.id)}
+     : [35;1m                  ^^^^^^^[0m
+ [2m244[0m |                   className="text-red-400 hover:text-red-300 text-sm"
+ [2m245[0m |                 >
+ [2m246[0m |                   Delete
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/playlists/page.tsx
+ GET /manage 200 in 71ms
+ GET /manage 500 in 16ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /manage 500 in 56ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⨯ ./app/playlists/page.tsx
+Error:   [31mx[0m Expression expected
+    ,-[[36;1;4m/Users/kaitlynbook/music-website/app/playlists/page.tsx[0m:74:1]
+ [2m71[0m |       const songAlreadyExists = playlist?.songs.some(s => s.id === song.id);
+ [2m72[0m |       if (!songAlreadyExists) {
+ [2m73[0m |         addToPlaylist(selectedPlaylistId, song);
+ [2m74[0m |         ) : (
+    : [35;1m        ^[0m
+ [2m75[0m |           <div key={refreshKey} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+ [2m76[0m |             {playlists.map((playlist) => {
+ [2m77[0m |               const totalSecs = (playlist.songs || []).reduce((acc, s) => acc + parseDurationToSeconds((s as any).duration || ''), 0);
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/playlists/page.tsx
+ GET /manage 200 in 77ms
+ GET /manage 500 in 16ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /manage 500 in 97ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⨯ ./app/playlists/page.tsx
+Error:   [31mx[0m Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/playlists/page.tsx[0m:439:1]
+ [2m436[0m |       />
+ [2m437[0m |     </div>
+ [2m438[0m |   );
+ [2m439[0m | }
+     : [35;1m^[0m
+     `----
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/playlists/page.tsx[0m:439:1]
+ [2m436[0m |       />
+ [2m437[0m |     </div>
+ [2m438[0m |   );
+ [2m439[0m | }
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/playlists/page.tsx
+ GET /manage 200 in 124ms
+ GET /manage 500 in 8ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /manage 500 in 80ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⨯ ./app/playlists/page.tsx
+Error:   [31mx[0m Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/playlists/page.tsx[0m:434:1]
+ [2m431[0m |       />
+ [2m432[0m |     </div>
+ [2m433[0m |   );
+ [2m434[0m | }
+     : [35;1m^[0m
+     `----
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/playlists/page.tsx[0m:434:1]
+ [2m431[0m |       />
+ [2m432[0m |     </div>
+ [2m433[0m |   );
+ [2m434[0m | }
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/playlists/page.tsx
+ GET /manage 200 in 76ms
+ GET /manage 500 in 15ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /manage 500 in 43ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⨯ ./app/playlists/page.tsx
+Error:   [31mx[0m Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/playlists/page.tsx[0m:435:1]
+ [2m432[0m |       />
+ [2m433[0m |     </div>
+ [2m434[0m |   );
+ [2m435[0m | }
+     : [35;1m^[0m
+     `----
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/playlists/page.tsx[0m:435:1]
+ [2m432[0m |       />
+ [2m433[0m |     </div>
+ [2m434[0m |   );
+ [2m435[0m | }
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/playlists/page.tsx
+ GET /manage 200 in 71ms
+ GET /manage 500 in 18ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /manage 500 in 45ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled /_error in 477ms (1041 modules)
+ GET /manage 200 in 146ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /manage 200 in 186ms
+ GET /manage 200 in 43ms
+ GET /playlists 200 in 37ms
+ ✓ Compiled in 244ms (1055 modules)
+ GET /playlists 200 in 75ms
+ GET /manage 200 in 17ms
+ GET / 200 in 17ms
+ GET / 200 in 10ms
+ GET /manage 200 in 24ms
+ GET /friends 200 in 37ms
+ GET /profile 200 in 21ms
+ ✓ Compiled in 414ms (1055 modules)
+ GET /profile 200 in 39ms
+ GET /manage 200 in 17ms
+ ✓ Compiled in 306ms (1055 modules)
+ GET /manage 200 in 48ms
+ GET / 200 in 16ms
+ GET / 200 in 12ms
+ GET /friends 200 in 23ms
+ GET /friends 200 in 15ms
+ GET /manage 200 in 21ms
+ GET /friends 200 in 13ms
+ GET /playlists 200 in 43ms
+ GET / 200 in 24ms
+ GET /playlists 200 in 18ms
+ GET /manage 200 in 17ms
+ GET /friends 200 in 14ms
+ GET /manage 200 in 14ms
+ GET /manage 200 in 22ms
+ GET /playlists 200 in 20ms
+ GET /manage 200 in 18ms
+ GET /friends 200 in 24ms
+ GET /manage 200 in 26ms
+ GET / 200 in 9ms
+ GET / 200 in 10ms
+ ✓ Compiled in 272ms (1055 modules)
+ GET / 200 in 41ms
+ GET /friends 200 in 19ms
+ GET /profile 200 in 23ms
+ ✓ Compiled /about in 206ms (631 modules)
+ GET /about 200 in 258ms
+ GET /friends 200 in 35ms
+ ✓ Compiled in 219ms (1060 modules)
+ GET /friends 200 in 32ms
+ GET /manage 200 in 32ms
+ GET /friends 200 in 11ms
+ GET /manage 200 in 8ms
+ GET /playlists 200 in 38ms
+ GET /friends 200 in 18ms
+ GET /manage 200 in 22ms
+ GET /friends 200 in 24ms
+ GET /manage 200 in 29ms
+ GET /friends 200 in 24ms
+ GET /manage 200 in 16ms
+ GET /manage 200 in 14ms
+ GET /friends 200 in 12ms
+ GET /manage 200 in 12ms
+ GET /friends 200 in 20ms
+ GET /manage 200 in 11ms
+ GET /friends 200 in 20ms
+ GET /playlists 200 in 11ms
+ ✓ Compiled in 172ms (1060 modules)
+ GET /playlists 200 in 37ms
+ GET /manage 200 in 36ms
+ GET /friends 200 in 36ms
+ GET /manage 200 in 22ms
+ GET /friends 200 in 21ms
+ GET /manage 200 in 22ms
+ GET /friends 200 in 29ms
+ GET /manage 200 in 21ms
+ GET /playlists 200 in 19ms
+ GET / 200 in 33ms
+ GET /manage 200 in 16ms
+ GET /playlists 200 in 24ms
+ GET / 200 in 21ms
+ GET /playlists 200 in 28ms
+ GET / 200 in 22ms
+ GET /playlists 200 in 22ms
+ GET /manage 200 in 22ms
+ GET /friends 200 in 30ms
+ GET /manage 200 in 23ms
+ GET /friends 200 in 24ms
+ GET /manage 200 in 10ms
+ GET /manage 200 in 13ms
+ GET /friends 200 in 8ms
+ GET /manage 200 in 17ms
+ GET /playlists 200 in 20ms
+ GET / 200 in 21ms
+ GET /friends 200 in 7ms
+ GET / 200 in 26ms
+ GET /playlists 200 in 19ms
+ GET / 200 in 23ms
+ GET /playlists 200 in 23ms
+ GET /manage 200 in 22ms
+ GET /friends 200 in 21ms
+ GET /manage 200 in 21ms
+ GET /friends 200 in 28ms
+ GET /manage 200 in 23ms
+ GET /friends 200 in 22ms
+ GET /manage 200 in 11ms
+ GET /playlists 200 in 31ms
+ GET / 200 in 8ms
+ GET /playlists 200 in 23ms
+ GET /manage 200 in 26ms
+ GET / 200 in 26ms
+ GET /manage 200 in 23ms
+ ✓ Compiled in 234ms (1055 modules)
+ GET /manage 200 in 59ms
+ GET /friends 200 in 16ms
+ GET /friends 200 in 9ms
+ GET /manage 200 in 18ms
+ GET / 200 in 37ms
+ GET /playlists 200 in 35ms
+ GET /friends 200 in 16ms
+ GET /manage 200 in 25ms
+ GET /playlists 200 in 25ms
+ GET / 200 in 21ms
+ GET /playlists 200 in 23ms
+ GET /manage 200 in 28ms
+ GET /playlists 200 in 23ms
+ GET /manage 200 in 8ms
+ ✓ Compiled in 286ms (1055 modules)
+ GET /manage 200 in 35ms
+ ✓ Compiled in 139ms (1055 modules)
+ GET /manage 200 in 30ms
+ ✓ Compiled in 44ms (429 modules)
+ GET /manage 200 in 10ms
+ ✓ Compiled in 47ms (429 modules)
+ GET /manage 200 in 11ms
+ ✓ Compiled in 46ms (429 modules)
+ GET /manage 200 in 11ms
+ ✓ Compiled in 183ms (1055 modules)
+ GET /manage 200 in 57ms
+ ✓ Compiled in 48ms (429 modules)
+ GET /manage 200 in 10ms
+ ✓ Compiled in 42ms (429 modules)
+ GET /manage 200 in 10ms
+ GET / 200 in 42ms
+ GET /manage 200 in 29ms
+ GET /playlists 200 in 47ms
+ GET /manage 200 in 25ms
+ GET /playlists 200 in 25ms
+ GET / 200 in 25ms
+ GET /playlists 200 in 10ms
+ GET / 200 in 10ms
+ ✓ Compiled in 295ms (1055 modules)
+ GET / 200 in 58ms
+ GET /manage 200 in 19ms
+ GET /manage 200 in 9ms
+ GET / 200 in 8ms
+ ✓ Compiled in 172ms (1055 modules)
+ GET / 200 in 36ms
+ GET /playlists 200 in 20ms
+ GET /manage 200 in 36ms
+ GET / 200 in 13ms
+ GET /playlists 200 in 24ms
+ GET /manage 200 in 13ms
+ ✓ Compiled in 295ms (1055 modules)
+ GET /manage 200 in 34ms
+ GET / 200 in 38ms
+ GET /playlists 200 in 34ms
+ GET /profile 200 in 19ms
+ ✓ Compiled /about in 192ms (631 modules)
+ GET /about 200 in 247ms
+ GET /friends 200 in 34ms
+ GET /manage 200 in 25ms
+ ✓ Compiled in 174ms (1060 modules)
+ GET /manage 200 in 52ms
+ GET /playlists 200 in 25ms
+ GET /manage 200 in 19ms
+ GET / 200 in 37ms
+ GET /manage 200 in 23ms
+ GET / 200 in 29ms
+ GET /manage 200 in 21ms
+ GET / 200 in 20ms
+ GET /manage 200 in 25ms
+ GET / 200 in 22ms
+ ✓ Compiled in 244ms (1055 modules)
+ GET / 200 in 52ms
+ GET /playlists 200 in 40ms
+ GET / 200 in 9ms
+ GET / 200 in 9ms
+ GET /manage 200 in 33ms
+ GET /playlists 200 in 22ms
+ GET / 200 in 27ms
+ GET /playlists 200 in 22ms
+ GET / 200 in 20ms
+ GET / 200 in 76ms
+ GET /profile 200 in 40ms
+ ✓ Compiled /about in 148ms (631 modules)
+ GET /about 200 in 192ms
+ GET /friends 200 in 36ms
+ GET /manage 200 in 13ms
+ GET /playlists 200 in 29ms
+ GET / 200 in 24ms
+ ⨯ ./app/components/Header.tsx
+Error:   [31mx[0m Expected '</', got 'className'
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/components/Header.tsx[0m:126:1]
+ [2m123[0m |                       />
+ [2m124[0m |                     ) : (
+ [2m125[0m |                       {/* Outer bordered ring to match the profile page's "circle in a circle" look */}
+ [2m126[0m |                       <div className={`w-8 h-8 rounded-full flex items-center justify-center border-4 ${theme.border}`}>
+     : [35;1m                           ^^^^^^^^^[0m
+ [2m127[0m |                         <div className="relative w-6 h-6 rounded-full overflow-hidden">
+ [2m128[0m |                           {/* inner gradient circle */}
+ [2m129[0m |                           <div className={`${(theme.gradientHover?.replace?.('from-', 'bg-gradient-to-br from-')?.replace?.('to-', 'to-') || theme.gradient)} absolute inset-0`} />
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/components/Header.tsx
+./app/layout.tsx
+ ○ Compiling /_not-found ...
+ ⨯ ./app/components/Header.tsx
+Error:   [31mx[0m Expected '</', got 'className'
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/components/Header.tsx[0m:126:1]
+ [2m123[0m |                       />
+ [2m124[0m |                     ) : (
+ [2m125[0m |                       {/* Outer bordered ring to match the profile page's "circle in a circle" look */}
+ [2m126[0m |                       <div className={`w-8 h-8 rounded-full flex items-center justify-center border-4 ${theme.border}`}>
+     : [35;1m                           ^^^^^^^^^[0m
+ [2m127[0m |                         <div className="relative w-6 h-6 rounded-full overflow-hidden">
+ [2m128[0m |                           {/* inner gradient circle */}
+ [2m129[0m |                           <div className={`${(theme.gradientHover?.replace?.('from-', 'bg-gradient-to-br from-')?.replace?.('to-', 'to-') || theme.gradient)} absolute inset-0`} />
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/components/Header.tsx
+./app/layout.tsx
+ GET / 500 in 368ms
+ ⨯ ./app/components/Header.tsx
+Error:   [31mx[0m Expected '</', got 'className'
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/components/Header.tsx[0m:126:1]
+ [2m123[0m |                       />
+ [2m124[0m |                     ) : (
+ [2m125[0m |                       {/* Outer bordered ring to match the profile page's "circle in a circle" look */}
+ [2m126[0m |                       <div className={`w-8 h-8 rounded-full flex items-center justify-center border-4 ${theme.border}`}>
+     : [35;1m                           ^^^^^^^^^[0m
+ [2m127[0m |                         <div className="relative w-6 h-6 rounded-full overflow-hidden">
+ [2m128[0m |                           {/* inner gradient circle */}
+ [2m129[0m |                           <div className={`${(theme.gradientHover?.replace?.('from-', 'bg-gradient-to-br from-')?.replace?.('to-', 'to-') || theme.gradient)} absolute inset-0`} />
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/components/Header.tsx
+./app/layout.tsx
+ ⨯ ./app/components/Header.tsx
+Error:   [31mx[0m Expected '</', got 'className'
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/components/Header.tsx[0m:126:1]
+ [2m123[0m |                       />
+ [2m124[0m |                     ) : (
+ [2m125[0m |                       {/* Outer bordered ring to match the profile page's "circle in a circle" look */}
+ [2m126[0m |                       <div className={`w-8 h-8 rounded-full flex items-center justify-center border-4 ${theme.border}`}>
+     : [35;1m                           ^^^^^^^^^[0m
+ [2m127[0m |                         <div className="relative w-6 h-6 rounded-full overflow-hidden">
+ [2m128[0m |                           {/* inner gradient circle */}
+ [2m129[0m |                           <div className={`${(theme.gradientHover?.replace?.('from-', 'bg-gradient-to-br from-')?.replace?.('to-', 'to-') || theme.gradient)} absolute inset-0`} />
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/components/Header.tsx
+./app/layout.tsx
+ POST /api/client-error 500 in 919ms
+ POST /api/client-error 500 in 653ms
+ POST /api/client-error 500 in 439ms
+ POST /api/client-error 500 in 298ms
+ POST /api/client-error 500 in 213ms
+ GET / 500 in 302ms
+ POST /api/client-error 500 in 21ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⨯ ./app/components/Header.tsx
+Error:   [31mx[0m Expected '</', got 'className'
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/components/Header.tsx[0m:126:1]
+ [2m123[0m |                       />
+ [2m124[0m |                     ) : (
+ [2m125[0m |                       {/* Outer bordered ring to match the profile page's "circle in a circle" look */}
+ [2m126[0m |                       <div className={"w-8 h-8 rounded-full flex items-center justify-center border-4 " + theme.border}>
+     : [35;1m                           ^^^^^^^^^[0m
+ [2m127[0m |                         <div className="relative w-6 h-6 rounded-full overflow-hidden">
+ [2m128[0m |                           {/* inner gradient circle */}
+ [2m129[0m |                           <div className={(theme.gradientHover?.replace?.('from-', 'bg-gradient-to-br from-')?.replace?.('to-', 'to-') || theme.gradient) + ' absolute inset-0'} />
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/components/Header.tsx
+./app/layout.tsx
+ GET / 200 in 91ms
+ GET / 500 in 17ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⨯ ./app/components/Header.tsx
+Error:   [31mx[0m Expected '</', got 'className'
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/components/Header.tsx[0m:137:1]
+ [2m134[0m |                       />
+ [2m135[0m |                     ) : (
+ [2m136[0m |                       {/* Outer bordered ring to match the profile page's "circle in a circle" look */}
+ [2m137[0m |                       <div className={"w-8 h-8 rounded-full flex items-center justify-center border-4 " + theme.border}>
+     : [35;1m                           ^^^^^^^^^[0m
+ [2m138[0m |                         <div className="relative w-6 h-6 rounded-full overflow-hidden">
+ [2m139[0m |                           {/* inner gradient circle */}
+ [2m140[0m |                           <div className={(theme.gradientHover?.replace?.('from-', 'bg-gradient-to-br from-')?.replace?.('to-', 'to-') || theme.gradient) + ' absolute inset-0'} />
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/components/Header.tsx
+./app/layout.tsx
+ GET / 200 in 114ms
+ GET / 500 in 92ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⨯ ./app/components/Header.tsx
+Error:   [31mx[0m Expected ';', '}' or <eof>
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/components/Header.tsx[0m:173:1]
+ [2m170[0m |     </header>
+ [2m171[0m |   );
+ [2m172[0m | }
+ [2m173[0m |                     Sign Up
+     : [35;1m                    ^^|^[0m[33;1m ^^[0m
+     :                       [35;1m`-- [35;1mThis is the expression part of an expression statement[0m[0m
+ [2m174[0m |                   </button>
+ [2m175[0m |                 </div>
+ [2m176[0m |               )}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/components/Header.tsx
+./app/layout.tsx
+ GET / 200 in 103ms
+ GET / 500 in 48ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⨯ ./app/components/Header.tsx
+Error:   [31mx[0m Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+    ,-[[36;1;4m/Users/kaitlynbook/music-website/app/components/Header.tsx[0m:35:1]
+ [2m32[0m |             xmlns="http://www.w3.org/2000/svg"
+ [2m33[0m |           >
+ [2m34[0m |             <title>KJBeats headphones</title>
+ [2m35[0m |             }
+    : [35;1m            ^[0m
+ [2m36[0m |           className="md:hidden"
+ [2m37[0m |           onClick={() => setIsMenuOpen(!isMenuOpen)}
+ [2m38[0m |         >
+    `----
+  [31mx[0m Unexpected token. Did you mean `{'>'}` or `&gt;`?
+    ,-[[36;1;4m/Users/kaitlynbook/music-website/app/components/Header.tsx[0m:38:1]
+ [2m35[0m |             }
+ [2m36[0m |           className="md:hidden"
+ [2m37[0m |           onClick={() => setIsMenuOpen(!isMenuOpen)}
+ [2m38[0m |         >
+    : [35;1m        ^[0m
+ [2m39[0m |           <svg
+ [2m40[0m |             className="w-6 h-6"
+ [2m41[0m |             fill="none"
+    `----
+  [31mx[0m Expected '</', got 'jsx text (
+  [31m|[0m
+  [31m|[0m         )'
+    ,-[[36;1;4m/Users/kaitlynbook/music-website/app/components/Header.tsx[0m:54:1]
+ [2m51[0m |                   <path d="M4 6h16M4 12h16M4 18h16" />
+ [2m52[0m |                 )}
+ [2m53[0m |               </svg>
+ [2m54[0m | [35;1m,[0m[35;1m-[0m[35;1m>[0m         </button>
+ [2m55[0m | [35;1m|[0m   
+ [2m56[0m | [35;1m`[0m[35;1m-[0m[35;1m>[0m         {/* Navigation links */}
+ [2m57[0m |             <nav
+ [2m58[0m |               className={`${
+ [2m59[0m |                 isMenuOpen ? 'block' : 'hidden'
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/components/Header.tsx
+./app/layout.tsx
+ GET / 200 in 67ms
+ GET / 500 in 23ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⨯ ./app/components/Header.tsx
+Error:   [31mx[0m 'import', and 'export' cannot be used outside of module code
+    ,-[[36;1;4m/Users/kaitlynbook/music-website/app/components/Header.tsx[0m:23:1]
+ [2m20[0m |   const logoutClass = 'bg-transparent hover:bg-white/5 text-white px-3 py-1 rounded-md text-sm transition-colors border border-white/10';
+ [2m21[0m | 'use client';
+ [2m22[0m | 
+ [2m23[0m | import Link from 'next/link';
+    : [35;1m^^^^^^[0m
+ [2m24[0m | import { useState } from 'react';
+ [2m25[0m | import { useUser } from '../context/UserContext';
+ [2m26[0m | import { useTheme, COLOR_THEMES } from '../context/ThemeContext';
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/components/Header.tsx
+./app/layout.tsx
+ GET / 200 in 127ms
+ GET / 500 in 44ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled /_not-found in 603ms (1055 modules)
+ GET / 200 in 32ms
+ GET / 200 in 212ms
+ GET /profile 200 in 17ms
+ GET / 200 in 10ms
+ ✓ Compiled in 278ms (1055 modules)
+ GET / 200 in 103ms
+ ✓ Compiled in 148ms (1055 modules)
+ GET / 200 in 35ms
+ GET / 200 in 69ms
+ ✓ Compiled in 233ms (1055 modules)
+ GET /profile 200 in 34ms
+ GET /profile 200 in 12ms
+ GET /profile 200 in 74ms
+ GET / 200 in 16ms
+ GET /profile 200 in 24ms
+ GET /profile 200 in 51ms
+ GET / 200 in 14ms
+ GET /profile 200 in 10ms
+ ✓ Compiled in 239ms (1055 modules)
+ GET /profile 200 in 53ms
+ GET /profile 200 in 50ms
+ GET / 200 in 15ms
+ GET /profile 200 in 24ms
+ ✓ Compiled in 161ms (1055 modules)
+ GET /profile 200 in 34ms
+ GET / 200 in 23ms
+ GET / 200 in 13ms
+ GET /playlists 200 in 44ms
+ GET /manage 200 in 33ms
+ GET /friends 200 in 36ms
+ ✓ Compiled /about in 180ms (631 modules)
+ GET /about 200 in 237ms
+ GET /friends 200 in 16ms
+ GET /manage 200 in 11ms
+ GET /friends 200 in 12ms
+ GET /manage 200 in 29ms
+ ✓ Compiled in 184ms (1060 modules)
+ GET /manage 200 in 49ms
+ GET /profile 200 in 36ms
+ ✓ Compiled in 186ms (1060 modules)
+ GET /profile 200 in 37ms
+ GET / 200 in 14ms
+ GET / 200 in 9ms
+ GET /friends 200 in 32ms
+ GET /manage 200 in 35ms
+ GET /friends 200 in 20ms
+ GET /manage 200 in 23ms
+ GET /friends 200 in 27ms
+ GET /manage 200 in 23ms
+ GET / 200 in 20ms
+ GET /playlists 200 in 37ms
+ GET /manage 200 in 20ms
+ GET /friends 200 in 28ms
+ GET /playlists 200 in 12ms
+ GET / 200 in 32ms
+ GET /playlists 200 in 27ms
+ GET /manage 200 in 28ms
+ GET /friends 200 in 13ms
+ GET /manage 200 in 21ms
+ GET /manage 200 in 23ms
+ GET /manage 200 in 27ms
+ GET /friends 200 in 28ms
+ GET /manage 200 in 26ms
+ GET /friends 200 in 26ms
+ GET /manage 200 in 28ms
+ GET /friends 200 in 26ms
+ GET /manage 200 in 9ms
+ GET /friends 200 in 23ms
+ GET /manage 200 in 22ms
+ GET /playlists 200 in 26ms
+ GET / 200 in 20ms
+ GET /friends 200 in 27ms
+ GET /playlists 200 in 9ms
+ ✓ Compiled in 274ms (1055 modules)
+ GET /playlists 200 in 58ms
+ GET / 200 in 20ms
+ GET /friends 200 in 34ms
+ GET / 200 in 20ms
+ GET /friends 200 in 27ms
+ GET / 200 in 22ms
+ GET /manage 200 in 16ms
+ GET /friends 200 in 30ms
+ GET /playlists 200 in 20ms
+ GET /manage 200 in 20ms
+ GET /friends 200 in 20ms
+ ✓ Compiled /about in 98ms (631 modules)
+ GET /about 200 in 133ms
+ GET /friends 200 in 28ms
+ GET /manage 200 in 10ms
+ GET /playlists 200 in 25ms
+ GET /manage 200 in 26ms
+ GET / 200 in 24ms
+ GET /friends 200 in 22ms
+ GET /profile 200 in 11ms
+ ✓ Compiled in 230ms (1060 modules)
+ GET /profile 200 in 45ms
+ GET /friends 200 in 17ms
+ GET /about 200 in 32ms
+ GET /friends 200 in 23ms
+ GET / 200 in 9ms
+ GET /about 200 in 23ms
+ GET /friends 200 in 22ms
+ GET /manage 200 in 30ms
+ GET /friends 200 in 22ms
+ GET /manage 200 in 26ms
+ GET /friends 200 in 26ms
+ GET /about 200 in 20ms
+ GET /friends 200 in 14ms
+ GET /manage 200 in 29ms
+ GET /friends 200 in 8ms
+ GET /about 200 in 16ms
+ GET /friends 200 in 21ms
+ ✓ Compiled in 249ms (1060 modules)
+ GET /friends 200 in 57ms
+ GET /about 200 in 14ms
+ GET /about 200 in 9ms
+ GET /friends 200 in 7ms
+ GET /manage 200 in 32ms
+ GET /friends 200 in 23ms
+ GET /manage 200 in 24ms
+ GET /friends 200 in 25ms
+ GET /manage 200 in 24ms
+ GET /manage 200 in 15ms
+ GET /friends 200 in 29ms
+ GET /profile 200 in 37ms
+ GET /friends 200 in 36ms
+ GET /manage 200 in 28ms
+ GET /friends 200 in 30ms
+ GET /manage 200 in 29ms
+ GET /friends 200 in 12ms
+ GET /manage 200 in 33ms
+ GET /playlists 200 in 23ms
+ GET /friends 200 in 17ms
+ GET /manage 200 in 12ms
+ GET /playlists 200 in 25ms
+ GET /about 200 in 32ms
+ GET /manage 200 in 16ms
+ GET /friends 200 in 21ms
+ GET /manage 200 in 12ms
+ GET /friends 200 in 13ms
+ ✓ Compiled in 298ms (1060 modules)
+ GET /friends 200 in 47ms
+ GET /manage 200 in 17ms
+ GET /friends 200 in 11ms
+ GET /manage 200 in 21ms
+ GET /friends 200 in 14ms
+ GET /friends 200 in 15ms
+ GET /manage 200 in 15ms
+ GET /friends 200 in 12ms
+ ✓ Compiled in 213ms (1060 modules)
+ GET /manage 200 in 249ms
+ GET /manage 200 in 15ms
+ GET / 200 in 41ms
+ GET /friends 200 in 23ms
+ GET / 200 in 10ms
+ ✓ Compiled in 288ms (1055 modules)
+ GET / 200 in 56ms
+ ✓ Compiled in 236ms (1055 modules)
+ GET / 200 in 51ms
+ ✓ Compiled /playlists in 109ms (631 modules)
+ GET /playlists 200 in 153ms
+ GET / 200 in 35ms
+ GET /playlists 200 in 10ms
+ GET /playlists 200 in 22ms
+ GET /playlists 200 in 23ms
+ GET / 200 in 25ms
+ GET /playlists 200 in 21ms
+ GET / 200 in 26ms
+ GET /playlists 200 in 20ms
+ GET / 200 in 7ms
+ GET / 200 in 8ms
+ GET /playlists 200 in 27ms
+ GET / 200 in 17ms
+ GET /playlists 200 in 16ms
+ GET / 200 in 32ms
+ GET /playlists 200 in 38ms
+ GET / 200 in 25ms
+ GET /playlists 200 in 27ms
+ ✓ Compiled in 301ms (1055 modules)
+ GET /playlists 200 in 103ms
+ GET / 200 in 31ms
+ GET /playlists 200 in 22ms
+ GET /manage 200 in 38ms
+ GET /playlists 200 in 27ms
+ GET /manage 200 in 23ms
+ GET /playlists 200 in 21ms
+ GET /manage 200 in 29ms
+ ✓ Compiled /friends in 116ms (631 modules)
+ GET /friends 200 in 162ms
+ GET /manage 200 in 17ms
+ GET /playlists 200 in 25ms
+ GET /manage 200 in 24ms
+ GET /friends 200 in 25ms
+ GET /manage 200 in 13ms
+ GET / 200 in 25ms
+ GET /playlists 200 in 28ms
+ GET /manage 200 in 26ms
+ GET /friends 200 in 29ms
+ GET /manage 200 in 30ms
+ GET /playlists 200 in 10ms
+ GET /manage 200 in 15ms
+ GET /friends 200 in 21ms
+ GET /about 200 in 24ms
+ GET /friends 200 in 13ms
+ GET /about 200 in 18ms
+ ✓ Compiled in 266ms (1051 modules)
+ GET /friends 200 in 310ms
+ GET /friends 200 in 12ms
+ GET / 200 in 27ms
+ GET /about 200 in 36ms
+ GET /friends 200 in 26ms
+ ✓ Compiled /profile in 118ms (631 modules)
+ GET /profile 200 in 167ms
+ GET / 200 in 20ms
+ GET /about 200 in 17ms
+ GET /friends 200 in 28ms
+ GET /profile 200 in 25ms
+ ✓ Compiled in 332ms (1054 modules)
+ GET /profile 200 in 56ms
+ ✓ Compiled /manage in 122ms (631 modules)
+ GET /manage 200 in 173ms
+ GET /friends 200 in 15ms
+ GET /about 200 in 24ms
+ GET /profile 200 in 13ms
+ ✓ Compiled in 168ms (1060 modules)
+ GET /profile 200 in 35ms
+ GET /about 200 in 30ms
+ GET /profile 200 in 25ms
+ ✓ Compiled in 266ms (1054 modules)
+ GET /profile 200 in 50ms
+ ✓ Compiled in 280ms (1054 modules)
+ GET /profile 200 in 51ms
+ GET / 200 in 28ms
+ GET /about 200 in 48ms
+ GET /profile 200 in 30ms
+ ✓ Compiled in 307ms (1054 modules)
+ GET /profile 200 in 119ms
+ ✓ Compiled in 143ms (1054 modules)
+ GET /profile 200 in 25ms
+ GET /profile 200 in 73ms
+ GET / 200 in 20ms
+ GET /profile 200 in 11ms
+ ✓ Compiled in 313ms (1054 modules)
+ GET /profile 200 in 60ms
+ ✓ Compiled in 291ms (1054 modules)
+ GET /profile 200 in 49ms
+ ✓ Compiled in 298ms (1054 modules)
+ GET /profile 200 in 52ms
+ GET /profile 200 in 86ms
+ GET / 200 in 19ms
+ GET /profile 200 in 25ms
+ ✓ Compiled in 283ms (1054 modules)
+ GET /profile 200 in 50ms
+ ✓ Compiled in 282ms (1054 modules)
+ GET /profile 200 in 48ms
+ ✓ Compiled in 183ms (1054 modules)
+ GET /profile 200 in 36ms
+ ✓ Compiled in 170ms (1054 modules)
+ GET /profile 200 in 34ms
+ GET /profile 200 in 65ms
+ GET / 200 in 22ms
+ GET /profile 200 in 25ms
+ ✓ Compiled in 210ms (1054 modules)
+ GET /profile 200 in 46ms
+ ✓ Compiled in 268ms (1054 modules)
+ GET /profile 200 in 48ms
+ ✓ Compiled in 178ms (1054 modules)
+ GET /profile 200 in 34ms
+ ✓ Compiled in 437ms (1054 modules)
+ GET /profile 200 in 43ms
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /profile 200 in 96ms
+ GET / 200 in 19ms
+ GET /profile 200 in 24ms
+ ✓ Compiled in 277ms (1054 modules)
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /profile 200 in 63ms
+ GET /profile 200 in 78ms
+ GET / 200 in 19ms
+ GET / 200 in 20ms
+ GET /playlists 200 in 35ms
+ GET / 200 in 8ms
+ GET /playlists 200 in 12ms
+ GET / 200 in 22ms
+ ✓ Compiled /manage in 212ms (631 modules)
+ GET /manage 200 in 259ms
+ GET /friends 200 in 34ms
+ GET /manage 200 in 17ms
+ GET /playlists 200 in 31ms
+ GET / 200 in 24ms
+ GET /about 200 in 32ms
+ GET /friends 200 in 21ms
+ GET /profile 200 in 29ms
+ ✓ Compiled in 276ms (1055 modules)
+ GET /profile 200 in 55ms
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /profile 200 in 74ms
+ GET / 200 in 23ms
+ GET /profile 200 in 8ms
+ GET /profile 200 in 8ms
+ GET / 200 in 30ms
+ GET /profile 200 in 22ms
+ ✓ Compiled in 259ms (1055 modules)
+ GET /profile 200 in 54ms
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /profile 200 in 89ms
+ GET / 200 in 17ms
+ ✓ Compiled in 172ms (1055 modules)
+ GET / 200 in 53ms
+ GET /profile 200 in 23ms
+ GET / 200 in 30ms
+ ✓ Compiled in 293ms (1055 modules)
+ ✓ Compiled in 141ms (1055 modules)
+ ✓ Compiled in 207ms (1055 modules)
+ ✓ Compiled in 53ms (429 modules)
+ ✓ Compiled in 171ms (1055 modules)
+ GET / 200 in 74ms
+ GET /profile 200 in 18ms
+ GET /profile 200 in 48ms
+ GET / 200 in 10ms
+ GET / 200 in 41ms
+ GET /profile 200 in 22ms
+ GET /profile 200 in 59ms
+ GET / 200 in 11ms
+ GET / 200 in 19ms
+ GET / 200 in 21ms
+ GET /playlists 200 in 26ms
+ GET /profile 200 in 19ms
+ GET / 200 in 21ms
+ ✓ Compiled in 260ms (1055 modules)
+ GET / 200 in 49ms
+ ✓ Compiled in 139ms (1055 modules)
+ GET / 200 in 37ms
+ ✓ Compiled in 127ms (1055 modules)
+ GET / 200 in 28ms
+ ✓ Compiled in 230ms (1055 modules)
+ GET / 200 in 48ms
+ GET /profile 200 in 32ms
+ GET /playlists 200 in 33ms
+ ✓ Compiled in 54ms (429 modules)
+ GET /playlists 200 in 12ms
+ GET / 200 in 21ms
+ GET /manage 200 in 34ms
+ GET /friends 200 in 32ms
+ ✓ Compiled /about in 159ms (631 modules)
+ GET /about 200 in 207ms
+ GET /about 200 in 12ms
+ GET /profile 200 in 29ms
+ ✓ Compiled in 206ms (1060 modules)
+ GET /profile 200 in 46ms
+ GET /manage 200 in 35ms
+ GET / 200 in 22ms
+ GET /playlists 200 in 30ms
+ GET / 200 in 21ms
+ GET /playlists 200 in 22ms
+ GET /profile 200 in 20ms
+ GET / 200 in 12ms
+ GET /profile 200 in 20ms
+ GET / 200 in 32ms
+ GET /profile 200 in 32ms
+ ✓ Compiled in 346ms (1055 modules)
+ GET /profile 200 in 58ms
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /profile 200 in 76ms
+ GET / 200 in 18ms
+ GET /profile 200 in 25ms
+ GET / 200 in 27ms
+ GET /profile 200 in 24ms
+ ✓ Compiled in 256ms (1055 modules)
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /profile 200 in 60ms
+ GET /profile 200 in 86ms
+ GET / 200 in 19ms
+ GET /profile 200 in 9ms
+ GET / 200 in 25ms
+ GET /profile 200 in 22ms
+ ✓ Compiled in 280ms (1055 modules)
+ GET /profile 200 in 50ms
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /profile 200 in 81ms
+ GET / 200 in 27ms
+ GET /profile 200 in 9ms
+ GET / 200 in 27ms
+ GET /playlists 200 in 39ms
+ GET /profile 200 in 31ms
+ GET / 200 in 31ms
+ GET /friends 200 in 39ms
+ GET /profile 200 in 26ms
+ GET / 200 in 30ms
+ GET /playlists 200 in 26ms
+ GET /profile 200 in 26ms
+ GET / 200 in 21ms
+ GET /profile 200 in 34ms
+ GET / 200 in 33ms
+ GET /profile 200 in 32ms
+ GET /manage 200 in 44ms
+ GET /playlists 200 in 27ms
+ GET / 200 in 31ms
+ ✓ Compiled /about in 151ms (631 modules)
+ GET /about 200 in 200ms
+ GET /profile 200 in 18ms
+ GET /manage 200 in 28ms
+ GET / 200 in 31ms
+ GET /profile 200 in 23ms
+ GET /manage 200 in 23ms
+ GET / 200 in 20ms
+ GET /profile 200 in 26ms
+ GET / 200 in 39ms
+ GET /playlists 200 in 32ms
+ GET /profile 200 in 18ms
+ GET / 200 in 34ms
+ GET /playlists 200 in 38ms
+ GET /manage 200 in 37ms
+ GET /friends 200 in 36ms
+ GET /about 200 in 29ms
+ GET /profile 200 in 26ms
+ GET /profile 200 in 17ms
+ GET /profile 200 in 35ms
+ ✓ Compiled in 328ms (1060 modules)
+ GET /profile 200 in 61ms
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ⨯ TypeError: Cannot read properties of undefined (reading 'gradient')
+    at Header (app/components/Header.tsx:22:87)
+  20 |     <header className="bg-gray-900 p-4">
+  21 |       <div className="container mx-auto flex justify-between items-center">
+> 22 |         <Link href="/" className={`text-2xl font-bold bg-gradient-to-r ${currentTheme.gradient} text-transparent bg-clip-text flex items-center`}>
+     |                                                                                       ^
+  23 |           <svg
+  24 |             aria-hidden="true"
+  25 |             role="img" {
+  digest: '1190631242'
+}
+ GET /profile 500 in 158ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 561ms (1060 modules)
+ ⨯ TypeError: Cannot read properties of undefined (reading 'backgroundCss')
+    at ThemeProvider (app/context/ThemeContext.tsx:257:38)
+  255 |   // --theme-gradient: used for background-image on banners/buttons
+  256 |   // --theme-primary / --theme-secondary: primary color fallbacks
+> 257 |   const themeGradient = currentTheme.backgroundCss ? currentTheme.backgroundCss : `linear-gradient(90deg, ${currentTheme.primary}, ${currentTheme.secondary})`;
+      |                                      ^
+  258 |
+  259 |   const wrapperStyle: React.CSSProperties = {
+  260 |     // CSS custom properties (kebab-case) must be casted for TS {
+  digest: '3560851805'
+}
+ GET /profile 500 in 416ms
+ ✓ Compiled in 330ms (1060 modules)
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⨯ TypeError: Cannot read properties of undefined (reading 'backgroundCss')
+    at ThemeProvider (app/context/ThemeContext.tsx:257:38)
+  255 |   // --theme-gradient: used for background-image on banners/buttons
+  256 |   // --theme-primary / --theme-secondary: primary color fallbacks
+> 257 |   const themeGradient = currentTheme.backgroundCss ? currentTheme.backgroundCss : `linear-gradient(90deg, ${currentTheme.primary}, ${currentTheme.secondary})`;
+      |                                      ^
+  258 |
+  259 |   const wrapperStyle: React.CSSProperties = {
+  260 |     // CSS custom properties (kebab-case) must be casted for TS {
+  digest: '3560851805'
+}
+ GET /profile 500 in 99ms
+ ⨯ TypeError: Cannot read properties of undefined (reading 'backgroundCss')
+    at ThemeProvider (app/context/ThemeContext.tsx:257:38)
+  255 |   // --theme-gradient: used for background-image on banners/buttons
+  256 |   // --theme-primary / --theme-secondary: primary color fallbacks
+> 257 |   const themeGradient = currentTheme.backgroundCss ? currentTheme.backgroundCss : `linear-gradient(90deg, ${currentTheme.primary}, ${currentTheme.secondary})`;
+      |                                      ^
+  258 |
+  259 |   const wrapperStyle: React.CSSProperties = {
+  260 |     // CSS custom properties (kebab-case) must be casted for TS {
+  digest: '3560851805'
+}
+ GET /profile 500 in 49ms
+ ✓ Compiled in 304ms (1055 modules)
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /profile 200 in 157ms
+ GET / 200 in 21ms
+ GET /profile 200 in 9ms
+ GET / 200 in 24ms
+ ✓ Compiled /playlists in 110ms (631 modules)
+ GET /playlists 200 in 148ms
+ GET /profile 200 in 28ms
+ GET / 200 in 30ms
+ GET /manage 200 in 36ms
+ GET /friends 200 in 35ms
+ GET /about 200 in 33ms
+ GET /profile 200 in 16ms
+ ✓ Compiled in 116ms (429 modules)
+ ✓ Compiled in 94ms (429 modules)
+ GET /profile 200 in 95ms
+ GET /profile 200 in 19ms
+ ✓ Compiled in 332ms (1055 modules)
+ GET /profile 200 in 53ms
+ ✓ Compiled in 175ms (1057 modules)
+ GET /profile 200 in 31ms
+ ✓ Compiled in 154ms (1057 modules)
+ GET /profile 200 in 30ms
+ ✓ Compiled in 151ms (1057 modules)
+ GET /profile 200 in 31ms
+ ✓ Compiled in 144ms (1057 modules)
+ GET /profile 200 in 25ms
+ ✓ Compiled in 187ms (1057 modules)
+ GET /profile 200 in 48ms
+ ✓ Compiled in 169ms (1057 modules)
+ GET /profile 200 in 32ms
+ ✓ Compiled in 64ms (430 modules)
+ GET /profile 200 in 13ms
+ GET /profile 200 in 72ms
+ GET / 200 in 19ms
+ ✓ Compiled in 86ms (430 modules)
+ GET / 200 in 21ms
+ GET /profile 200 in 25ms
+ GET / 200 in 27ms
+ GET /profile 200 in 21ms
+ ✓ Compiled in 276ms (1057 modules)
+ GET /profile 200 in 53ms
+ GET /playlists 200 in 20ms
+ GET / 200 in 30ms
+ GET /manage 200 in 36ms
+ GET /playlists 200 in 23ms
+ GET / 200 in 20ms
+ GET /playlists 200 in 7ms
+ GET /manage 200 in 31ms
+ GET /profile 200 in 26ms
+ GET /profile 200 in 85ms
+ GET / 200 in 13ms
+ GET /profile 200 in 24ms
+ GET / 200 in 13ms
+ GET /manage 200 in 37ms
+ GET /profile 200 in 30ms
+ GET / 200 in 28ms
+ GET / 200 in 27ms
+ GET /playlists 200 in 29ms
+ GET /manage 200 in 30ms
+ GET /about 200 in 38ms
+ GET /profile 200 in 26ms
+ GET /about 200 in 24ms
+ ✓ Compiled /friends in 209ms (632 modules)
+ GET /friends 200 in 259ms
+ GET /manage 200 in 35ms
+ GET /manage 200 in 20ms
+ GET /manage 200 in 29ms
+ GET /friends 200 in 8ms
+ GET /manage 200 in 22ms
+ GET /playlists 200 in 28ms
+ GET / 200 in 32ms
+ GET /profile 200 in 15ms
+ GET / 200 in 20ms
+ GET /playlists 200 in 20ms
+ GET /manage 200 in 28ms
+ GET /friends 200 in 27ms
+ GET /about 200 in 36ms
+ GET /friends 200 in 31ms
+ GET /about 200 in 31ms
+ GET /profile 200 in 24ms
+ GET / 200 in 17ms
+ ⨯ ./app/profile/page.tsx
+Error:   [31mx[0m 'import', and 'export' cannot be used outside of module code
+    ,-[[36;1;4m/Users/kaitlynbook/music-website/app/profile/page.tsx[0m:51:1]
+ [2m48[0m |   };
+ [2m49[0m | "use client";
+ [2m50[0m | 
+ [2m51[0m | import { useUser } from "../context/UserContext";
+    : [35;1m^^^^^^[0m
+ [2m52[0m | import { useMusicLibrary } from "../context/MusicLibraryContext";
+ [2m53[0m | import { useTheme } from "../context/ThemeContext";
+ [2m54[0m | import { useRouter } from "next/navigation";
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/profile/page.tsx
+ ⨯ ./app/profile/page.tsx
+Error:   [31mx[0m 'import', and 'export' cannot be used outside of module code
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/profile/page.tsx[0m:280:1]
+ [2m277[0m |   };
+ [2m278[0m | "use client";
+ [2m279[0m | 
+ [2m280[0m | import { useUser } from "../context/UserContext";
+     : [35;1m^^^^^^[0m
+ [2m281[0m | import { useMusicLibrary } from "../context/MusicLibraryContext";
+ [2m282[0m | import { useTheme } from "../context/ThemeContext";
+ [2m283[0m | import { useRouter } from "next/navigation";
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/profile/page.tsx
+ ⨯ ./app/profile/page.tsx
+Error:   [31mx[0m 'import', and 'export' cannot be used outside of module code
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/profile/page.tsx[0m:509:1]
+ [2m506[0m |   };
+ [2m507[0m | "use client";
+ [2m508[0m | 
+ [2m509[0m | import { useUser } from "../context/UserContext";
+     : [35;1m^^^^^^[0m
+ [2m510[0m | import { useMusicLibrary } from "../context/MusicLibraryContext";
+ [2m511[0m | import { useTheme } from "../context/ThemeContext";
+ [2m512[0m | import { useRouter } from "next/navigation";
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/profile/page.tsx
+ ⨯ ./app/profile/page.tsx
+Error:   [31mx[0m 'import', and 'export' cannot be used outside of module code
+     ,-[[36;1;4m/Users/kaitlynbook/music-website/app/profile/page.tsx[0m:738:1]
+ [2m735[0m |   };
+ [2m736[0m | "use client";
+ [2m737[0m | 
+ [2m738[0m | import { useUser } from "../context/UserContext";
+     : [35;1m^^^^^^[0m
+ [2m739[0m | import { useMusicLibrary } from "../context/MusicLibraryContext";
+ [2m740[0m | import { useTheme } from "../context/ThemeContext";
+ [2m741[0m | import { useRouter } from "next/navigation";
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/profile/page.tsx
+ ✓ Compiled in 310ms (1043 modules)
+ GET / 200 in 110ms
+ GET / 200 in 21ms
+ ✓ Compiled in 147ms (1057 modules)
+ GET / 200 in 36ms
+ GET /playlists 200 in 17ms
+ GET /manage 200 in 24ms
+ ✓ Compiled /friends in 121ms (632 modules)
+ GET /friends 200 in 167ms
+ GET /playlists 200 in 36ms
+ GET /manage 200 in 15ms
+ GET /about 200 in 38ms
+ GET /friends 200 in 22ms
+ GET /profile 200 in 32ms
+ GET / 200 in 25ms
+ GET /playlists 200 in 28ms
+ GET /manage 200 in 19ms
+ GET /friends 200 in 22ms
+ GET /about 200 in 30ms
+ GET /profile 200 in 25ms
+ GET /manage 200 in 23ms
+ GET /playlists 200 in 20ms
+ GET / 200 in 29ms
+ GET / 200 in 78ms
+ GET / 200 in 22ms
+ GET /playlists 200 in 27ms
+ GET /manage 200 in 28ms
+ GET /friends 200 in 28ms
+ GET /manage 200 in 20ms
+ GET /friends 200 in 25ms
+ GET /about 200 in 20ms
+ GET /profile 200 in 28ms
+ GET /about 200 in 22ms
+ GET /profile 200 in 26ms
+ GET /about 200 in 20ms
+ GET /friends 200 in 27ms
+ ✓ Compiled in 327ms (1057 modules)
+ GET /friends 200 in 66ms
+ GET /playlists 200 in 18ms
+ GET /manage 200 in 35ms
+ GET /about 200 in 36ms
+ GET /friends 200 in 21ms
+ ✓ Compiled / in 181ms (632 modules)
+ GET / 200 in 228ms
+ GET /playlists 200 in 21ms
+ GET /manage 200 in 24ms
+ GET /friends 200 in 25ms
+ ✓ Compiled in 287ms (1062 modules)
+ GET /friends 200 in 49ms
+ GET /profile 200 in 35ms
+ GET /profile 200 in 16ms
+ GET /profile 200 in 20ms
+ GET /profile 200 in 13ms
+ GET /profile 200 in 30ms
+ GET /about 200 in 40ms
+ GET /profile 200 in 32ms
+ GET /profile 200 in 16ms
+ GET /friends 200 in 12ms
+ ✓ Compiled in 310ms (1056 modules)
+ GET /friends 200 in 54ms
+ GET / 200 in 17ms
+ GET /playlists 200 in 20ms
+ ✓ Compiled /manage in 96ms (632 modules)
+ GET /manage 200 in 129ms
+ GET /friends 200 in 20ms
+ GET /about 200 in 31ms
+ GET /profile 200 in 34ms
+ GET /profile 200 in 14ms
+ GET /friends 200 in 23ms
+ GET /profile 200 in 25ms
+ GET /profile 200 in 12ms

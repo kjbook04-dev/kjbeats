@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useUser } from '../context/UserContext';
 import { useTheme } from '../context/ThemeContext';
 import { ProfilePictureUpload } from './ProfilePictureUpload';
@@ -27,8 +28,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [profilePicture, setProfilePicture] = useState<File | null>(null);
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [rememberMe, setRememberMe] = useState<boolean>(true);
   const { login, signup, updateProfilePicture, clearAllUserData } = useUser();
   const { currentTheme } = useTheme();
+  const router = useRouter();
 
   // Reset mode when modal opens with different initialMode
   useEffect(() => {
@@ -42,6 +45,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         confirmPassword: ''
       });
       setProfilePicture(null);
+      setRememberMe(true);
       setError('');
     }
   }, [isOpen, initialMode]);
@@ -74,20 +78,24 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           return;
         }
 
-        const result = await signup(formData.firstName, formData.username, formData.email, formData.password);
+  const result = await signup(formData.firstName, formData.username, formData.email, formData.password, rememberMe);
         if (result.success) {
           // If there's a profile picture, update it after signup
           if (profilePicture) {
             await updateProfilePicture(profilePicture);
           }
           onClose();
+          // Redirect to home after successful signup
+          try { router.push('/'); } catch (e) { /* ignore navigation errors */ }
         } else {
           setError(result.error || 'Signup failed');
         }
       } else {
-        const result = await login(formData.username, formData.password);
+  const result = await login(formData.username, formData.password, rememberMe);
         if (result.success) {
           onClose();
+          // Redirect to home after successful login
+          try { router.push('/'); } catch (e) { /* ignore navigation errors */ }
         } else {
           setError(result.error || 'Login failed');
         }
@@ -225,6 +233,20 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 className={`w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-${currentTheme.primary.split(' ')[0]}`}
                 required
               />
+            </div>
+          )}
+
+          {/* Stay signed in option for login */}
+          {mode === 'login' && (
+            <div className="flex items-center space-x-2">
+              <input
+                id="rememberMe"
+                type="checkbox"
+                checked={rememberMe}
+                onChange={() => setRememberMe(!rememberMe)}
+                className="h-4 w-4 text-indigo-600 bg-gray-800 border-gray-700 rounded"
+              />
+              <label htmlFor="rememberMe" className="text-sm text-gray-300">Stay signed in</label>
             </div>
           )}
 

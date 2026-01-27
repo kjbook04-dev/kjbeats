@@ -5,12 +5,17 @@ import MusicUpload from '../components/MusicUpload';
 import { useTheme } from '../context/ThemeContext';
 import { useMusicLibrary } from '../context/MusicLibraryContext';
 import { useLastPlayed } from '../context/LastPlayedContext';
+import { useUser } from '../context/UserContext';
+import { AuthModal } from '../components/AuthModal';
 
 export default function ManageMusicPage() {
   const { currentTheme } = useTheme();
   const { songs, removeSong } = useMusicLibrary();
   const { playAudio, currentSong, isPlaying, togglePlay, setCurrentSong, setIsPlaying } = useLastPlayed();
   const [pageBgColor, setPageBgColor] = useState<string>('transparent');
+  const { user } = useUser();
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -30,7 +35,7 @@ export default function ManageMusicPage() {
         <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="bg-gray-800 p-6 rounded-lg border border-gray-700">
             <h3 className={`text-xl font-semibold mb-3 ${currentTheme.text}`}>Your Library</h3>
-            <p className="text-gray-400 mb-4">View and manage your saved music collection</p>
+            <p className="text-gray-300 mb-4">View and manage your saved music collection</p>
 
             {songs.length === 0 ? (
               <div className="text-gray-400">No songs yet. Upload something to see it here.</div>
@@ -39,7 +44,7 @@ export default function ManageMusicPage() {
                 {songs.map((s) => (
                   <div key={s.id} className="flex items-center justify-between bg-gray-900 p-2 rounded">
                     <div className="min-w-0">
-                      <div className="text-white truncate font-medium">{s.title}</div>
+                      <div className="text-white truncate font-semibold">{s.title}</div>
                       <div className="text-gray-400 text-sm truncate">{s.artist}</div>
                     </div>
                     <div className="flex items-center gap-2 ml-4">
@@ -62,7 +67,7 @@ export default function ManageMusicPage() {
                                 setIsPlaying(true);
                               }
                             }}
-                            className={`w-9 h-9 rounded-full ${currentTheme.bg} ${currentTheme.bgHover} ${currentTheme.text} flex items-center justify-center hover:scale-105 transition-all`}
+                            className={`w-9 h-9 rounded-full ${currentTheme.bg} ${currentTheme.bgHover} text-gray-300 flex items-center justify-center hover:scale-105 transition-all`}
                             title={isThisPlaying ? 'Pause' : 'Play'}
                           >
                             <span style={{ color: pageBgColor }}>
@@ -100,13 +105,38 @@ export default function ManageMusicPage() {
 
           <div className="bg-gray-800 p-6 rounded-lg border border-gray-700">
             <h3 className={`text-xl font-semibold mb-3 ${currentTheme.text}`}>Upload Your Music</h3>
-            <p className="text-gray-400 mb-4">Upload audio files to add to your personal collection.</p>
+            <p className="text-gray-300 mb-4">Upload audio files to add to your personal collection.</p>
             <div>
-              <MusicUpload />
+              {user ? (
+                <MusicUpload />
+              ) : (
+                <div className="text-center py-8">
+                  <p className="text-gray-400 mb-4">Please login to upload your music.</p>
+                  <div className="flex items-center justify-center gap-4">
+                    <button
+                      onClick={() => { setAuthMode('login'); setShowAuthModal(true); }}
+                      className={`${currentTheme.text} ${currentTheme.textHover} px-4 py-2 rounded-md`}
+                    >
+                      Login
+                    </button>
+                    <button
+                      onClick={() => { setAuthMode('signup'); setShowAuthModal(true); }}
+                      className={`${currentTheme.bg} ${currentTheme.bgHover} text-white px-4 py-2 rounded-md`}
+                    >
+                      Sign Up
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </section>
       </div>
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        initialMode={authMode}
+      />
     </div>
   );
 }

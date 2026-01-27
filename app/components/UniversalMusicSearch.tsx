@@ -184,8 +184,8 @@ export default function UniversalMusicSearch() {
                       className="w-16 h-16 object-cover rounded"
                     />
                     <div className="flex-1 min-w-0">
-                      <h4 className="text-white font-medium truncate">{song.title}</h4>
-                      <p className="text-gray-400 text-sm truncate">{song.artist}</p>
+                      <h4 className="text-white font-semibold truncate">{song.title}</h4>
+                      <p className={`${song.artist === 'Local Upload' ? 'text-gray-300' : 'text-gray-400'} text-sm truncate`}>{song.artist}</p>
                       <span className={`inline-block mt-1 px-2 py-1 text-xs rounded ${currentTheme.bg} text-gray-900`}>
                         {song.genre}
                       </span>

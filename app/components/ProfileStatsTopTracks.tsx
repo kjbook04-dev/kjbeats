@@ -72,8 +72,8 @@ export const ProfileStatsTopTracks: React.FC = () => {
               <div className="flex items-center space-x-3">
                 <div className="text-white font-medium">{idx + 1}.</div>
                 <div>
-                  <div className="text-white font-medium">{song.title}</div>
-                  <div className="text-gray-400 text-sm">{song.artist}</div>
+                  <div className="text-white font-semibold">{song.title}</div>
+                  <div className={`${(song.artist === 'Local Upload' || (song as any).audioUrl && (song as any).audioUrl.startsWith('blob:')) ? 'text-gray-300' : 'text-gray-400'} text-sm`}>{song.artist}</div>
                 </div>
               </div>
             </div>

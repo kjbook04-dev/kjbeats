@@ -1,19 +1,22 @@
 'use client';
 
 import { useTheme } from '../context/ThemeContext';
+import { gradientTextStyle } from '../context/themeHelpers';
 
 export default function Footer() {
   const { currentTheme } = useTheme();
+  const hasMultiStop = !!currentTheme.backgroundCss;
+  const gText = hasMultiStop ? gradientTextStyle() : {};
   return (
     <footer className="bg-gray-900 py-8">
       <div className="container mx-auto px-4">
   <div className="grid grid-cols-1 md:grid-cols-3 items-start gap-8 md:gap-x-[2px]">
           <div className="md:transform md:translate-x-[75px]">
-            <h3 className={`text-xl font-bold mb-4 bg-gradient-to-r ${currentTheme.gradient} text-transparent bg-clip-text`}>KJBeats</h3>
+            <h3 className="text-xl font-bold mb-4" style={gText}>KJBeats</h3>
             <p className="text-gray-300">Your ultimate destination for music exploration.</p>
           </div>
           <div className="justify-self-center text-center">
-            <h4 className={`text-lg font-semibold mb-4 ${currentTheme.text} ${currentTheme.textHover}`}>Quick Links</h4>
+            <h4 className={`text-lg font-semibold mb-4`} style={gText}>Quick Links</h4>
             <ul className="space-y-2">
               <li><a href="/about" className="text-gray-300 hover:text-white">About Us</a></li>
               <li><a href="mailto:kjbook04@gmail.com" className="text-gray-300 hover:text-white">Contact</a></li>
@@ -22,7 +25,7 @@ export default function Footer() {
           </div>
           <div className="justify-self-end md:transform md:-translate-x-[125px]">
             <div className="flex flex-col items-end">
-              <h4 className={`text-lg font-semibold mb-4 ${currentTheme.text} ${currentTheme.textHover} self-center md:transform md:-translate-x-2`}>Connect With Us</h4>
+              <h4 className={`text-lg font-semibold mb-4 self-center md:transform md:-translate-x-2`} style={gText}>Connect With Us</h4>
               <div className="flex space-x-4">
               <a href="#" className="text-gray-300 hover:text-white">
                 Twitter

@@ -26,7 +26,9 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ className = '' }) => {
               }
             `}
             style={{
-              background: `linear-gradient(135deg, ${theme.primary}, ${theme.secondary})`
+              // Prefer an explicit multi-stop gradient when available (backgroundCss),
+              // otherwise fall back to a simple two-stop gradient using primary/secondary.
+              background: theme.backgroundCss ? theme.backgroundCss : `linear-gradient(135deg, ${theme.primary}, ${theme.secondary})`
             }}
             title={theme.name}
           >

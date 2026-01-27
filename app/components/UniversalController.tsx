@@ -172,9 +172,9 @@ export default function UniversalController() {
               title="Click to seek"
             >
               <div
-                className={`h-full bg-gradient-to-r ${currentTheme.gradient} rounded-full transition-all duration-300`}
-                style={{ width: `${progressPercentage}%` }}
-              />
+                    className={`h-full bg-gradient-to-r ${currentTheme.gradient} rounded-full transition-all duration-300`}
+                    style={{ width: `${progressPercentage}%` }}
+                  />
             </div>
           </div>
         )}
@@ -196,7 +196,7 @@ export default function UniversalController() {
       </div>
 
       {/* Custom Styles for the volume slider */}
-      <style jsx>{`
+          <style jsx>{`
         .slider::-webkit-slider-thumb {
           appearance: none;
           width: 16px;

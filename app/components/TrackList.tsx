@@ -75,7 +75,7 @@ export default function TrackList({ songs }: { songs?: Song[] }) {
                   )}
                 </div>
                 <div className="flex items-center space-x-2">
-                  <span className={`${currentTheme.text} text-sm`}>{s.duration}</span>
+                    <span className="text-gray-300 text-sm">{s.duration}</span>
                   <button
                     onClick={() => {
                       const isThisPlaying = !!currentSong && currentSong.id === s.id && isPlaying;
@@ -123,7 +123,7 @@ export default function TrackList({ songs }: { songs?: Song[] }) {
                       setCurrentSong(s);
                       setIsPlaying(true);
                     }}
-                    className={`w-8 h-8 rounded-full ${currentTheme.bg} text-gray-900 font-bold ${currentTheme.bgHover} flex items-center justify-center`}
+                      className={`w-8 h-8 rounded-full ${currentTheme.bg} text-gray-300 font-bold ${currentTheme.bgHover} flex items-center justify-center`}
                   >
                     {currentSong?.id === s.id && isPlaying ? '❚❚' : '▶'}
                   </button>

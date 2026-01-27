@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useTheme } from '../context/ThemeContext';
+import { gradientTextStyle, gradientBgStyle } from '../context/themeHelpers';
 
 interface LibrarySong {
   id: string;
@@ -23,6 +24,9 @@ export default function LibraryPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPlaying, setCurrentPlaying] = useState<string | null>(null);
   const { currentTheme } = useTheme();
+  const hasMultiStop = !!currentTheme.backgroundCss;
+  const gText = hasMultiStop ? gradientTextStyle() : {};
+  const gBg = hasMultiStop ? gradientBgStyle() : {};
 
   useEffect(() => {
     fetchLibrary();
@@ -113,7 +117,7 @@ export default function LibraryPage() {
     <div className="min-h-screen bg-gray-900 py-8">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
-          <h1 className={`text-4xl font-bold mb-2 bg-gradient-to-r ${currentTheme.gradient} text-transparent bg-clip-text`}>
+          <h1 className="text-4xl font-bold mb-2" style={gText}>
             Music Library
           </h1>
           <p className="text-gray-400 mb-8">
@@ -143,7 +147,8 @@ export default function LibraryPage() {
               )}
               <a
                 href="/popular"
-                className={`inline-block bg-gradient-to-r ${currentTheme.gradient} text-white px-6 py-3 rounded-lg font-medium hover:scale-105 transition-all`}
+                className={`inline-block text-white px-6 py-3 rounded-lg font-medium hover:scale-105 transition-all`}
+                style={gBg}
               >
                 Browse Popular Music
               </a>
@@ -162,8 +167,8 @@ export default function LibraryPage() {
                             className="w-12 h-12 object-cover rounded"
                           />
                           <div>
-                            <h3 className="text-white font-medium">{song.title}</h3>
-                            <p className="text-gray-400 text-sm">{song.artist}</p>
+                            <h3 className="text-white font-semibold">{song.title}</h3>
+                            <p className={`${(song.artist === 'Local Upload' || (song as any).audioUrl && (song as any).audioUrl.startsWith('blob:')) ? 'text-gray-300' : 'text-gray-400'} text-sm`}>{song.artist}</p>
                           </div>
                         </div>
                         <div className="flex items-center space-x-4 text-sm text-gray-400">
@@ -201,8 +206,8 @@ export default function LibraryPage() {
                         className="w-16 h-16 object-cover rounded"
                       />
                       <div className="flex-1 min-w-0">
-                        <h3 className="text-white font-medium truncate">{song.title}</h3>
-                        <p className="text-gray-400 text-sm truncate">{song.artist}</p>
+                        <h3 className="text-white font-semibold truncate">{song.title}</h3>
+                        <p className={`${(song.artist === 'Local Upload' || (song as any).audioUrl && (song as any).audioUrl.startsWith('blob:')) ? 'text-gray-300' : 'text-gray-400'} text-sm truncate`}>{song.artist}</p>
                         <div className="flex items-center space-x-4 text-xs text-gray-500 mt-1">
                           <span>{song.playCount} plays</span>
                           <span>Added {new Date(song.addedAt).toLocaleDateString()}</span>

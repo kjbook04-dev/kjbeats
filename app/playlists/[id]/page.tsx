@@ -153,13 +153,13 @@ export default function PlaylistDetailPage() {
         )}
         
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <p className="text-gray-500">
+            <div className="flex items-center space-x-4">
+                <p className="text-gray-300">
               {playlist.songs.length} {playlist.songs.length === 1 ? 'song' : 'songs'}
             </p>
             {playlist.songs.length > 0 && (
               <div className="flex items-center space-x-2 text-xs">
-                <span className="text-blue-400 bg-blue-900/30 px-2 py-1 rounded">
+                <span className="text-gray-300 bg-blue-900/30 px-2 py-1 rounded">
                   {playlist.songs.length} Local
                 </span>
               </div>
@@ -168,7 +168,7 @@ export default function PlaylistDetailPage() {
           {playlist.songs.length > 0 && (
             <button
               onClick={handlePlayPlaylist}
-              className={`${currentTheme.bg} text-gray-900 px-6 py-3 rounded-full font-semibold ${currentTheme.bgHover} transition-colors flex items-center space-x-2`}
+              className={`${currentTheme.bg} text-gray-300 px-6 py-3 rounded-full font-semibold ${currentTheme.bgHover} transition-colors flex items-center space-x-2`}
             >
               <span>▶</span>
               <span>Play All</span>
@@ -201,20 +201,18 @@ export default function PlaylistDetailPage() {
                 </span>
                 <button
                   onClick={() => handlePlaySong(song)}
-                  className={`${currentTheme.text} ${currentTheme.textHover} p-2 rounded-full transition-colors`}
+                  className={`text-gray-300 p-2 rounded-full transition-colors`}
                   title="Play this song locally"
                 >
                   ▶
                 </button>
                 <div className="flex items-center space-x-3">
-                  {/* Track type indicator */}
-                  <div className="flex-shrink-0 w-3 h-3 rounded-full bg-blue-400" title="Local track" />
                   <div>
-                    <h3 className="text-white font-medium">{song.title}</h3>
+                    <h3 className="text-white font-semibold">{song.title}</h3>
                     <div className="flex items-center space-x-2">
-                      <p className="text-gray-400 text-sm">{song.artist}</p>
+                      <p className={`${(song.artist === 'Local Upload' || (song.audioUrl && song.audioUrl.startsWith('blob:'))) ? 'text-gray-300' : 'text-gray-400'} text-sm`}>{song.artist}</p>
                       {song.audioUrl && (
-                        <span className="text-blue-400 text-xs px-2 py-0.5 bg-blue-900/30 rounded-full">
+                        <span className="text-gray-300 text-sm px-2 py-0.5 bg-blue-900/30 rounded-full">
                           Local
                         </span>
                       )}
@@ -223,7 +221,7 @@ export default function PlaylistDetailPage() {
                 </div>
               </div>
               <div className="flex items-center space-x-4">
-                <span className="text-gray-400 text-sm">{song.duration}</span>
+                <span className="text-gray-300 text-sm">{song.duration}</span>
                 <button
                   onClick={() => handleRemoveSong(song.title, song.id)}
                   className={`w-9 h-9 rounded-full ${currentTheme.bg} ${currentTheme.bgHover} ${currentTheme.text} flex items-center justify-center hover:scale-105 transition-all`}

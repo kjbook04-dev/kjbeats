@@ -144,7 +144,7 @@ export default function MultiPlatformSearch() {
                       className="w-16 h-16 object-cover rounded"
                     />
                     <div className="flex-1 min-w-0">
-                      <h4 className="text-white font-medium truncate">{result.title}</h4>
+                      <h4 className="text-white font-semibold truncate">{result.title}</h4>
                       <p className="text-gray-400 text-sm truncate">{result.artist}</p>
                       <div className="flex items-center space-x-2 mt-1">
                         <span className={`inline-block px-2 py-1 text-xs rounded text-white ${getPlatformColor(result.platform)}`}>
