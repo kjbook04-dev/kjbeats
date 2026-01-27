@@ -125,7 +125,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className={`text-5xl font-bold mb-6 bg-gradient-to-r ${currentTheme.gradient} text-transparent bg-clip-text`}>Welcome to KJBeats</h1>
-              <p className="text-gray-300 text-xl mb-8">
+            <p className="text-gray-300 text-xl mb-8">
               Search popular music, save your favorites, and play full songs from multiple platforms.
             </p>
             <Link
@@ -179,12 +179,12 @@ export default function Home() {
                 )}
               </div>
               <div className="mt-4">
-                <a
+                <Link
                   href="/library"
                   className={`inline-block bg-gradient-to-r ${currentTheme.gradient} px-4 py-2 rounded-lg text-sm font-medium hover:scale-105 transition-all`}
                 >
                   <span style={{ color: pageBgColor }}>View Library</span>
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -227,12 +227,12 @@ export default function Home() {
                 )}
               </div>
               <div className="mt-4">
-                <a
+                <Link
                   href="/playlists"
                   className={`inline-block bg-gradient-to-r ${currentTheme.gradient} px-4 py-2 rounded-lg text-sm font-medium hover:scale-105 transition-all`}
                 >
                   <span style={{ color: pageBgColor }}>View All Playlists</span>
-                </a>
+                </Link>
               </div>
             </div>
           </div>

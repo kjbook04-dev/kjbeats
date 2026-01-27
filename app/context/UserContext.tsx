@@ -10,17 +10,26 @@ export interface User {
   createdAt: string;
   profilePicture?: string;
   themeColor?: string;
+  friends?: string[];
+  bio?: string;
+  website?: string;
+  publicProfile?: boolean;
 }
+
+
 
 interface UserContextType {
   user: User | null;
-  login: (username: string, password: string) => Promise<{success: boolean, error?: string}>;
-  signup: (firstName: string, username: string, email: string, password: string) => Promise<{success: boolean, error?: string}>;
+  login: (username: string, password: string) => Promise<{ success: boolean, error?: string }>;
+  signup: (firstName: string, username: string, email: string, password: string) => Promise<{ success: boolean, error?: string }>;
   logout: () => void;
   updateProfilePicture: (imageFile: File) => Promise<boolean>;
   updateUserTheme: (themeColor: string) => Promise<boolean>;
   clearAllUserData: () => void;
   isLoading: boolean;
+  addFriend: (username: string) => Promise<{ success: boolean, error?: string }>;
+  removeFriend: (username: string) => Promise<{ success: boolean, error?: string }>;
+  updateUserProfile: (data: { bio?: string; website?: string; publicProfile?: boolean }) => Promise<boolean>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -51,10 +60,10 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         if (!userData.firstName) {
           // Auto-migrate: use username as firstName for backward compatibility
           userData.firstName = userData.username || 'User';
-          
+
           // Update the saved user data
           localStorage.setItem('kjbeats_user', JSON.stringify(userData));
-          
+
           // Also update in the users list if it exists
           try {
             const allUsers = JSON.parse(localStorage.getItem('kjbeats_users') || '[]');
@@ -73,7 +82,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         localStorage.removeItem('kjbeats_user');
       }
     }
-    
+
     // Clean up old users without firstName from the users list
     try {
       const allUsers = JSON.parse(localStorage.getItem('kjbeats_users') || '[]');
@@ -84,16 +93,16 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     } catch (error) {
       console.error('Error cleaning up user data:', error);
     }
-    
+
     setIsLoading(false);
   }, []);
 
-  const login = async (username: string, password: string): Promise<{success: boolean, error?: string}> => {
+  const login = async (username: string, password: string): Promise<{ success: boolean, error?: string }> => {
     setIsLoading(true);
-    
+
     // Get all users from localStorage
     const users = JSON.parse(localStorage.getItem('kjbeats_users') || '[]');
-    const foundUser = users.find((u: User & { password: string }) => 
+    const foundUser = users.find((u: User & { password: string }) =>
       u.username === username && u.password === password
     );
 
@@ -102,7 +111,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       if (!foundUser.firstName) {
         // Auto-update the user with firstName = username for backward compatibility
         foundUser.firstName = foundUser.username;
-        
+
         // Update the user in the users array
         const userIndex = users.findIndex((u: User) => u.id === foundUser.id);
         if (userIndex !== -1) {
@@ -110,14 +119,19 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
           localStorage.setItem('kjbeats_users', JSON.stringify(users));
         }
       }
-      
+
       const userSession = {
         id: foundUser.id,
         username: foundUser.username,
         firstName: foundUser.firstName,
         email: foundUser.email,
         createdAt: foundUser.createdAt,
-        profilePicture: foundUser.profilePicture
+        profilePicture: foundUser.profilePicture,
+        themeColor: foundUser.themeColor,
+        friends: foundUser.friends,
+        bio: foundUser.bio,
+        website: foundUser.website,
+        publicProfile: foundUser.publicProfile
       };
       setUser(userSession);
       localStorage.setItem('kjbeats_user', JSON.stringify(userSession));
@@ -129,14 +143,14 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     return { success: false, error: 'Invalid username or password' };
   };
 
-  const signup = async (firstName: string, username: string, email: string, password: string): Promise<{success: boolean, error?: string}> => {
+  const signup = async (firstName: string, username: string, email: string, password: string): Promise<{ success: boolean, error?: string }> => {
     setIsLoading(true);
 
     // Get existing users
     const users = JSON.parse(localStorage.getItem('kjbeats_users') || '[]');
-    
+
     // Check if username or email already exists (only valid users with firstName)
-    const existingUser = users.find((u: User) => 
+    const existingUser = users.find((u: User) =>
       u.username === username || u.email === email
     );
 
@@ -195,22 +209,22 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       // Update user in localStorage
       const users = JSON.parse(localStorage.getItem('kjbeats_users') || '[]');
       const userIndex = users.findIndex((u: User) => u.id === user.id);
-      
+
       if (userIndex !== -1) {
         users[userIndex].themeColor = themeColor;
         localStorage.setItem('kjbeats_users', JSON.stringify(users));
-        
+
         // Update current user session
         const updatedUser = { ...user, themeColor };
         setUser(updatedUser);
         localStorage.setItem('kjbeats_user', JSON.stringify(updatedUser));
-        
+
         return true;
       }
     } catch (error) {
       console.error('Error updating user theme:', error);
     }
-    
+
     return false;
   };
 
@@ -220,33 +234,126 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     try {
       // Create a blob URL for the image
       const imageUrl = URL.createObjectURL(imageFile);
-      
+
       // Update user in localStorage
       const users = JSON.parse(localStorage.getItem('kjbeats_users') || '[]');
       const userIndex = users.findIndex((u: User) => u.id === user.id);
-      
+
       if (userIndex !== -1) {
         users[userIndex].profilePicture = imageUrl;
         localStorage.setItem('kjbeats_users', JSON.stringify(users));
-        
+
         // Update current user session
         const updatedUser = { ...user, profilePicture: imageUrl };
         setUser(updatedUser);
         localStorage.setItem('kjbeats_user', JSON.stringify(updatedUser));
-        
+
         // Store the file for later use (client-side only)
         if (typeof window !== 'undefined') {
-          (window as typeof window & {profilePictures?: Map<string, File>}).profilePictures = 
-            (window as typeof window & {profilePictures?: Map<string, File>}).profilePictures || new Map();
-          (window as typeof window & {profilePictures?: Map<string, File>}).profilePictures!.set(user.id, imageFile);
+          (window as typeof window & { profilePictures?: Map<string, File> }).profilePictures =
+            (window as typeof window & { profilePictures?: Map<string, File> }).profilePictures || new Map();
+          (window as typeof window & { profilePictures?: Map<string, File> }).profilePictures!.set(user.id, imageFile);
         }
-        
+
         return true;
       }
     } catch (error) {
       console.error('Error updating profile picture:', error);
     }
-    
+
+    return false;
+  };
+
+  const addFriend = async (friendUsername: string): Promise<{ success: boolean, error?: string }> => {
+    if (!user) return { success: false, error: 'Not logged in' };
+
+    // In a real app we'd verify the friend exists
+    // For now we just add the string to the list
+    if (friendUsername === user.username) {
+      return { success: false, error: 'Cannot add yourself' };
+    }
+
+    try {
+      const users = JSON.parse(localStorage.getItem('kjbeats_users') || '[]');
+      const userIndex = users.findIndex((u: User) => u.id === user.id);
+
+      if (userIndex !== -1) {
+        const currentUser = users[userIndex];
+        const currentFriends = currentUser.friends || [];
+
+        if (currentFriends.includes(friendUsername)) {
+          return { success: false, error: 'Already friends' };
+        }
+
+        const updatedFriends = [...currentFriends, friendUsername];
+        currentUser.friends = updatedFriends;
+
+        localStorage.setItem('kjbeats_users', JSON.stringify(users));
+
+        const updatedUser = { ...user, friends: updatedFriends };
+        setUser(updatedUser);
+        localStorage.setItem('kjbeats_user', JSON.stringify(updatedUser));
+
+        return { success: true };
+      }
+    } catch (e) {
+      console.error('Failed to add friend', e);
+    }
+    return { success: false, error: 'Failed to update user' };
+  };
+
+  const removeFriend = async (friendUsername: string): Promise<{ success: boolean, error?: string }> => {
+    if (!user) return { success: false, error: 'Not logged in' };
+
+    try {
+      const users = JSON.parse(localStorage.getItem('kjbeats_users') || '[]');
+      const userIndex = users.findIndex((u: User) => u.id === user.id);
+
+      if (userIndex !== -1) {
+        const currentUser = users[userIndex];
+        const currentFriends = currentUser.friends || [];
+
+        const updatedFriends = currentFriends.filter((f: string) => f !== friendUsername);
+        currentUser.friends = updatedFriends;
+
+        localStorage.setItem('kjbeats_users', JSON.stringify(users));
+
+        const updatedUser = { ...user, friends: updatedFriends };
+        setUser(updatedUser);
+        localStorage.setItem('kjbeats_user', JSON.stringify(updatedUser));
+
+        return { success: true };
+      }
+    } catch (e) {
+      console.error('Failed to remove friend', e);
+    }
+    return { success: false, error: 'Failed to update user' };
+  };
+
+  const updateUserProfile = async (data: { bio?: string; website?: string; publicProfile?: boolean }): Promise<boolean> => {
+    if (!user) return false;
+
+    try {
+      const users = JSON.parse(localStorage.getItem('kjbeats_users') || '[]');
+      const userIndex = users.findIndex((u: User) => u.id === user.id);
+
+      if (userIndex !== -1) {
+        const currentUser = users[userIndex];
+        const updatedUser = { ...currentUser, ...data };
+
+        users[userIndex] = updatedUser;
+        localStorage.setItem('kjbeats_users', JSON.stringify(users));
+
+        // Update bio/website/etc in session
+        const currentSession = { ...user, ...data };
+        setUser(currentSession);
+        localStorage.setItem('kjbeats_user', JSON.stringify(currentSession));
+
+        return true;
+      }
+    } catch (e) {
+      console.error('Failed to update user profile', e);
+    }
     return false;
   };
 
@@ -259,7 +366,10 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       updateProfilePicture,
       updateUserTheme,
       clearAllUserData,
-      isLoading
+      isLoading,
+      addFriend,
+      removeFriend,
+      updateUserProfile
     }}>
       {children}
     </UserContext.Provider>

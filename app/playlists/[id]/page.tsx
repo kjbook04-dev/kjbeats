@@ -26,7 +26,15 @@ export default function PlaylistDetailPage() {
     type: 'success',
     isVisible: false
   });
-  
+
+  // compute page background color for cutout icons
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const bg = getComputedStyle(document.body).backgroundColor || getComputedStyle(document.documentElement).backgroundColor;
+      setPageBgColor(bg);
+    }
+  }, []);
+
   const playlistId = params.id as string;
   const playlist = playlists.find(p => p.id === playlistId);
 
@@ -49,14 +57,6 @@ export default function PlaylistDetailPage() {
       </div>
     );
   }
-
-  // compute page background color for cutout icons
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const bg = getComputedStyle(document.body).backgroundColor || getComputedStyle(document.documentElement).backgroundColor;
-      setPageBgColor(bg);
-    }
-  }, []);
 
   const handleDeletePlaylist = () => {
     if (confirm(`Are you sure you want to delete &quot;${playlist.title}&quot;? This action cannot be undone.`)) {
@@ -135,7 +135,7 @@ export default function PlaylistDetailPage() {
           <span>←</span>
           <span>Back to Playlists</span>
         </button>
-        
+
         <button
           onClick={handleDeletePlaylist}
           className="text-red-400 hover:text-red-300 px-4 py-2 rounded-md border border-red-400 hover:border-red-300 transition-colors"
@@ -151,7 +151,7 @@ export default function PlaylistDetailPage() {
         {playlist.description && (
           <p className="text-gray-400 text-lg mb-4">{playlist.description}</p>
         )}
-        
+
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <p className="text-gray-500">

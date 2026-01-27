@@ -15,6 +15,7 @@ export interface ColorTheme {
   borderHover: string;
   bg: string;
   bgHover: string;
+  backgroundCss?: string;
 }
 
 export const COLOR_THEMES: Record<string, ColorTheme> = {
