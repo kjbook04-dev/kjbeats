@@ -92,11 +92,13 @@ export default function Header() {
                 </Link>
               </li>
               {/* Library tab removed per request */}
-              <li>
-                <Link href="/playlists" className={`${currentTheme.text} ${currentTheme.textHover}`}>
-                  <span style={gradientTextStyle}>Playlists</span>
-                </Link>
-              </li>
+              {user && (
+                <li>
+                  <Link href="/playlists" className={`${currentTheme.text} ${currentTheme.textHover}`}>
+                    <span style={gradientTextStyle}>Playlists</span>
+                  </Link>
+                </li>
+              )}
               {user && (
                 <li>
                   <Link href="/manage" className={`${currentTheme.text} ${currentTheme.textHover}`}>
