@@ -67,7 +67,7 @@ export default function MusicUpload() {
       
       for (const file of files) {
         if (file.type.startsWith('audio/')) {
-          // Create a blob URL that we'll manage properly
+          // Temporary local URL used before Firebase Storage returns a durable URL.
           const audioUrl = URL.createObjectURL(file);
           const fileName = file.name.replace(/\.[^/.]+$/, '');
           
@@ -112,8 +112,8 @@ export default function MusicUpload() {
         }
       }
       
-      // Add songs to the global library
-      addSongs(newSongs);
+      // Add songs to cloud-backed library and upload file bytes.
+      await addSongs(newSongs, files);
       
       setFiles([]);
       showNotification(`Successfully added ${newSongs.length} song(s) to your library! 🎉`, 'success');

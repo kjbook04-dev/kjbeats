@@ -8,6 +8,9 @@ export interface Song {
   userId?: string;
   uploadedBy?: string;
   uploadedAt?: string;
+  storagePath?: string;
+  ownerId?: string;
+  sharedFromUserId?: string;
 }
 
 export interface Playlist {
@@ -16,4 +19,6 @@ export interface Playlist {
   description: string;
   coverUrl?: string;
   songs: Song[];
+  ownerId?: string;
+  updatedAt?: string;
 }

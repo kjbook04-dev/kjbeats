@@ -4,6 +4,9 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { useLastPlayed } from '../context/LastPlayedContext';
 import { useMusicLibrary } from '../context/MusicLibraryContext';
 import { useTheme } from '../context/ThemeContext';
+import { useUser } from '../context/UserContext';
+import { db } from '../lib/firebase';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import type { Song } from '../types/music';
 
 interface WindowWithPlayerToggle extends Window {
@@ -14,6 +17,7 @@ export default function PersistentPlayer() {
   const { currentSong, setCurrentSong, isPlaying, setIsPlaying, setLastPlayed, setPlayAudio, setTogglePlay, setRestartCurrentSong } = useLastPlayed();
   const { songs } = useMusicLibrary();
   const { currentTheme } = useTheme();
+  const { user } = useUser();
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(1);
@@ -96,29 +100,47 @@ export default function PersistentPlayer() {
 
   // Persist volume to localStorage so the slider stays at last value across reloads
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem('playerVolume');
-      if (stored !== null) {
-        const v = Number(stored);
-        if (!Number.isNaN(v)) {
-          setVolume(v);
-          if (v > 0) setPreviousVolume(v);
-          setIsMuted(v === 0);
-          if (audioRef.current) audioRef.current.volume = v;
+    const loadVolume = async () => {
+      try {
+        const stored = localStorage.getItem('playerVolume');
+        if (stored !== null) {
+          const v = Number(stored);
+          if (!Number.isNaN(v)) {
+            setVolume(v);
+            if (v > 0) setPreviousVolume(v);
+            setIsMuted(v === 0);
+            if (audioRef.current) audioRef.current.volume = v;
+          }
         }
+        if (user && db) {
+          const snap = await getDoc(doc(db, 'users', user.id));
+          const cloudVolume = snap.data()?.playerVolume;
+          if (typeof cloudVolume === 'number' && !Number.isNaN(cloudVolume)) {
+            setVolume(cloudVolume);
+            if (cloudVolume > 0) setPreviousVolume(cloudVolume);
+            setIsMuted(cloudVolume === 0);
+            if (audioRef.current) audioRef.current.volume = cloudVolume;
+          }
+        }
+      } catch (e) {
+        // ignore storage errors
       }
-    } catch (e) {
-      // ignore storage errors
-    }
-  }, []);
+    };
+    loadVolume();
+  }, [user]);
 
   useEffect(() => {
     try {
       localStorage.setItem('playerVolume', String(volume));
+      if (user && db) {
+        updateDoc(doc(db, 'users', user.id), { playerVolume: volume }).catch(() => {
+          // ignore cloud sync errors
+        });
+      }
     } catch (e) {
       // ignore storage errors
     }
-  }, [volume]);
+  }, [volume, user]);
 
   const togglePlay = useCallback(async () => {
     if (!currentSong) return;

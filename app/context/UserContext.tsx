@@ -1,6 +1,25 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import {
+  browserLocalPersistence,
+  browserSessionPersistence,
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  setPersistence,
+  signInWithEmailAndPassword,
+  signOut,
+} from 'firebase/auth';
+import {
+  arrayRemove,
+  arrayUnion,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+} from 'firebase/firestore';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { auth, db, firebaseConfigured, storage } from '../lib/firebase';
 
 export interface User {
   id: string;
@@ -18,14 +37,14 @@ export interface User {
 
 interface UserContextType {
   user: User | null;
-  login: (username: string, password: string, remember?: boolean) => Promise<{success: boolean, error?: string}>;
-  signup: (firstName: string, username: string, email: string, password: string, remember?: boolean) => Promise<{success: boolean, error?: string}>;
+  login: (username: string, password: string, remember?: boolean) => Promise<{ success: boolean; error?: string }>;
+  signup: (firstName: string, username: string, email: string, password: string, remember?: boolean) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
   updateProfilePicture: (imageFile: File) => Promise<boolean>;
   updateUserTheme: (themeColor: string) => Promise<boolean>;
   clearAllUserData: () => void;
   isLoading: boolean;
-  addFriend: (username: string) => Promise<{success: boolean, error?: string}>;
+  addFriend: (username: string) => Promise<{ success: boolean; error?: string }>;
   removeFriend: (username: string) => Promise<boolean>;
   updateUserProfile: (data: { bio?: string; website?: string; publicProfile?: boolean }) => Promise<boolean>;
 }
@@ -44,330 +63,281 @@ interface UserProviderProps {
   children: ReactNode;
 }
 
+const normalizeUsername = (value: string) => value.trim().toLowerCase();
+
+const userDocToSession = (uid: string, data: any): User => ({
+  id: uid,
+  username: data.username || '',
+  firstName: data.firstName || data.username || 'User',
+  email: data.email || '',
+  createdAt: data.createdAt || new Date().toISOString(),
+  profilePicture: data.profilePicture,
+  themeColor: data.themeColor,
+  friends: Array.isArray(data.friends) ? data.friends : [],
+  bio: data.bio || '',
+  website: data.website || '',
+  publicProfile: !!data.publicProfile,
+});
+
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Load user from localStorage on mount
   useEffect(() => {
-    // Try localStorage first (persistent), fall back to sessionStorage (temporary)
-    const savedUser = localStorage.getItem('kjbeats_user') || sessionStorage.getItem('kjbeats_user');
-    if (savedUser) {
+    const authClient = auth;
+    const dbClient = db;
+    if (!firebaseConfigured || !authClient || !dbClient) {
+      setIsLoading(false);
+      return;
+    }
+
+    const unsubscribe = onAuthStateChanged(authClient, async (authUser) => {
+      if (!authUser) {
+        setUser(null);
+        setIsLoading(false);
+        return;
+      }
+
       try {
-        const userData = JSON.parse(savedUser);
-        // Handle backward compatibility for users without firstName
-        if (!userData.firstName) {
-          // Auto-migrate: use username as firstName for backward compatibility
-          userData.firstName = userData.username || 'User';
-          
-          // Update the saved user data
-      // When migrating we persist to localStorage to remain compatible with prior behavior
-      localStorage.setItem('kjbeats_user', JSON.stringify(userData));
-          
-          // Also update in the users list if it exists
-          try {
-            const allUsers = JSON.parse(localStorage.getItem('kjbeats_users') || '[]');
-            const userIndex = allUsers.findIndex((u: User) => u.id === userData.id);
-            if (userIndex !== -1) {
-              allUsers[userIndex].firstName = userData.firstName;
-              localStorage.setItem('kjbeats_users', JSON.stringify(allUsers));
-            }
-          } catch (e) {
-            console.log('No users list to update');
-          }
+        const snap = await getDoc(doc(dbClient, 'users', authUser.uid));
+        if (!snap.exists()) {
+          const fallback: User = {
+            id: authUser.uid,
+            username: authUser.email?.split('@')[0] || 'user',
+            firstName: authUser.displayName || authUser.email?.split('@')[0] || 'User',
+            email: authUser.email || '',
+            createdAt: new Date().toISOString(),
+            friends: [],
+          };
+          await setDoc(doc(dbClient, 'users', authUser.uid), {
+            ...fallback,
+            usernameLower: normalizeUsername(fallback.username),
+          }, { merge: true });
+          setUser(fallback);
+        } else {
+          setUser(userDocToSession(authUser.uid, snap.data()));
         }
-        setUser(userData);
       } catch (error) {
-        console.error('Error parsing saved user:', error);
-        localStorage.removeItem('kjbeats_user');
+        console.error('Failed loading user profile', error);
+        setUser(null);
+      } finally {
+        setIsLoading(false);
       }
-    }
-    
-    // Clean up old users without firstName from the users list
-    try {
-      const allUsers = JSON.parse(localStorage.getItem('kjbeats_users') || '[]');
-      const validUsers = allUsers.filter((user: User) => user.firstName);
-      if (validUsers.length !== allUsers.length) {
-        localStorage.setItem('kjbeats_users', JSON.stringify(validUsers));
-      }
-    } catch (error) {
-      console.error('Error cleaning up user data:', error);
-    }
-    
-    setIsLoading(false);
+    });
+
+    return () => unsubscribe();
   }, []);
 
-  // Helper to persist the current session in the appropriate storage
-  const saveSession = (userSession: any, remember?: boolean) => {
-    try {
-      if (remember === false) {
-        sessionStorage.setItem('kjbeats_user', JSON.stringify(userSession));
-        localStorage.removeItem('kjbeats_user');
-      } else if (remember === true) {
-        localStorage.setItem('kjbeats_user', JSON.stringify(userSession));
-        sessionStorage.removeItem('kjbeats_user');
-      } else {
-        // remember not specified: prefer existing storage (session if present) otherwise local
-        if (sessionStorage.getItem('kjbeats_user')) {
-          sessionStorage.setItem('kjbeats_user', JSON.stringify(userSession));
-        } else {
-          localStorage.setItem('kjbeats_user', JSON.stringify(userSession));
-        }
-      }
-    } catch (e) {
-      // ignore storage errors
-      try { localStorage.setItem('kjbeats_user', JSON.stringify(userSession)); } catch (_) {}
+  const login = async (username: string, password: string, remember: boolean = true): Promise<{ success: boolean; error?: string }> => {
+    const authClient = auth;
+    const dbClient = db;
+    if (!firebaseConfigured || !authClient || !dbClient) {
+      return { success: false, error: 'Firebase is not configured yet' };
     }
-  };
 
-  const login = async (username: string, password: string, remember: boolean = true): Promise<{success: boolean, error?: string}> => {
     setIsLoading(true);
-    
-    // Get all users from localStorage
-    const users = JSON.parse(localStorage.getItem('kjbeats_users') || '[]');
-    const foundUser = users.find((u: User & { password: string }) => 
-      u.username === username && u.password === password
-    );
+    try {
+      await setPersistence(authClient, remember ? browserLocalPersistence : browserSessionPersistence);
+      const uname = normalizeUsername(username);
 
-  if (foundUser) {
-      // Handle backward compatibility for users without firstName
-      if (!foundUser.firstName) {
-        // Auto-update the user with firstName = username for backward compatibility
-        foundUser.firstName = foundUser.username;
-        
-        // Update the user in the users array
-        const userIndex = users.findIndex((u: User) => u.id === foundUser.id);
-        if (userIndex !== -1) {
-          users[userIndex] = foundUser;
-          localStorage.setItem('kjbeats_users', JSON.stringify(users));
-        }
+      // Username-based login: lookup email by username in Firestore.
+      const usernameDoc = await getDoc(doc(dbClient, 'usernames', uname));
+      if (!usernameDoc.exists()) {
+        setIsLoading(false);
+        return { success: false, error: 'Invalid username or password' };
       }
-      
-      const userSession = {
-        id: foundUser.id,
-        username: foundUser.username,
-        firstName: foundUser.firstName,
-        email: foundUser.email,
-        createdAt: foundUser.createdAt,
-        profilePicture: foundUser.profilePicture
-      };
-      setUser(userSession);
-      // Persist to the desired storage (local vs session)
-      saveSession(userSession, remember);
+
+      const data = usernameDoc.data();
+      const email = data.email as string;
+      await signInWithEmailAndPassword(authClient, email, password);
       setIsLoading(false);
       return { success: true };
+    } catch (error) {
+      setIsLoading(false);
+      return { success: false, error: 'Invalid username or password' };
     }
-
-    setIsLoading(false);
-    return { success: false, error: 'Invalid username or password' };
   };
 
-  const signup = async (firstName: string, username: string, email: string, password: string, remember: boolean = true): Promise<{success: boolean, error?: string}> => {
+  const signup = async (
+    firstName: string,
+    username: string,
+    email: string,
+    password: string,
+    remember: boolean = true
+  ): Promise<{ success: boolean; error?: string }> => {
+    const authClient = auth;
+    const dbClient = db;
+    if (!firebaseConfigured || !authClient || !dbClient) {
+      return { success: false, error: 'Firebase is not configured yet' };
+    }
+
     setIsLoading(true);
-
-    // Get existing users
-    const users = JSON.parse(localStorage.getItem('kjbeats_users') || '[]');
-    
-    // Check if username or email already exists (only valid users with firstName)
-    const existingUser = users.find((u: User) => 
-      u.username === username || u.email === email
-    );
-
-    if (existingUser) {
-      setIsLoading(false);
-      if (existingUser.username === username) {
+    try {
+      const uname = normalizeUsername(username);
+      const usernameRef = doc(dbClient, 'usernames', uname);
+      const existingUsername = await getDoc(usernameRef);
+      if (existingUsername.exists()) {
+        setIsLoading(false);
         return { success: false, error: 'Username already exists' };
-      } else {
+      }
+
+      await setPersistence(authClient, remember ? browserLocalPersistence : browserSessionPersistence);
+      const cred = await createUserWithEmailAndPassword(authClient, email.trim(), password);
+      const createdAt = new Date().toISOString();
+      const userProfile = {
+        id: cred.user.uid,
+        username: username.trim(),
+        usernameLower: uname,
+        firstName: firstName.trim() || username.trim(),
+        email: email.trim(),
+        createdAt,
+        friends: [] as string[],
+        bio: '',
+        website: '',
+        publicProfile: false,
+      };
+
+      await setDoc(doc(dbClient, 'users', cred.user.uid), userProfile);
+      await setDoc(usernameRef, { uid: cred.user.uid, email: email.trim(), username: username.trim() });
+      setIsLoading(false);
+      return { success: true };
+    } catch (error: any) {
+      setIsLoading(false);
+      if (error?.code === 'auth/email-already-in-use') {
         return { success: false, error: 'Email already registered' };
       }
+      return { success: false, error: 'Signup failed' };
     }
-
-    // Create new user
-    const newUser = {
-      id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
-      firstName,
-      username,
-      email,
-      password, // In a real app, this would be hashed
-      createdAt: new Date().toISOString(),
-    };
-
-    users.push(newUser);
-    localStorage.setItem('kjbeats_users', JSON.stringify(users));
-
-    // Auto-login the new user
-    const userSession = {
-      id: newUser.id,
-      username: newUser.username,
-      firstName: newUser.firstName,
-      email: newUser.email,
-      createdAt: newUser.createdAt
-    };
-  setUser(userSession);
-  saveSession(userSession, remember);
-
-    setIsLoading(false);
-    return { success: true };
   };
 
-  const logout = () => {
+  const logout = async () => {
+    const authClient = auth;
+    if (authClient) {
+      try {
+        await signOut(authClient);
+      } catch (error) {
+        console.error('Logout failed', error);
+      }
+    }
     setUser(null);
-    localStorage.removeItem('kjbeats_user');
-    sessionStorage.removeItem('kjbeats_user');
   };
 
   const clearAllUserData = () => {
-    localStorage.removeItem('kjbeats_users');
-    localStorage.removeItem('kjbeats_user');
-    sessionStorage.removeItem('kjbeats_user');
-    setUser(null);
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('kjbeats_user');
+      localStorage.removeItem('kjbeats_users');
+      sessionStorage.removeItem('kjbeats_user');
+    }
   };
 
   const updateUserTheme = async (themeColor: string): Promise<boolean> => {
-    if (!user) return false;
-
+    if (!user || !db) return false;
     try {
-      // Update user in localStorage
-      const users = JSON.parse(localStorage.getItem('kjbeats_users') || '[]');
-      const userIndex = users.findIndex((u: User) => u.id === user.id);
-      
-      if (userIndex !== -1) {
-        users[userIndex].themeColor = themeColor;
-        localStorage.setItem('kjbeats_users', JSON.stringify(users));
-        
-        // Update current user session
-  const updatedUser = { ...user, themeColor };
-  setUser(updatedUser);
-  saveSession(updatedUser);
-        
-        return true;
-      }
+      await updateDoc(doc(db, 'users', user.id), { themeColor });
+      setUser((prev) => (prev ? { ...prev, themeColor } : prev));
+      return true;
     } catch (error) {
       console.error('Error updating user theme:', error);
+      return false;
     }
-    
-    return false;
   };
 
-  const addFriend = async (usernameToAdd: string): Promise<{success: boolean, error?: string}> => {
-    if (!user) return { success: false, error: 'Not authenticated' };
+  const addFriend = async (usernameToAdd: string): Promise<{ success: boolean; error?: string }> => {
+    if (!user || !db) return { success: false, error: 'Not authenticated' };
     try {
-      const users = JSON.parse(localStorage.getItem('kjbeats_users') || '[]');
-      const userIndex = users.findIndex((u: User) => u.id === user.id);
-      if (userIndex === -1) return { success: false, error: 'User not found' };
+      const uname = normalizeUsername(usernameToAdd);
+      if (!uname) return { success: false, error: 'Enter a username' };
+      if (normalizeUsername(user.username) === uname) return { success: false, error: 'You cannot add yourself' };
 
-      const updated = { ...(users[userIndex] as any) };
-      updated.friends = Array.isArray(updated.friends) ? updated.friends : [];
-      if (updated.friends.includes(usernameToAdd)) return { success: false, error: 'Already friends' };
-      updated.friends.push(usernameToAdd);
-      users[userIndex] = updated;
-  localStorage.setItem('kjbeats_users', JSON.stringify(users));
+      const targetSnap = await getDoc(doc(db, 'usernames', uname));
+      if (!targetSnap.exists()) return { success: false, error: 'User not found' };
 
-  const updatedSession = { ...user, friends: updated.friends };
-  setUser(updatedSession);
-  saveSession(updatedSession);
+      const canonical = (targetSnap.data().username as string) || usernameToAdd.trim();
+      await updateDoc(doc(db, 'users', user.id), { friends: arrayUnion(canonical) });
+      setUser((prev) => {
+        if (!prev) return prev;
+        const next = Array.from(new Set([...(prev.friends || []), canonical]));
+        return { ...prev, friends: next };
+      });
       return { success: true };
-    } catch (e) {
-      console.error('Failed to add friend', e);
+    } catch (error) {
+      console.error('Failed to add friend', error);
       return { success: false, error: 'Failed to add friend' };
     }
   };
 
   const removeFriend = async (usernameToRemove: string): Promise<boolean> => {
-    if (!user) return false;
+    if (!user || !db) return false;
     try {
-      const users = JSON.parse(localStorage.getItem('kjbeats_users') || '[]');
-      const userIndex = users.findIndex((u: User) => u.id === user.id);
-      if (userIndex === -1) return false;
-
-      const updated = { ...(users[userIndex] as any) };
-      updated.friends = Array.isArray(updated.friends) ? updated.friends.filter((f: string) => f !== usernameToRemove) : [];
-  users[userIndex] = updated;
-  localStorage.setItem('kjbeats_users', JSON.stringify(users));
-
-  const updatedSession = { ...user, friends: updated.friends };
-  setUser(updatedSession);
-  saveSession(updatedSession);
+      await updateDoc(doc(db, 'users', user.id), { friends: arrayRemove(usernameToRemove) });
+      setUser((prev) => {
+        if (!prev) return prev;
+        return { ...prev, friends: (prev.friends || []).filter((f) => f !== usernameToRemove) };
+      });
       return true;
-    } catch (e) {
-      console.error('Failed to remove friend', e);
+    } catch (error) {
+      console.error('Failed to remove friend', error);
       return false;
     }
   };
 
   const updateUserProfile = async (data: { bio?: string; website?: string; publicProfile?: boolean }): Promise<boolean> => {
-    if (!user) return false;
+    if (!user || !db) return false;
     try {
-      const users = JSON.parse(localStorage.getItem('kjbeats_users') || '[]');
-      const userIndex = users.findIndex((u: User) => u.id === user.id);
-      if (userIndex === -1) return false;
-      const updated = { ...(users[userIndex] as any) };
-      if (data.bio !== undefined) updated.bio = data.bio;
-      if (data.website !== undefined) updated.website = data.website;
-      if (data.publicProfile !== undefined) updated.publicProfile = data.publicProfile;
-      users[userIndex] = updated;
-      localStorage.setItem('kjbeats_users', JSON.stringify(users));
-
-  const updatedSession = { ...user, bio: updated.bio, website: updated.website, publicProfile: updated.publicProfile };
-  setUser(updatedSession);
-  saveSession(updatedSession);
+      const payload: Record<string, any> = {};
+      if (data.bio !== undefined) payload.bio = data.bio;
+      if (data.website !== undefined) payload.website = data.website;
+      if (data.publicProfile !== undefined) payload.publicProfile = data.publicProfile;
+      await updateDoc(doc(db, 'users', user.id), payload);
+      setUser((prev) => (prev ? { ...prev, ...payload } : prev));
       return true;
-    } catch (e) {
-      console.error('Failed to update profile', e);
+    } catch (error) {
+      console.error('Failed to update profile', error);
       return false;
     }
   };
 
   const updateProfilePicture = async (imageFile: File): Promise<boolean> => {
-    if (!user) return false;
-
+    if (!user || !db) return false;
     try {
-      // Create a blob URL for the image
-      const imageUrl = URL.createObjectURL(imageFile);
-      
-      // Update user in localStorage
-      const users = JSON.parse(localStorage.getItem('kjbeats_users') || '[]');
-      const userIndex = users.findIndex((u: User) => u.id === user.id);
-      
-      if (userIndex !== -1) {
-        users[userIndex].profilePicture = imageUrl;
-        localStorage.setItem('kjbeats_users', JSON.stringify(users));
-        
-        // Update current user session
-  const updatedUser = { ...user, profilePicture: imageUrl };
-  setUser(updatedUser);
-  saveSession(updatedUser);
-        
-        // Store the file for later use (client-side only)
-        if (typeof window !== 'undefined') {
-          (window as typeof window & {profilePictures?: Map<string, File>}).profilePictures = 
-            (window as typeof window & {profilePictures?: Map<string, File>}).profilePictures || new Map();
-          (window as typeof window & {profilePictures?: Map<string, File>}).profilePictures!.set(user.id, imageFile);
-        }
-        
-        return true;
+      let imageUrl = URL.createObjectURL(imageFile);
+      if (storage) {
+        const path = `users/${user.id}/profile/${Date.now()}-${imageFile.name}`;
+        const fileRef = ref(storage, path);
+        await uploadBytes(fileRef, imageFile);
+        imageUrl = await getDownloadURL(fileRef);
       }
+      await updateDoc(doc(db, 'users', user.id), { profilePicture: imageUrl });
+      setUser((prev) => (prev ? { ...prev, profilePicture: imageUrl } : prev));
+
+      if (typeof window !== 'undefined') {
+        const win = window as typeof window & { profilePictures?: Map<string, File> };
+        win.profilePictures = win.profilePictures || new Map();
+        win.profilePictures.set(user.id, imageFile);
+      }
+      return true;
     } catch (error) {
       console.error('Error updating profile picture:', error);
+      return false;
     }
-    
-    return false;
   };
 
   return (
-    <UserContext.Provider value={{
-      user,
-      login,
-      signup,
-      logout,
-      updateProfilePicture,
-      updateUserTheme,
-      clearAllUserData,
-      addFriend,
-      removeFriend,
-      updateUserProfile,
-      isLoading
-    }}>
+    <UserContext.Provider
+      value={{
+        user,
+        login,
+        signup,
+        logout,
+        updateProfilePicture,
+        updateUserTheme,
+        clearAllUserData,
+        addFriend,
+        removeFriend,
+        updateUserProfile,
+        isLoading,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );
