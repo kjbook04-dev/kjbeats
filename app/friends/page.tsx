@@ -8,9 +8,8 @@ import { gradientTextStyle, gradientBgStyle } from '../context/themeHelpers';
 export default function FriendsPage() {
   const { currentTheme } = useTheme();
   const [pageBgColor, setPageBgColor] = useState<string>('transparent');
-  const hasMultiStop = !!currentTheme.backgroundCss;
-  const gText = hasMultiStop ? gradientTextStyle() : {};
-  const gBg = hasMultiStop ? gradientBgStyle() : {};
+  const gText = gradientTextStyle();
+  const gBg = gradientBgStyle();
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -24,12 +23,8 @@ export default function FriendsPage() {
       <h1 className="text-4xl font-bold mb-6" style={gText}>Friends</h1>
       <div className="max-w-4xl mx-auto">
   {/* use the theme color (gradient if available) for the intro phrase */}
-  <p className={`font-semibold mb-4`} style={hasMultiStop ? gText : undefined}>
-    {!hasMultiStop ? (
-      <span className={currentTheme.text}>This is your friends area. Add or manage friends here.</span>
-    ) : (
-      <>This is your friends area. Add or manage friends here.</>
-    )}
+  <p className={`font-semibold text-lg mb-4`} style={gText}>
+    This is your friends area. Add or manage friends here.
   </p>
 
         <div className="bg-gray-800 p-6 rounded-lg border border-gray-700">

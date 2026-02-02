@@ -13,6 +13,8 @@ interface LastPlayedContextType {
   setPlayAudio: (fn: (song: Song) => void) => void;
   togglePlay: (() => void) | null;
   setTogglePlay: (fn: () => void) => void;
+  restartCurrentSong: (() => void) | null;
+  setRestartCurrentSong: (fn: () => void) => void;
 }
 
 const LastPlayedContext = createContext<LastPlayedContextType | undefined>(undefined);
@@ -29,6 +31,7 @@ export function LastPlayedProvider({ children }: { children: ReactNode }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [playAudio, setPlayAudio] = useState<((song: Song) => void) | null>(null);
   const [togglePlay, setTogglePlay] = useState<(() => void) | null>(null);
+  const [restartCurrentSong, setRestartCurrentSong] = useState<(() => void) | null>(null);
 
   useEffect(() => {
     // Load from localStorage on mount
@@ -52,7 +55,9 @@ export function LastPlayedProvider({ children }: { children: ReactNode }) {
       playAudio,
       setPlayAudio,
       togglePlay,
-      setTogglePlay
+      setTogglePlay,
+      restartCurrentSong,
+      setRestartCurrentSong
     }}>
       {children}
     </LastPlayedContext.Provider>

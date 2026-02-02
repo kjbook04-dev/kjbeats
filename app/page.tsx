@@ -12,11 +12,10 @@ import { AuthModal } from './components/AuthModal';
 // All-in-one music search removed
 
 export default function Home() {
-  const { lastPlayed, playAudio, setCurrentSong, setIsPlaying } = useLastPlayed();
+  const { lastPlayed, playAudio, setCurrentSong, setIsPlaying, currentSong, isPlaying, togglePlay, restartCurrentSong } = useLastPlayed();
   const { currentTheme } = useTheme();
-  const hasMultiStop = !!currentTheme.backgroundCss;
-  const gText = hasMultiStop ? gradientTextStyle() : {};
-  const gBg = hasMultiStop ? gradientBgStyle() : {};
+  const gText = gradientTextStyle();
+  const gBg = gradientBgStyle();
   const bgImage = lastPlayed?.coverUrl;
   const [pageBgColor, setPageBgColor] = useState<string>('transparent');
   const { songs } = useMusicLibrary();
@@ -47,12 +46,34 @@ export default function Home() {
         return;
       }
 
+      // If the playlist's first song is already the current song, restart if playing, otherwise play
+      if (currentSong && currentSong.id === firstSong.id) {
+        if (isPlaying) {
+          if (restartCurrentSong) {
+            restartCurrentSong();
+            return;
+          }
+          // fallback: set current time to 0 by re-setting currentSong and ensuring playing
+          setCurrentSong(firstSong);
+          setIsPlaying(true);
+          return;
+        } else {
+          // not playing: start playback
+          if (togglePlay) {
+            togglePlay();
+            return;
+          }
+          setIsPlaying(true);
+          return;
+        }
+      }
+
       if (playAudio) {
         playAudio(firstSong);
         return;
       }
 
-      // fallback
+      // fallback: set and play
       setCurrentSong(firstSong);
       setIsPlaying(true);
     } catch (e) {
@@ -71,6 +92,27 @@ export default function Home() {
           id: song.id,
         });
         return;
+      }
+
+      // If this song is already loaded, restart if it's playing; otherwise start playback
+      if (currentSong && currentSong.id === song.id) {
+        if (isPlaying) {
+          if (restartCurrentSong) {
+            restartCurrentSong();
+            return;
+          }
+          // fallback: restart by re-setting song and playing
+          setCurrentSong(song);
+          setIsPlaying(true);
+          return;
+        } else {
+          if (togglePlay) {
+            togglePlay();
+            return;
+          }
+          setIsPlaying(true);
+          return;
+        }
       }
 
       if (playAudio) {
@@ -158,7 +200,7 @@ export default function Home() {
                   </Link>
                 ) : (
                   <Link
-                    href="/library"
+                    href="/manage"
                     className={`text-gray-900 px-8 py-3 rounded-full font-semibold hover:scale-105 transition-all`}
                     style={gBg}>
                     View Your Library
@@ -229,7 +271,7 @@ export default function Home() {
                 </div>
                 <div className="mt-4">
                   <a
-                    href="/library"
+                    href="/manage"
                     className={`inline-block px-4 py-2 rounded-lg text-sm font-medium hover:scale-105 transition-all`}
                     style={gBg}
                   >
@@ -279,13 +321,13 @@ export default function Home() {
                   )}
                 </div>
                 <div className="mt-4">
-                  <a
+                  <Link
                     href="/playlists"
                     className={`inline-block px-4 py-2 rounded-lg text-sm font-medium hover:scale-105 transition-all`}
                     style={gBg}
                   >
                     <span style={{ color: pageBgColor }}>View All Playlists</span>
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -296,13 +338,13 @@ export default function Home() {
               <div className="flex items-center justify-center space-x-4">
                 <button
                   onClick={() => { setAuthMode('login'); setShowAuthModal(true); }}
-                  className={`${currentTheme.text} ${currentTheme.textHover} px-4 py-2 rounded-md`}
+                  className={`${currentTheme.bg} ${currentTheme.bgHover} text-gray-900 px-4 py-2 rounded-md`}
                 >
                   Login
                 </button>
                 <button
                   onClick={() => { setAuthMode('signup'); setShowAuthModal(true); }}
-                  className={`${currentTheme.bg} ${currentTheme.bgHover} text-white px-4 py-2 rounded-md`}
+                  className={`${currentTheme.bg} ${currentTheme.bgHover} text-gray-900 px-4 py-2 rounded-md`}
                 >
                   Sign Up
                 </button>

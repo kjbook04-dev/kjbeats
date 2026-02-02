@@ -63,7 +63,7 @@ export const ProfilePictureUpload: React.FC<ProfilePictureUploadProps> = ({
   return (
     <div className={`relative ${className}`}>
       <div
-        className={`relative w-32 h-32 rounded-full overflow-hidden border-4 cursor-pointer transition-all duration-200 ${
+        className={`relative w-full h-full rounded-full overflow-hidden border-4 cursor-pointer transition-all duration-200 ${
           isDragging 
             ? `${currentTheme.border} bg-gray-100` 
             : `border-gray-600 ${currentTheme.borderHover}`

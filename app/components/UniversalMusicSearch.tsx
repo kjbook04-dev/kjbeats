@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useTheme } from '../context/ThemeContext';
+import { gradientBgStyle, gradientTextStyle } from '../context/themeHelpers';
 
 interface MusicVideo {
   id: string;
@@ -17,6 +18,8 @@ export default function UniversalMusicSearch() {
   const [isSearching, setIsSearching] = useState(false);
   const [currentPlaying, setCurrentPlaying] = useState<string | null>(null);
   const { currentTheme } = useTheme();
+  const gBg = gradientBgStyle();
+  const gText = gradientTextStyle();
 
   // Comprehensive music database with geo-restriction safe videos
   const musicDatabase: MusicVideo[] = [
@@ -123,9 +126,8 @@ export default function UniversalMusicSearch() {
         <button
           type="submit"
           disabled={isSearching}
-          className={`px-6 py-2 rounded-lg text-white font-medium transition-all duration-300 ${
-            isSearching ? 'bg-gray-600 cursor-not-allowed' : `bg-gradient-to-r ${currentTheme.gradient} hover:scale-105 shadow-lg`
-          }`}
+          className={`px-6 py-2 rounded-lg text-white font-medium transition-all duration-300 ${isSearching ? 'bg-gray-600 cursor-not-allowed' : ''}`}
+          style={!isSearching ? gBg : undefined}
         >
           {isSearching ? 'Searching...' : 'Search'}
         </button>
@@ -206,7 +208,8 @@ export default function UniversalMusicSearch() {
                             }
                           } catch (e) { console.error(e); }
                         }}
-                        className={`w-10 h-10 rounded-full flex items-center justify-center text-white transition-all duration-300 bg-gradient-to-r ${currentTheme.gradient} hover:scale-105 shadow-lg`}
+                        className={`w-10 h-10 rounded-full flex items-center justify-center text-white transition-all duration-300`}
+                        style={gBg}
                         title="Play Song"
                       >
                         <svg className="w-4 h-4 ml-0.5" fill="currentColor" viewBox="0 0 20 20">

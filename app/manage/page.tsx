@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import MusicUpload from '../components/MusicUpload';
 import { useTheme } from '../context/ThemeContext';
+import { gradientTextStyle, gradientBgStyle } from '../context/themeHelpers';
 import { useMusicLibrary } from '../context/MusicLibraryContext';
 import { useLastPlayed } from '../context/LastPlayedContext';
 import { useUser } from '../context/UserContext';
@@ -10,6 +11,8 @@ import { AuthModal } from '../components/AuthModal';
 
 export default function ManageMusicPage() {
   const { currentTheme } = useTheme();
+  const gText = gradientTextStyle();
+  const gBg = gradientBgStyle();
   const { songs, removeSong } = useMusicLibrary();
   const { playAudio, currentSong, isPlaying, togglePlay, setCurrentSong, setIsPlaying } = useLastPlayed();
   const [pageBgColor, setPageBgColor] = useState<string>('transparent');
@@ -26,9 +29,7 @@ export default function ManageMusicPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className={`text-4xl font-bold mb-8 bg-gradient-to-r ${currentTheme.gradient} text-transparent bg-clip-text`}>
-        Manage Music
-      </h1>
+  <h1 className="text-4xl font-bold mb-8" style={gText}>Manage Music</h1>
 
       <div className="max-w-4xl mx-auto space-y-8">
         {/* Simple layout: Library + Upload only */}
@@ -45,7 +46,7 @@ export default function ManageMusicPage() {
                   <div key={s.id} className="flex items-center justify-between bg-gray-900 p-2 rounded">
                     <div className="min-w-0">
                       <div className="text-white truncate font-semibold">{s.title}</div>
-                      <div className="text-gray-400 text-sm truncate">{s.artist}</div>
+                      <div className={`${(s.artist === 'Local Upload' || (s as any).audioUrl && (s as any).audioUrl.startsWith('blob:')) ? 'text-gray-300' : 'text-gray-400'} text-sm truncate`}>{s.artist}</div>
                     </div>
                     <div className="flex items-center gap-2 ml-4">
                       {(() => {
@@ -115,13 +116,14 @@ export default function ManageMusicPage() {
                   <div className="flex items-center justify-center gap-4">
                     <button
                       onClick={() => { setAuthMode('login'); setShowAuthModal(true); }}
-                      className={`${currentTheme.text} ${currentTheme.textHover} px-4 py-2 rounded-md`}
+                      className={`${currentTheme.bg} ${currentTheme.bgHover} text-gray-900 px-4 py-2 rounded-md`}
                     >
                       Login
                     </button>
                     <button
                       onClick={() => { setAuthMode('signup'); setShowAuthModal(true); }}
-                      className={`${currentTheme.bg} ${currentTheme.bgHover} text-white px-4 py-2 rounded-md`}
+                      className={`text-gray-900 px-4 py-2 rounded-md`}
+                      style={gBg}
                     >
                       Sign Up
                     </button>

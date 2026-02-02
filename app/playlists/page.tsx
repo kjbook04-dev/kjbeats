@@ -10,11 +10,14 @@ interface WindowWithPlayTrack {
 }
 
 import { Notification } from "../components/Notification";
+import { gradientTextStyle, gradientBgStyle } from "../context/themeHelpers";
 
 export default function PlaylistsPage() {
   const { playlists, createPlaylist, deletePlaylist, addToPlaylist, removeFromPlaylist, updatePlaylistCover } = usePlaylist();
   const { songs: allSongs } = useMusicLibrary();
   const { currentTheme } = useTheme();
+  const gText = gradientTextStyle();
+  const gBg = gradientBgStyle();
 
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showAddSongsModal, setShowAddSongsModal] = useState(false);
@@ -167,9 +170,13 @@ export default function PlaylistsPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-8">
-        <h1 className={`text-4xl font-bold bg-gradient-to-r ${currentTheme.gradient} text-transparent bg-clip-text`}>
-          Your Playlists
-        </h1>
+  <h1 className="text-4xl font-bold">
+    {currentTheme.name === 'Iridescent' ? (
+      <span style={gText}>Your Playlists</span>
+    ) : (
+      <span style={{ color: currentTheme.primary }}>Your Playlists</span>
+    )}
+  </h1>
         <button
           onClick={() => setShowCreateModal(true)}
           className={`${currentTheme.bg} text-gray-900 px-6 py-3 rounded-full font-semibold ${currentTheme.bgHover} transition-colors`}
@@ -270,11 +277,12 @@ export default function PlaylistsPage() {
                   )}
                 </div>
 
-                <div className="flex space-x-2 mb-2">
+                <div className="flex space-x-2">
                   {playlist.songs.length > 0 && (
                     <button
                       onClick={() => handlePlayPlaylist(playlist)}
-                      className={`flex-1 bg-gradient-to-r ${currentTheme.gradient} px-4 py-2 rounded-lg text-sm font-medium hover:scale-105 transition-all flex items-center justify-center space-x-2`}
+                      className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium hover:scale-105 transition-all flex items-center justify-center space-x-2`}
+                      style={gBg}
                     >
                       <span style={{ color: pageBgColor }}>▶</span>
                       <span style={{ color: pageBgColor }}>Play</span>
@@ -287,12 +295,6 @@ export default function PlaylistsPage() {
                     Add Songs
                   </button>
                 </div>
-                <button
-                  onClick={() => window.location.href = `/playlists/${playlist.id}`}
-                  className="w-full border border-gray-600 text-gray-200 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-700 transition-colors"
-                >
-                  View Details
-                </button>
               </div>
             );
           })}

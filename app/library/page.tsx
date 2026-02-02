@@ -24,9 +24,8 @@ export default function LibraryPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPlaying, setCurrentPlaying] = useState<string | null>(null);
   const { currentTheme } = useTheme();
-  const hasMultiStop = !!currentTheme.backgroundCss;
-  const gText = hasMultiStop ? gradientTextStyle() : {};
-  const gBg = hasMultiStop ? gradientBgStyle() : {};
+  const gText = gradientTextStyle();
+  const gBg = gradientBgStyle();
 
   useEffect(() => {
     fetchLibrary();
@@ -117,7 +116,7 @@ export default function LibraryPage() {
     <div className="min-h-screen bg-gray-900 py-8">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-4xl font-bold mb-2" style={gText}>
+          <h1 className={`text-4xl font-bold mb-2 ${currentTheme.text}`}>
             Music Library
           </h1>
           <p className="text-gray-400 mb-8">
@@ -146,12 +145,12 @@ export default function LibraryPage() {
                 </p>
               )}
               <a
-                href="/popular"
-                className={`inline-block text-white px-6 py-3 rounded-lg font-medium hover:scale-105 transition-all`}
-                style={gBg}
-              >
-                Browse Popular Music
-              </a>
+                  href="/popular"
+                  className={`inline-block text-white px-6 py-3 rounded-lg font-medium hover:scale-105 transition-all`}
+                  style={gBg}
+                >
+                  Browse Popular Music
+                </a>
             </div>
           ) : (
             <div className="space-y-4">
@@ -225,7 +224,8 @@ export default function LibraryPage() {
                         </button>
                         <button
                           onClick={() => handlePlay(song)}
-                          className={`w-10 h-10 rounded-full flex items-center justify-center text-white transition-all duration-300 bg-gradient-to-r ${currentTheme.gradient} hover:scale-105 shadow-lg`}
+                          className={`w-10 h-10 rounded-full flex items-center justify-center text-white transition-all duration-300`}
+                          style={gBg}
                           title="Play Song"
                         >
                           <svg className="w-4 h-4 ml-0.5" fill="currentColor" viewBox="0 0 20 20">

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { usePlaylist } from "../../context/PlaylistContext";
 import { useTheme } from "../../context/ThemeContext";
+import { gradientTextStyle } from "../../context/themeHelpers";
 import { Notification } from "../../components/Notification";
 import type { Song } from "../../types/music";
 
@@ -16,6 +17,7 @@ export default function PlaylistDetailPage() {
   const router = useRouter();
   const { playlists, removeFromPlaylist, deletePlaylist } = usePlaylist();
   const { currentTheme } = useTheme();
+  const gText = gradientTextStyle();
   const [pageBgColor, setPageBgColor] = useState<string>('transparent');
   const [notification, setNotification] = useState<{
     message: string;
@@ -29,6 +31,14 @@ export default function PlaylistDetailPage() {
   
   const playlistId = params.id as string;
   const playlist = playlists.find(p => p.id === playlistId);
+
+  // compute page background color for cutout icons
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const bg = getComputedStyle(document.body).backgroundColor || getComputedStyle(document.documentElement).backgroundColor;
+      setPageBgColor(bg);
+    }
+  }, []);
 
   if (!playlist) {
     return (
@@ -49,14 +59,6 @@ export default function PlaylistDetailPage() {
       </div>
     );
   }
-
-  // compute page background color for cutout icons
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const bg = getComputedStyle(document.body).backgroundColor || getComputedStyle(document.documentElement).backgroundColor;
-      setPageBgColor(bg);
-    }
-  }, []);
 
   const handleDeletePlaylist = () => {
     if (confirm(`Are you sure you want to delete &quot;${playlist.title}&quot;? This action cannot be undone.`)) {
@@ -145,9 +147,7 @@ export default function PlaylistDetailPage() {
       </div>
 
       <div className="mb-8">
-        <h1 className={`text-4xl font-bold bg-gradient-to-r ${currentTheme.gradient} text-transparent bg-clip-text mb-2`}>
-          {playlist.title}
-        </h1>
+  <h1 className="text-4xl font-bold mb-2" style={gText}>{playlist.title}</h1>
         {playlist.description && (
           <p className="text-gray-400 text-lg mb-4">{playlist.description}</p>
         )}

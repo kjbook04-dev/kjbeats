@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
 // All-in-one music search removed
 import { useTheme } from '../context/ThemeContext';
+import { gradientTextStyle } from '../context/themeHelpers';
 
 export default function PopularMusicPage() {
   const { currentTheme } = useTheme();
+  const gText = gradientTextStyle();
 
   return (
     <div className="min-h-screen bg-gray-900 py-8">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
-          <h1 className={`text-4xl font-bold mb-2 bg-gradient-to-r ${currentTheme.gradient} text-transparent bg-clip-text`}>
-            Popular Music
-          </h1>
+          <h1 className="text-4xl font-bold mb-2" style={gText}>Popular Music</h1>
           <p className="text-gray-400 mb-8">
             Discover trending and popular tracks curated for you.
           </p>

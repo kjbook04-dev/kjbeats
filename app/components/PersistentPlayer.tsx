@@ -11,7 +11,7 @@ interface WindowWithPlayerToggle extends Window {
 }
 
 export default function PersistentPlayer() {
-  const { currentSong, setCurrentSong, isPlaying, setIsPlaying, setLastPlayed, setPlayAudio, setTogglePlay } = useLastPlayed();
+  const { currentSong, setCurrentSong, isPlaying, setIsPlaying, setLastPlayed, setPlayAudio, setTogglePlay, setRestartCurrentSong } = useLastPlayed();
   const { songs } = useMusicLibrary();
   const { currentTheme } = useTheme();
   const [currentTime, setCurrentTime] = useState(0);
@@ -21,7 +21,17 @@ export default function PersistentPlayer() {
   const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const currentSongIdRef = useRef<string | null>(null);
+  const previousPressAtRef = useRef<number>(0);
+  const previousPressTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [hasUniversal, setHasUniversal] = useState(false);
+
+  useEffect(() => {
+    return () => {
+      if (previousPressTimerRef.current) {
+        clearTimeout(previousPressTimerRef.current);
+      }
+    };
+  }, []);
 
 
 
@@ -84,6 +94,32 @@ export default function PersistentPlayer() {
     }
   }, [volume]);
 
+  // Persist volume to localStorage so the slider stays at last value across reloads
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem('playerVolume');
+      if (stored !== null) {
+        const v = Number(stored);
+        if (!Number.isNaN(v)) {
+          setVolume(v);
+          if (v > 0) setPreviousVolume(v);
+          setIsMuted(v === 0);
+          if (audioRef.current) audioRef.current.volume = v;
+        }
+      }
+    } catch (e) {
+      // ignore storage errors
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('playerVolume', String(volume));
+    } catch (e) {
+      // ignore storage errors
+    }
+  }, [volume]);
+
   const togglePlay = useCallback(async () => {
     if (!currentSong) return;
     
@@ -129,6 +165,35 @@ export default function PersistentPlayer() {
     }
   }, [currentSong, isPlaying, setIsPlaying]);
 
+  const restartCurrentSong = useCallback(async () => {
+    if (!currentSong) return;
+    if (!audioRef.current) return;
+
+    try {
+      // Try to seek to start and play
+      audioRef.current.currentTime = 0;
+      if (audioRef.current.readyState >= 2) {
+        await audioRef.current.play();
+        setIsPlaying(true);
+      } else {
+        // Wait until canplay
+        const playWhenReady = async () => {
+          try {
+            await audioRef.current?.play();
+            setIsPlaying(true);
+          } catch (error) {
+            console.error('Failed to restart audio:', error);
+            setIsPlaying(false);
+          }
+        };
+        audioRef.current.addEventListener('canplay', playWhenReady, { once: true });
+      }
+    } catch (e) {
+      console.error('Error restarting current song', e);
+      setIsPlaying(false);
+    }
+  }, [currentSong, setIsPlaying]);
+
   // Create play function that can be called by other components
   const playAudio = useCallback((song: Song) => {
     console.log('playAudio called with song:', song.title);
@@ -143,7 +208,8 @@ export default function PersistentPlayer() {
   useEffect(() => {
     setPlayAudio(() => playAudio);
     setTogglePlay(() => togglePlay);
-  }, [playAudio, togglePlay, setPlayAudio, setTogglePlay]);
+    setRestartCurrentSong(() => restartCurrentSong);
+  }, [playAudio, togglePlay, restartCurrentSong, setPlayAudio, setTogglePlay, setRestartCurrentSong]);
 
   // Expose togglePlay to window so other components can call it (legacy support)
   useEffect(() => {
@@ -154,6 +220,105 @@ export default function PersistentPlayer() {
       };
     }
   }, [togglePlay]);
+
+  // Register a lightweight universalPlayer for legacy callers (window.playTrack)
+  // and drain any queued calls that EarlyUniversalShim may have stored.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const win = window as any;
+
+    // Create the universal player object that other code can call.
+    win.universalPlayer = win.universalPlayer || {};
+    win.universalPlayer.playTrack = (data: any) => {
+      try {
+        // Normalize incoming data to our Song shape as best-effort.
+        const song = {
+          id: data.id || data.youtubeId || `legacy-${Date.now()}`,
+          title: data.title || data.name || data.song?.title || 'Unknown',
+          artist: data.artist || data.song?.artist || 'Unknown',
+          duration: data.duration || data.song?.duration || '0:00',
+          audioUrl: data.audioUrl || data.url || data.youtubeId || '',
+          coverUrl: data.coverUrl || data.song?.coverUrl || undefined,
+        } as Song;
+
+        // If this exact track is already loaded, restart it from the beginning.
+        if (audioRef.current && currentSongIdRef.current === song.id) {
+          try {
+            audioRef.current.currentTime = 0;
+            if (audioRef.current.readyState >= 2) {
+              audioRef.current.play().catch(() => {
+                setIsPlaying(false);
+              });
+            } else {
+              const playWhenReady = () => {
+                audioRef.current?.play().catch(() => {
+                  setIsPlaying(false);
+                });
+              };
+              audioRef.current.addEventListener('canplay', playWhenReady, { once: true });
+            }
+            setIsPlaying(true);
+            return;
+          } catch (e) {
+            // Fall through to normal setCurrentSong path.
+          }
+        }
+
+        // If we have an audioUrl, set it and start playback. Otherwise, just set current song.
+        setCurrentSong(song);
+        setIsPlaying(true);
+      } catch (e) {
+        console.warn('universalPlayer.playTrack failed to play', e, data);
+      }
+    };
+
+    // Provide a pause method for updateSimplePlayerState compatibility
+    win.universalPlayer.pause = () => {
+      try {
+        if (audioRef.current && !audioRef.current.paused) audioRef.current.pause();
+        setIsPlaying(false);
+      } catch (e) {
+        // ignore
+      }
+    };
+
+    // Drain any queued playTrack calls created by EarlyUniversalShim
+    try {
+      const q = win._playTrackQueue || [];
+      if (Array.isArray(q) && q.length > 0) {
+        // Drain in order
+        q.forEach((d: any) => {
+          try { win.universalPlayer.playTrack(d); } catch (e) { /* ignore per-call */ }
+        });
+        win._playTrackQueue = [];
+      }
+
+      const uq = win._updateStateQueue || [];
+      if (Array.isArray(uq) && uq.length > 0) {
+        uq.forEach((playing: boolean) => {
+          if (!playing && win.universalPlayer && typeof win.universalPlayer.pause === 'function') {
+            try { win.universalPlayer.pause(); } catch (e) { /* ignore */ }
+          }
+        });
+        win._updateStateQueue = [];
+      }
+    } catch (e) {
+      // ignore queue drain errors
+    }
+
+    return () => {
+      try {
+        // Do not delete the object entirely; remove only our methods to avoid stomping other providers.
+        if (win && win.universalPlayer) {
+          delete win.universalPlayer.playTrack;
+          delete win.universalPlayer.pause;
+        }
+      } catch (e) {
+        // ignore
+      }
+    };
+  }, [setCurrentSong, setIsPlaying]);
 
   const handleTimeUpdate = () => {
     if (audioRef.current) {
@@ -220,60 +385,69 @@ export default function PersistentPlayer() {
   };
 
   const skipToPrevious = () => {
-    // New UX: first press restarts the current song; pressing again (within a short window)
-    // goes to the previous track. This mirrors common music player behavior.
-    if (!currentSong || songs.length <= 1) return;
+    // UX: first press restarts and plays the current song from the beginning.
+    // If the user presses again within 2000ms of that restart, go to the previous track.
+    // Also, if the track is already at the very start (<= 1s), go to previous immediately.
+    if (!currentSong) return;
 
     const now = Date.now();
-    // store last press timestamp in a ref-like property on the function
-    if (!(skipToPrevious as any)._lastPress) (skipToPrevious as any)._lastPress = 0;
-    const lastPress = (skipToPrevious as any)._lastPress as number;
-    const DOUBLE_PRESS_MS = 800;
+    const firstPressAt = previousPressAtRef.current;
+    const RESTART_WINDOW_MS = 2000; // 2 seconds
 
     const currentIndex = songs.findIndex(song => song.id === currentSong.id);
     if (currentIndex === -1) return;
 
-    // If the track is at the very start (<= 1s), go to previous immediately
-    const currentTimeSeconds = audioRef.current ? Math.floor(audioRef.current.currentTime) : 0;
-    if (currentTimeSeconds <= 1) {
+    // Determine current time in seconds
+    const currentTimeSeconds = audioRef.current ? audioRef.current.currentTime : 0;
+
+    // If this is a second press within the restart window, go to the previous track.
+    // Otherwise, treat as a restart.
+    if (firstPressAt && (now - firstPressAt) <= RESTART_WINDOW_MS) {
       const previousIndex = currentIndex === 0 ? songs.length - 1 : currentIndex - 1;
       const previousSong = songs[previousIndex];
-      console.log('At start: skipping to previous:', previousSong.title);
+      console.log('Second press within window: skipping to previous:', previousSong.title);
       setCurrentSong(previousSong);
       if (isPlaying) setIsPlaying(true);
-      // reset lastPress
-      (skipToPrevious as any)._lastPress = 0;
+      previousPressAtRef.current = 0;
+      if (previousPressTimerRef.current) {
+        clearTimeout(previousPressTimerRef.current);
+        previousPressTimerRef.current = null;
+      }
       return;
     }
 
-    if (now - lastPress <= DOUBLE_PRESS_MS) {
-      // Treat as "go to previous track" on quick double-press
-      const previousIndex = currentIndex === 0 ? songs.length - 1 : currentIndex - 1;
-      const previousSong = songs[previousIndex];
-      console.log('Double-press: skipping to previous:', previousSong.title);
-      setCurrentSong(previousSong);
-      if (isPlaying) setIsPlaying(true);
-      // reset lastPress
-      (skipToPrevious as any)._lastPress = 0;
-    } else {
-      // Single press: restart current track
-      console.log('Single-press: restarting current song');
-      if (audioRef.current) {
-        try {
-          audioRef.current.currentTime = 0;
-        } catch (e) {
-          // ignore
+    // No recent first-press or conditions not met: treat this as a restart and start a window
+    console.log('Restarting current song and starting 2s window for previous');
+    if (audioRef.current) {
+      try {
+        audioRef.current.currentTime = 0;
+        // Ensure playback resumes
+        if (audioRef.current.readyState >= 2) {
+          audioRef.current.play().catch(() => { /* ignore play errors */ });
+        } else {
+          const playWhenReady = () => { audioRef.current?.play().catch(() => {}); };
+          audioRef.current.addEventListener('canplay', playWhenReady, { once: true });
         }
+      } catch (e) {
+        // ignore
       }
-      // record this press time
-      (skipToPrevious as any)._lastPress = now;
-      // schedule reset after the window to avoid stale state
-      setTimeout(() => { (skipToPrevious as any)._lastPress = 0; }, DOUBLE_PRESS_MS + 50);
     }
+    setIsPlaying(true);
+
+    // record this press time as the first press
+    previousPressAtRef.current = now;
+    // clear the window after RESTART_WINDOW_MS
+    if (previousPressTimerRef.current) {
+      clearTimeout(previousPressTimerRef.current);
+    }
+    previousPressTimerRef.current = setTimeout(() => {
+      previousPressAtRef.current = 0;
+      previousPressTimerRef.current = null;
+    }, RESTART_WINDOW_MS + 50);
   };
 
   const skipToNext = () => {
-    if (!currentSong || songs.length <= 1) return;
+    if (!currentSong || songs.length === 0) return;
     
     const currentIndex = songs.findIndex(song => song.id === currentSong.id);
     if (currentIndex === -1) return;
@@ -359,7 +533,7 @@ export default function PersistentPlayer() {
               {/* Previous Button */}
               <button
                 onClick={skipToPrevious}
-                disabled={songs.length <= 1}
+                disabled={!currentSong || songs.length === 0}
                 className={`${currentTheme.text} ${currentTheme.textHover} disabled:text-gray-600 disabled:opacity-50 text-sm font-bold flex-shrink-0 transition-colors`}
                 title="Previous song"
               >
@@ -386,7 +560,7 @@ export default function PersistentPlayer() {
               {/* Next Button */}
               <button
                 onClick={skipToNext}
-                disabled={songs.length <= 1}
+                disabled={!currentSong || songs.length === 0}
                 className={`${currentTheme.text} ${currentTheme.textHover} disabled:text-gray-600 disabled:opacity-50 text-sm font-bold flex-shrink-0 transition-colors`}
                 title="Next song"
               >

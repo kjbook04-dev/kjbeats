@@ -1,12 +1,12 @@
 'use client';
 
+import Link from 'next/link';
 import { useTheme } from '../context/ThemeContext';
 import { gradientTextStyle } from '../context/themeHelpers';
 
 export default function Footer() {
   const { currentTheme } = useTheme();
-  const hasMultiStop = !!currentTheme.backgroundCss;
-  const gText = hasMultiStop ? gradientTextStyle() : {};
+  const gText = gradientTextStyle();
   return (
     <footer className="bg-gray-900 py-8">
       <div className="container mx-auto px-4">
@@ -18,9 +18,9 @@ export default function Footer() {
           <div className="justify-self-center text-center">
             <h4 className={`text-lg font-semibold mb-4`} style={gText}>Quick Links</h4>
             <ul className="space-y-2">
-              <li><a href="/about" className="text-gray-300 hover:text-white">About Us</a></li>
+              <li><Link href="/about" className="text-gray-300 hover:text-white">About Us</Link></li>
               <li><a href="mailto:kjbook04@gmail.com" className="text-gray-300 hover:text-white">Contact</a></li>
-              <li><a href="/privacy" className="text-gray-300 hover:text-white">Privacy Policy</a></li>
+              <li><Link href="/privacy" className="text-gray-300 hover:text-white">Privacy Policy</Link></li>
             </ul>
           </div>
           <div className="justify-self-end md:transform md:-translate-x-[125px]">

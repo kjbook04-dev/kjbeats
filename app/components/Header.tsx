@@ -7,6 +7,7 @@ import { useUser } from '../context/UserContext';
 import { useTheme } from '../context/ThemeContext';
 import { usePathname } from 'next/navigation';
 import { AuthModal } from './AuthModal';
+import { gradientTextStyle } from '../context/themeHelpers';
 
 export default function Header() {
   const router = useRouter();
@@ -18,19 +19,13 @@ export default function Header() {
   // Make the top/header logout a subtle see-through/ghost button on every page.
   const logoutClass = 'bg-transparent hover:bg-white/5 text-white px-3 py-1 rounded-md text-sm transition-colors border border-white/10';
 
-  // If the theme provides a multi-stop gradient, prefer it for text/background
-  const hasMultiStop = !!currentTheme.backgroundCss;
-  const gradientTextStyle: React.CSSProperties = hasMultiStop ? {
-    backgroundImage: 'var(--theme-gradient)',
-    WebkitBackgroundClip: 'text',
-    backgroundClip: 'text',
-    color: 'transparent'
-  } : {};
+  // Use helper-backed gradient text style (ThemeProvider ensures --theme-gradient exists)
+  const gText = gradientTextStyle();
 
   return (
     <header className="bg-gray-900 p-4">
       <div className="container mx-auto flex justify-between items-center">
-        <Link href="/" className={`text-2xl font-bold flex items-center`} style={gradientTextStyle}>
+  <Link href="/" className={`text-2xl font-bold flex items-center`} style={gText}>
           <svg
             aria-hidden="true"
             role="img"
@@ -53,7 +48,7 @@ export default function Header() {
             {/* right earcup */}
             <path d="M19 13.5v2.5a2 2 0 01-2 2h0a1 1 0 01-1-1v-3a2 2 0 012-2h0a1 1 0 011 1z" stroke="url(#kjbeats-logo-grad)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" fill="none" />
           </svg>
-          <span style={gradientTextStyle}>KJBeats</span>
+          <span style={gText}>KJBeats</span>
         </Link>
 
         {/* Mobile menu button */}
@@ -88,34 +83,34 @@ export default function Header() {
             <ul className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8">
               <li>
                 <Link href="/" className={`${currentTheme.text} ${currentTheme.textHover}`}>
-                  <span style={gradientTextStyle}>Home</span>
+                  <span style={gText}>Home</span>
                 </Link>
               </li>
               {/* Library tab removed per request */}
               {user && (
                 <li>
-                  <Link href="/playlists" className={`${currentTheme.text} ${currentTheme.textHover}`}>
-                    <span style={gradientTextStyle}>Playlists</span>
-                  </Link>
+        <Link href="/playlists" className={`${currentTheme.text} ${currentTheme.textHover}`}>
+        <span style={gText}>Playlists</span>
+        </Link>
                 </li>
               )}
               {user && (
                 <li>
                   <Link href="/manage" className={`${currentTheme.text} ${currentTheme.textHover}`}>
-                    Manage Music
+                    <span style={gText}>Manage Music</span>
                   </Link>
                 </li>
               )}
               {user && (
                 <li>
                   <Link href="/friends" className={`${currentTheme.text} ${currentTheme.textHover}`}>
-                    Friends
+                    <span style={gText}>Friends</span>
                   </Link>
                 </li>
               )}
               <li>
                 <Link href="/about" className={`${currentTheme.text} ${currentTheme.textHover}`}>
-                  About
+                  <span style={gText}>About</span>
                 </Link>
               </li>
             </ul>
@@ -128,15 +123,19 @@ export default function Header() {
                               {user.profilePicture ? (
                                 // Show a small bordered circular avatar whose inner color matches the current theme
                                 <div
-                                  className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${currentTheme.border} shadow-sm cursor-pointer`}
-                                  role="button"
-                                  tabIndex={0}
-                                  onClick={() => router.push('/profile')}
-                                  onKeyDown={(e) => { if (e.key === 'Enter') router.push('/profile'); }}
-                                >
-                                    {/* centered dark "cutout" inner circle to match header background */}
-                                    <div className="w-6 h-6 rounded-full bg-gray-900" />
-                                  </div>
+                                    className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${currentTheme.border} shadow-sm cursor-pointer`}
+                                    role="button"
+                                    tabIndex={0}
+                                    onClick={() => router.push('/profile')}
+                                    onKeyDown={(e) => { if (e.key === 'Enter') router.push('/profile'); }}
+                                  >
+                                      {/* centered dark "cutout" inner circle with plus icon */}
+                                      <div className="w-6 h-6 rounded-full bg-gray-900 flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-4 h-4 text-white" fill="none" stroke="white">
+                                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                        </svg>
+                                      </div>
+                                    </div>
                               ) : (
                                 // Match the profile page's "circle-in-a-circle" placeholder but scaled for the header.
                                 <div
@@ -146,13 +145,17 @@ export default function Header() {
                                   onClick={() => router.push('/profile')}
                                   onKeyDown={(e) => { if (e.key === 'Enter') router.push('/profile'); }}
                                 >
-                                  {/* inner dark "cutout" circle to match header background (gradient ring effect) */}
-                                  <div className="w-6 h-6 rounded-full bg-gray-900" />
+                                  {/* inner dark "cutout" circle with plus icon to match profile placeholder */}
+                                  <div className="w-6 h-6 rounded-full bg-gray-900 flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-4 h-4 text-white" fill="none" stroke="white">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                    </svg>
+                                  </div>
                                   {/* subtle crescent shadow at top-left to mimic profile shading */}
                                   <div className="absolute -top-0.5 -left-0.5 w-3 h-3 rounded-full bg-black/30 transform rotate-6" />
                                 </div>
                               )}
-                    <span style={gradientTextStyle}>{user.firstName || user.username}</span>
+                              <span style={gText}>{user.firstName || user.username}</span>
                   </Link>
                   <button
                     onClick={logout}
@@ -168,7 +171,8 @@ export default function Header() {
                       setAuthMode('login');
                       setShowAuthModal(true);
                     }}
-                    className={`${currentTheme.text} ${currentTheme.textHover} px-3 py-1 text-sm`}
+                    className="px-3 py-1 text-sm transition-colors hover:opacity-80"
+                    style={{ color: currentTheme.primary }}
                   >
                     Login
                   </button>
@@ -177,7 +181,7 @@ export default function Header() {
                       setAuthMode('signup');
                       setShowAuthModal(true);
                     }}
-                    className={`${currentTheme.bg} ${currentTheme.bgHover} text-white px-3 py-1 rounded-md text-sm transition-colors`}
+                    className={`${currentTheme.bg} ${currentTheme.bgHover} text-gray-900 px-3 py-1 rounded-md text-sm transition-colors`}
                   >
                     Sign Up
                   </button>

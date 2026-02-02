@@ -2,10 +2,12 @@
 
 import { useUniversalPlayer } from '../context/UniversalPlayerContext';
 import { useTheme } from '../context/ThemeContext';
+import { gradientBgStyle } from '../context/themeHelpers';
 
 export default function UniversalController() {
   const { state, pause, resume, stop, seekTo, setVolume, toggleMute } = useUniversalPlayer();
   const { currentTheme } = useTheme();
+  const gBg = gradientBgStyle();
 
   console.log('🎵 UNIVERSAL CONTROLLER: Rendering');
   console.log('🎵 Current track:', state.currentTrack?.title);
@@ -123,7 +125,8 @@ export default function UniversalController() {
               <button
                 onClick={handlePlayPause}
                 disabled={state.isLoading}
-                className={`w-10 h-10 rounded-full bg-gradient-to-r ${currentTheme.gradient} hover:scale-105 flex items-center justify-center text-gray-900 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed`}
+                className={`w-10 h-10 rounded-full hover:scale-105 flex items-center justify-center text-gray-900 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed`}
+                style={gBg}
                 title={state.isPlaying ? "Pause" : "Play"}
               >
                 {state.isLoading ? (
@@ -172,8 +175,8 @@ export default function UniversalController() {
               title="Click to seek"
             >
               <div
-                    className={`h-full bg-gradient-to-r ${currentTheme.gradient} rounded-full transition-all duration-300`}
-                    style={{ width: `${progressPercentage}%` }}
+                    className={`h-full rounded-full transition-all duration-300`}
+                    style={{ width: `${progressPercentage}%`, ...(gBg || {}) }}
                   />
             </div>
           </div>
@@ -197,12 +200,12 @@ export default function UniversalController() {
 
       {/* Custom Styles for the volume slider */}
           <style jsx>{`
-        .slider::-webkit-slider-thumb {
+          .slider::-webkit-slider-thumb {
           appearance: none;
           width: 16px;
           height: 16px;
           border-radius: 50%;
-          background: linear-gradient(to right, ${currentTheme.gradient.split(' ')[1]}, ${currentTheme.gradient.split(' ')[2]});
+          background: var(--theme-gradient);
           cursor: pointer;
           box-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
@@ -210,7 +213,7 @@ export default function UniversalController() {
           width: 16px;
           height: 16px;
           border-radius: 50%;
-          background: linear-gradient(to right, ${currentTheme.gradient.split(' ')[1]}, ${currentTheme.gradient.split(' ')[2]});
+          background: var(--theme-gradient);
           cursor: pointer;
           border: none;
           box-shadow: 0 2px 4px rgba(0,0,0,0.3);

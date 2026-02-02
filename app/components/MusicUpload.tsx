@@ -5,6 +5,7 @@ import type { Song } from '../types/music';
 import { useMusicLibrary } from '../context/MusicLibraryContext';
 import { useUser } from '../context/UserContext';
 import { useTheme } from '../context/ThemeContext';
+import { gradientTextStyle, gradientBgStyle } from '../context/themeHelpers';
 import { useLastPlayed } from '../context/LastPlayedContext';
 import { Notification } from './Notification';
 
@@ -27,6 +28,8 @@ export default function MusicUpload() {
   const { songs: uploadedSongs, addSongs, removeSong } = useMusicLibrary();
   const { user } = useUser();
   const { currentTheme } = useTheme();
+  const gText = gradientTextStyle();
+  const gBg = gradientBgStyle();
   const { playAudio, setCurrentSong, setIsPlaying, currentSong, isPlaying, togglePlay } = useLastPlayed();
   const [pageBgColor, setPageBgColor] = useState<string>('transparent');
 
@@ -123,10 +126,10 @@ export default function MusicUpload() {
 
   if (!user) {
     return (
-      <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 text-center">
-        <h2 className={`text-xl font-semibold mb-4 bg-gradient-to-r ${currentTheme.gradient} text-transparent bg-clip-text`}>
-          Add Music
-        </h2>
+    <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 text-center">
+          <h2 className="text-xl font-semibold mb-4" style={gText}>
+            Add Music
+          </h2>
         <p className="text-gray-300 mb-4">Please log in to upload your music.</p>
         <p className="text-sm text-gray-400">Create an account to start building your personal music library!</p>
       </div>
@@ -135,8 +138,8 @@ export default function MusicUpload() {
 
   return (
     <div className="bg-gray-800 p-6 rounded-lg border border-gray-700">
-      <h2 className={`text-xl font-semibold mb-4 bg-gradient-to-r ${currentTheme.gradient} text-transparent bg-clip-text`}>
-        Add Music
+  <h2 className="text-xl font-semibold mb-4" style={gText}>
+    Add Music
       </h2>
       
       <div className="mb-4">
@@ -152,7 +155,8 @@ export default function MusicUpload() {
           />
           <label
             htmlFor="audio-file-input"
-            className={`inline-block ${currentTheme.bg} ${currentTheme.bgHover} text-gray-900 px-6 py-3 rounded-full font-semibold cursor-pointer transition-colors`}
+            className={`inline-block text-gray-900 px-6 py-3 rounded-full font-semibold cursor-pointer transition-colors`}
+            style={gBg}
           >
             Choose Audio Files
           </label>
@@ -180,15 +184,16 @@ export default function MusicUpload() {
       <button
         onClick={handleUpload}
         disabled={files.length === 0 || uploading}
-        className={`${currentTheme.bg} ${files.length === 0 || uploading ? 'opacity-50 cursor-not-allowed' : currentTheme.bgHover} text-gray-900 px-6 py-3 rounded-full font-semibold transition-all`}
+        className={`${files.length === 0 || uploading ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'} text-gray-900 px-6 py-3 rounded-full font-semibold transition-all`}
+        style={gBg}
       >
         {uploading ? 'Adding to Library...' : 'Add to Library'}
       </button>
 
       {uploadedSongs.length > 0 && (
         <div className="mt-6">
-          <h3 className={`text-lg font-semibold mb-3 bg-gradient-to-r ${currentTheme.gradient} text-transparent bg-clip-text`}>
-            Your Uploaded Music ({uploadedSongs.length} songs)
+          <h3 className="text-lg font-semibold mb-3" style={gText}>
+            {`Your Uploaded Music (${uploadedSongs.length} songs)`}
           </h3>
           <div className="space-y-2 max-h-48 overflow-y-auto">
             {uploadedSongs.map((song) => (

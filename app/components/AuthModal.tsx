@@ -200,7 +200,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     const file = e.target.files?.[0];
                     if (file) setProfilePicture(file);
                   }}
-                  className={`w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:${currentTheme.bg} file:text-gray-900 hover:file:${currentTheme.bgHover.replace('hover:', '')}`}
+                  className="themed-file-input w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white"
+                  style={{ '--file-theme-bg': currentTheme.primary } as React.CSSProperties}
                 />
               </div>
             </>
@@ -244,7 +245,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 type="checkbox"
                 checked={rememberMe}
                 onChange={() => setRememberMe(!rememberMe)}
-                className="h-4 w-4 text-indigo-600 bg-gray-800 border-gray-700 rounded"
+                className="h-4 w-4 bg-gray-800 border-gray-700 rounded"
+                style={{ accentColor: currentTheme.primary }}
               />
               <label htmlFor="rememberMe" className="text-sm text-gray-300">Stay signed in</label>
             </div>
@@ -259,7 +261,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           <button
             type="submit"
             disabled={isSubmitting}
-            className={`w-full ${currentTheme.bg} ${currentTheme.bgHover} disabled:opacity-70 text-white py-2 px-4 rounded-md font-medium transition-colors`}
+            className={`w-full ${currentTheme.bg} ${currentTheme.bgHover} disabled:opacity-70 text-gray-900 py-2 px-4 rounded-md font-medium transition-colors`}
           >
             {isSubmitting ? 'Please wait...' : (mode === 'login' ? 'Login' : 'Sign Up')}
           </button>

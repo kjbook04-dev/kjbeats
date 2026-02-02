@@ -6,6 +6,7 @@ import AddToPlaylist from './AddToPlaylist';
 import { useLastPlayed } from '../context/LastPlayedContext';
 import { useMusicLibrary } from '../context/MusicLibraryContext';
 import { useTheme } from '../context/ThemeContext';
+import { gradientTextStyle } from '../context/themeHelpers';
 
 interface PlayTrackData {
   name: string;
@@ -25,6 +26,7 @@ export default function TrackList({ songs }: { songs?: Song[] }) {
   const { currentSong, setCurrentSong, isPlaying, setIsPlaying, togglePlay, playAudio } = useLastPlayed();
   const { songs: librarySongs } = useMusicLibrary();
   const { currentTheme } = useTheme();
+  const gText = gradientTextStyle();
 
   useEffect(() => {
     // If songs prop is provided, use it; otherwise use library songs
@@ -68,7 +70,7 @@ export default function TrackList({ songs }: { songs?: Song[] }) {
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <h4 className={`bg-gradient-to-r ${currentTheme.gradient} text-transparent bg-clip-text font-medium`}>{s.title}</h4>
+                  <h4 className={`font-medium`} style={gText}>{s.title}</h4>
                   <p className="text-gray-300 text-sm">{s.artist}</p>
                   {s.uploadedBy && (
                     <p className="text-gray-400 text-xs">Uploaded by {s.uploadedBy}</p>

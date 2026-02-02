@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useTheme } from '../context/ThemeContext';
+import { gradientBgStyle } from '../context/themeHelpers';
 
 interface UniversalSearchResult {
   id: string;
@@ -20,6 +21,7 @@ export default function MultiPlatformSearch() {
   const [results, setResults] = useState<UniversalSearchResult[]>([]);
   const [currentPlaying, setCurrentPlaying] = useState<string | null>(null);
   const { currentTheme } = useTheme();
+  const gBg = gradientBgStyle();
 
   const searchAllPlatforms = async (query: string) => {
     if (!query.trim()) return;
@@ -106,7 +108,8 @@ export default function MultiPlatformSearch() {
           />
           <button
             type="submit"
-            className={`px-6 py-2 rounded-lg text-white font-medium transition-all duration-300 bg-gradient-to-r ${currentTheme.gradient} hover:scale-105 shadow-lg`}
+            className={`px-6 py-2 rounded-lg text-white font-medium transition-all duration-300 hover:scale-105 shadow-lg`}
+            style={gBg}
           >
             Search All
           </button>
@@ -166,7 +169,8 @@ export default function MultiPlatformSearch() {
                               }
                             } catch (e) { console.error(e); }
                           }}
-                          className={`w-10 h-10 rounded-full flex items-center justify-center text-white transition-all duration-300 bg-gradient-to-r ${currentTheme.gradient} hover:scale-105 shadow-lg`}
+                          className={`w-10 h-10 rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-105 shadow-lg`}
+                          style={gBg}
                           title="Play Song"
                         >
                           ▶️

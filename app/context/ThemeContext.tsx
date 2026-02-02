@@ -188,7 +188,7 @@ export const COLOR_THEMES: Record<string, ColorTheme> = {
     // subtle iridescent gradient; primary is a mid-tone used for small accents
     primary: '#b38be6',
     secondary: '#f7c6ff',
-    backgroundCss: 'linear-gradient(120deg, #c7f9ff 0%, #ffd6e0 25%, #e7c6ff 50%, #d0f0ff 75%, #c7f9ff 100%)',
+  backgroundCss: 'linear-gradient(120deg, #c7f9ff 0%, #ffd6e0 25%, #e7c6ff 50%, #d0f0ff 75%, #c7f9ff 100%)',
     gradient: 'from-cyan-100 to-pink-100',
     gradientHover: 'from-purple-100 to-pink-100',
     text: 'text-purple-200',
@@ -265,8 +265,33 @@ interface ThemeProviderProps {
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const { user, updateUserTheme } = useUser();
+  const [themeKey, setThemeKey] = React.useState<string>('pink');
 
-  const currentThemeKey = user?.themeColor || 'pink';
+  // Restore last used theme for guests/logged-out state.
+  React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      const stored = localStorage.getItem('kjbeats_theme');
+      if (stored && COLOR_THEMES[stored]) {
+        setThemeKey(stored);
+      }
+    } catch (e) {
+      // ignore storage read errors
+    }
+  }, []);
+
+  // If a logged-in user has a saved theme, let it become the active theme.
+  React.useEffect(() => {
+    if (!user?.themeColor || !COLOR_THEMES[user.themeColor]) return;
+    setThemeKey(user.themeColor);
+    try {
+      localStorage.setItem('kjbeats_theme', user.themeColor);
+    } catch (e) {
+      // ignore storage write errors
+    }
+  }, [user?.themeColor]);
+
+  const currentThemeKey = themeKey;
   // Guard against a user-selected theme that no longer exists (removed by user).
   // Fall back to 'pink' to avoid undefined theme crashes.
   const currentTheme = COLOR_THEMES[currentThemeKey] || COLOR_THEMES['pink'];
@@ -288,6 +313,25 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       if (currentTheme.secondary) root.style.setProperty('--accent-secondary', currentTheme.secondary);
       // Player thumb uses --player-thumb-color in globals.css; keep it in sync
       if (currentTheme.primary) root.style.setProperty('--player-thumb-color', currentTheme.primary);
+      // Expose the full multi-stop gradient string so components using
+      // gradientTextStyle()/gradientBgStyle() can reference it as
+      // var(--theme-gradient). backgroundCss is expected to be a
+      // `linear-gradient(...)` string when present.
+      // Always expose --theme-gradient so components using the helper
+      // functions (gradientTextStyle/gradientBgStyle) can rely on a
+      // consistent variable. For solid themes we emit a single-color
+      // linear-gradient (primary -> primary) which renders visually as
+      // a solid color while still allowing the same bg-clip trick to be
+      // used by text and background helpers. For full multi-stop themes
+      // the theme's backgroundCss is used directly.
+      if (currentTheme.backgroundCss) {
+        root.style.setProperty('--theme-gradient', currentTheme.backgroundCss);
+      } else if (currentTheme.primary) {
+        const primary = currentTheme.primary;
+        root.style.setProperty('--theme-gradient', `linear-gradient(90deg, ${primary} 0%, ${primary} 100%)`);
+      } else {
+        root.style.removeProperty('--theme-gradient');
+      }
     } catch (e) {
       // ignore in environments where CSS vars can't be set
     }
@@ -301,9 +345,14 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   }, [currentThemeKey]);
 
   const changeTheme = async (colorKey: string) => {
-    if (user && COLOR_THEMES[colorKey]) {
-      await updateUserTheme(colorKey);
+    if (!COLOR_THEMES[colorKey]) return;
+    setThemeKey(colorKey);
+    try {
+      localStorage.setItem('kjbeats_theme', colorKey);
+    } catch (e) {
+      // ignore storage write errors
     }
+    if (user) await updateUserTheme(colorKey);
   };
 
   return (
