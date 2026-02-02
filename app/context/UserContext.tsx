@@ -16,6 +16,7 @@ import {
   arrayUnion,
   doc,
   getDoc,
+  onSnapshot,
   setDoc,
   updateDoc,
 } from 'firebase/firestore';
@@ -29,8 +30,10 @@ export interface User {
   email: string;
   createdAt: string;
   profilePicture?: string;
+  profilePictureOriginal?: string;
   themeColor?: string;
   friends?: string[];
+  friendNotifications?: Array<{ from: string; createdAt?: string; type?: string }>;
   bio?: string;
   website?: string;
   publicProfile?: boolean;
@@ -42,12 +45,13 @@ interface UserContextType {
   signup: (firstName: string, username: string, email: string, password: string, remember?: boolean) => Promise<{ success: boolean; error?: string }>;
   requestPasswordReset: (usernameOrEmail: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
-  updateProfilePicture: (imageFile: File) => Promise<boolean>;
+  updateProfilePicture: (imageFile: File, originalFile?: File) => Promise<boolean>;
   updateUserTheme: (themeColor: string) => Promise<boolean>;
   clearAllUserData: () => void;
   isLoading: boolean;
   addFriend: (username: string) => Promise<{ success: boolean; error?: string }>;
   removeFriend: (username: string) => Promise<boolean>;
+  clearFriendNotifications: () => Promise<void>;
   updateUserProfile: (data: { bio?: string; website?: string; publicProfile?: boolean }) => Promise<boolean>;
 }
 
@@ -74,8 +78,10 @@ const userDocToSession = (uid: string, data: any): User => ({
   email: data.email || '',
   createdAt: data.createdAt || new Date().toISOString(),
   profilePicture: data.profilePicture,
+  profilePictureOriginal: data.profilePictureOriginal,
   themeColor: data.themeColor,
   friends: Array.isArray(data.friends) ? data.friends : [],
+  friendNotifications: Array.isArray(data.friendNotifications) ? data.friendNotifications : [],
   bio: data.bio || '',
   website: data.website || '',
   publicProfile: !!data.publicProfile,
@@ -93,8 +99,13 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       return;
     }
 
+    let userDocUnsub: (() => void) | null = null;
     const unsubscribe = onAuthStateChanged(authClient, async (authUser) => {
       if (!authUser) {
+        if (userDocUnsub) {
+          userDocUnsub();
+          userDocUnsub = null;
+        }
         setUser(null);
         setIsLoading(false);
         return;
@@ -110,24 +121,34 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             email: authUser.email || '',
             createdAt: new Date().toISOString(),
             friends: [],
+            friendNotifications: [],
           };
           await setDoc(doc(dbClient, 'users', authUser.uid), {
             ...fallback,
             usernameLower: normalizeUsername(fallback.username),
           }, { merge: true });
-          setUser(fallback);
-        } else {
-          setUser(userDocToSession(authUser.uid, snap.data()));
         }
+
+        if (userDocUnsub) userDocUnsub();
+        userDocUnsub = onSnapshot(doc(dbClient, 'users', authUser.uid), (userSnap) => {
+          if (!userSnap.exists()) {
+            setUser(null);
+            return;
+          }
+          setUser(userDocToSession(authUser.uid, userSnap.data()));
+          setIsLoading(false);
+        });
       } catch (error) {
         console.error('Failed loading user profile', error);
         setUser(null);
-      } finally {
         setIsLoading(false);
       }
     });
 
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+      if (userDocUnsub) userDocUnsub();
+    };
   }, []);
 
   const login = async (username: string, password: string, remember: boolean = true): Promise<{ success: boolean; error?: string }> => {
@@ -222,6 +243,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         email: email.trim(),
         createdAt,
         friends: [] as string[],
+        friendNotifications: [] as Array<{ from: string; createdAt?: string; type?: string }>,
         bio: '',
         website: '',
         publicProfile: false,
@@ -283,12 +305,22 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       if (!targetSnap.exists()) return { success: false, error: 'User not found' };
 
       const canonical = (targetSnap.data().username as string) || usernameToAdd.trim();
+      const targetUid = targetSnap.data().uid as string;
       await updateDoc(doc(db, 'users', user.id), { friends: arrayUnion(canonical) });
       setUser((prev) => {
         if (!prev) return prev;
         const next = Array.from(new Set([...(prev.friends || []), canonical]));
         return { ...prev, friends: next };
       });
+      if (targetUid) {
+        await updateDoc(doc(db, 'users', targetUid), {
+          friendNotifications: arrayUnion({
+            from: user.username,
+            createdAt: new Date().toISOString(),
+            type: 'friend_added',
+          }),
+        });
+      }
       return { success: true };
     } catch (error) {
       console.error('Failed to add friend', error);
@@ -311,6 +343,16 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     }
   };
 
+  const clearFriendNotifications = async () => {
+    if (!user || !db) return;
+    try {
+      await updateDoc(doc(db, 'users', user.id), { friendNotifications: [] });
+      setUser((prev) => (prev ? { ...prev, friendNotifications: [] } : prev));
+    } catch (error) {
+      console.error('Failed to clear friend notifications', error);
+    }
+  };
+
   const updateUserProfile = async (data: { bio?: string; website?: string; publicProfile?: boolean }): Promise<boolean> => {
     if (!user || !db) return false;
     try {
@@ -327,18 +369,32 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     }
   };
 
-  const updateProfilePicture = async (imageFile: File): Promise<boolean> => {
+  const updateProfilePicture = async (imageFile: File, originalFile?: File): Promise<boolean> => {
     if (!user || !db) return false;
     try {
       let imageUrl = URL.createObjectURL(imageFile);
+      let originalUrl = user.profilePictureOriginal;
       if (storage) {
         const path = `users/${user.id}/profile/${Date.now()}-${imageFile.name}`;
         const fileRef = ref(storage, path);
         await uploadBytes(fileRef, imageFile);
         imageUrl = await getDownloadURL(fileRef);
+        if (originalFile) {
+          const originalPath = `users/${user.id}/profile/original/${Date.now()}-${originalFile.name}`;
+          const originalRef = ref(storage, originalPath);
+          await uploadBytes(originalRef, originalFile);
+          originalUrl = await getDownloadURL(originalRef);
+        }
       }
-      await updateDoc(doc(db, 'users', user.id), { profilePicture: imageUrl });
-      setUser((prev) => (prev ? { ...prev, profilePicture: imageUrl } : prev));
+      await updateDoc(doc(db, 'users', user.id), {
+        profilePicture: imageUrl,
+        ...(originalUrl ? { profilePictureOriginal: originalUrl } : {}),
+      });
+      setUser((prev) =>
+        prev
+          ? { ...prev, profilePicture: imageUrl, ...(originalUrl ? { profilePictureOriginal: originalUrl } : {}) }
+          : prev
+      );
 
       if (typeof window !== 'undefined') {
         const win = window as typeof window & { profilePictures?: Map<string, File> };
@@ -365,6 +421,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         clearAllUserData,
         addFriend,
         removeFriend,
+        clearFriendNotifications,
         updateUserProfile,
         isLoading,
       }}

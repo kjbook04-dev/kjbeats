@@ -1,26 +1,35 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUser } from '../context/UserContext';
 import { useTheme } from '../context/ThemeContext';
 import { usePathname } from 'next/navigation';
 import { AuthModal } from './AuthModal';
 import { gradientTextStyle } from '../context/themeHelpers';
+import { Notification } from './Notification';
 
 export default function Header() {
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
-  const { user, logout } = useUser();
+  const { user, logout, clearFriendNotifications } = useUser();
   const { currentTheme } = useTheme();
   // Make the top/header logout a subtle see-through/ghost button on every page.
   const logoutClass = 'bg-transparent hover:bg-white/5 text-white px-3 py-1 rounded-md text-sm transition-colors border border-white/10';
 
   // Use helper-backed gradient text style (ThemeProvider ensures --theme-gradient exists)
   const gText = gradientTextStyle();
+  const friendNotificationCount = user?.friendNotifications?.length || 0;
+  const [showFriendToast, setShowFriendToast] = useState(false);
+
+  useEffect(() => {
+    if (friendNotificationCount > 0) {
+      setShowFriendToast(true);
+    }
+  }, [friendNotificationCount]);
 
   return (
     <header className="bg-gray-900 p-4">
@@ -103,8 +112,25 @@ export default function Header() {
               )}
               {user && (
                 <li>
-                  <Link href="/friends" className={`${currentTheme.text} ${currentTheme.textHover}`}>
-                    <span style={gText}>Friends</span>
+                  <Link
+                    href="/friends"
+                    className={`${currentTheme.text} ${currentTheme.textHover}`}
+                    onClick={() => {
+                      clearFriendNotifications();
+                      setShowFriendToast(false);
+                    }}
+                  >
+                    <span className="relative inline-flex items-center" style={gText}>
+                      Friends
+                      {friendNotificationCount > 0 && (
+                        <span
+                          className="absolute -top-2 -right-3 min-w-[1.1rem] h-4 px-1 rounded-full text-[10px] leading-4 text-white text-center"
+                          style={{ backgroundColor: currentTheme.primary }}
+                        >
+                          {friendNotificationCount > 9 ? '9+' : friendNotificationCount}
+                        </span>
+                      )}
+                    </span>
                   </Link>
                 </li>
               )}
@@ -122,7 +148,7 @@ export default function Header() {
                   <Link href="/profile" className={`flex items-center space-x-2 ${currentTheme.text} ${currentTheme.textHover} transition-colors`}>
                               {user.profilePicture ? (
                                 <div
-                                  className={`w-8 h-8 rounded-full border-2 ${currentTheme.border} shadow-sm overflow-hidden flex items-center justify-center cursor-pointer`}
+                                  className={`w-8 h-8 rounded-full ${user.profilePicture ? 'border-0' : `border-2 ${currentTheme.border}`} shadow-sm overflow-hidden flex items-center justify-center cursor-pointer`}
                                   role="button"
                                   tabIndex={0}
                                   onClick={() => router.push('/profile')}
@@ -149,7 +175,7 @@ export default function Header() {
                                   <div className="absolute -top-0.5 -left-0.5 w-3 h-3 rounded-full bg-black/30 transform rotate-6" />
                                 </div>
                               )}
-                              <span style={gText}>{user.firstName || user.username}</span>
+                              <span className={currentTheme.text}>{user.firstName || user.username}</span>
                   </Link>
                   <button
                     onClick={logout}
@@ -184,7 +210,14 @@ export default function Header() {
             </div>
           </div>
         </nav>
-        
+
+        <Notification
+          message={`You have ${friendNotificationCount} new friend ${friendNotificationCount === 1 ? 'add' : 'adds'}.`}
+          type="success"
+          isVisible={showFriendToast}
+          onClose={() => setShowFriendToast(false)}
+        />
+
         <AuthModal
           isOpen={showAuthModal}
           onClose={() => setShowAuthModal(false)}

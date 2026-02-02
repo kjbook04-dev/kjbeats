@@ -5,12 +5,14 @@ import { useTheme } from '../context/ThemeContext';
 
 interface ProfilePictureUploadProps {
   currentImage?: string;
-  onImageSelect: (file: File) => void;
+  originalImage?: string;
+  onImageSelect: (file: File, originalFile?: File) => void;
   className?: string;
 }
 
 export const ProfilePictureUpload: React.FC<ProfilePictureUploadProps> = ({
   currentImage,
+  originalImage,
   onImageSelect,
   className = '',
 }) => {
@@ -20,7 +22,10 @@ export const ProfilePictureUpload: React.FC<ProfilePictureUploadProps> = ({
   const [rawFile, setRawFile] = useState<File | null>(null);
   const [zoom, setZoom] = useState(1);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const [liveOffset, setLiveOffset] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const editorRef = useRef<HTMLDivElement>(null);
@@ -38,6 +43,8 @@ export const ProfilePictureUpload: React.FC<ProfilePictureUploadProps> = ({
       setRawFile(file);
       setZoom(1);
       setOffset({ x: 0, y: 0 });
+      setImageLoaded(false);
+      setIsEditorOpen(true);
     }
   };
 
@@ -49,7 +56,7 @@ export const ProfilePictureUpload: React.FC<ProfilePictureUploadProps> = ({
   const clampOffset = (next: { x: number; y: number }) => {
     const container = editorRef.current;
     const img = editorImageRef.current;
-    if (!container || !img) return next;
+    if (!container || !img || !imageLoaded) return next;
     const size = container.clientWidth;
     const baseScale = Math.max(size / img.naturalWidth, size / img.naturalHeight);
     const scale = baseScale * zoom;
@@ -67,9 +74,13 @@ export const ProfilePictureUpload: React.FC<ProfilePictureUploadProps> = ({
 
   useEffect(() => {
     if (rawImage) {
-      setOffset((prev) => clampOffset(prev));
+      setOffset((prev) => {
+        const next = clampOffset(prev);
+        setLiveOffset(next);
+        return next;
+      });
     }
-  }, [zoom, rawImage]);
+  }, [zoom, rawImage, imageLoaded]);
 
   const beginDrag = (x: number, y: number) => {
     dragStartRef.current = { x, y, ox: offset.x, oy: offset.y };
@@ -80,18 +91,38 @@ export const ProfilePictureUpload: React.FC<ProfilePictureUploadProps> = ({
     if (!dragStartRef.current) return;
     const dx = x - dragStartRef.current.x;
     const dy = y - dragStartRef.current.y;
-    setOffset(clampOffset({ x: dragStartRef.current.ox + dx, y: dragStartRef.current.oy + dy }));
+    setLiveOffset(clampOffset({ x: dragStartRef.current.ox + dx, y: dragStartRef.current.oy + dy }));
   };
 
   const endDrag = () => {
     dragStartRef.current = null;
     setIsDragging(false);
+    setOffset(clampOffset(liveOffset));
+  };
+
+  const openEditorFromOriginal = async () => {
+    if (!originalImage) return;
+    try {
+      const resp = await fetch(originalImage, { mode: 'cors' });
+      const blob = await resp.blob();
+      const file = new File([blob], 'profile-original', { type: blob.type || 'image/jpeg' });
+      const previewUrl = URL.createObjectURL(blob);
+      setRawImage(previewUrl);
+      setRawFile(file);
+      setZoom(1);
+      setOffset({ x: 0, y: 0 });
+      setImageLoaded(false);
+      setIsEditorOpen(true);
+    } catch (e) {
+      // Fallback: let user pick a new file if the original can't be fetched
+      triggerFileSelect();
+    }
   };
 
   const applyCrop = async () => {
     const container = editorRef.current;
     const img = editorImageRef.current;
-    if (!container || !img || !rawFile) return;
+    if (!container || !img || !rawFile || !imageLoaded) return;
     const size = container.clientWidth;
     const baseScale = Math.max(size / img.naturalWidth, size / img.naturalHeight);
     const scale = baseScale * zoom;
@@ -120,7 +151,8 @@ export const ProfilePictureUpload: React.FC<ProfilePictureUploadProps> = ({
     setPreviewImage(previewUrl);
     setRawImage(null);
     setRawFile(null);
-    onImageSelect(croppedFile);
+    setIsEditorOpen(false);
+    onImageSelect(croppedFile, rawFile);
   };
 
   return (
@@ -129,7 +161,13 @@ export const ProfilePictureUpload: React.FC<ProfilePictureUploadProps> = ({
         className={`relative w-full h-full rounded-full overflow-hidden border-4 cursor-pointer transition-all duration-200 ${
           isDragging ? `${currentTheme.border} bg-gray-100` : `border-gray-600 ${currentTheme.borderHover}`
         }`}
-        onClick={triggerFileSelect}
+        onClick={() => {
+          if (originalImage || currentImage) {
+            openEditorFromOriginal();
+          } else {
+            triggerFileSelect();
+          }
+        }}
       >
         {displayImage ? (
           <img src={displayImage} alt="Profile" className="w-full h-full object-cover" />
@@ -152,9 +190,9 @@ export const ProfilePictureUpload: React.FC<ProfilePictureUploadProps> = ({
 
       <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
 
-      <p className="text-xs text-gray-400 mt-2 text-center">Click to upload</p>
+      <p className="text-xs text-gray-400 mt-2 text-center">Click to edit or upload</p>
 
-      {rawImage && (
+      {isEditorOpen && rawImage && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-6">
           <div className="bg-gray-900 rounded-lg p-6 w-full max-w-md">
             <h3 className="text-white font-semibold mb-4">Adjust profile photo</h3>
@@ -173,15 +211,26 @@ export const ProfilePictureUpload: React.FC<ProfilePictureUploadProps> = ({
                 ref={editorImageRef}
                 src={rawImage}
                 alt="Crop"
+                crossOrigin="anonymous"
                 className="w-full h-full object-cover"
+                onLoad={() => setImageLoaded(true)}
+                onError={() => setImageLoaded(true)}
                 style={{
                   position: 'absolute',
                   left: '50%',
                   top: '50%',
-                  transform: `translate(-50%, -50%) translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,
+                  transform: `translate(-50%, -50%) translate(${liveOffset.x}px, ${liveOffset.y}px) scale(${zoom})`,
                   transformOrigin: 'center',
+                  transition: isDragging ? 'none' : 'transform 120ms ease-out',
                 }}
               />
+              {/* Crop grid overlay */}
+              <div className="pointer-events-none absolute inset-0">
+                <div className="absolute left-1/3 top-0 h-full w-px bg-white/20" />
+                <div className="absolute left-2/3 top-0 h-full w-px bg-white/20" />
+                <div className="absolute top-1/3 left-0 h-px w-full bg-white/20" />
+                <div className="absolute top-2/3 left-0 h-px w-full bg-white/20" />
+              </div>
             </div>
             <div className="mt-4 flex items-center gap-3">
               <span className="text-xs text-gray-400">Zoom</span>
@@ -196,24 +245,33 @@ export const ProfilePictureUpload: React.FC<ProfilePictureUploadProps> = ({
               />
             </div>
             <p className="text-xs text-gray-400 text-center mt-2">Drag to position</p>
-            <div className="mt-4 flex items-center justify-end gap-2">
+            <div className="mt-4 flex items-center justify-between gap-2">
               <button
-                onClick={() => {
-                  setRawImage(null);
-                  setRawFile(null);
-                  endDrag();
-                }}
+                onClick={triggerFileSelect}
                 className="px-3 py-1 text-xs rounded-md text-gray-300 border border-gray-600"
               >
-                Cancel
+                Choose new
               </button>
-              <button
-                onClick={applyCrop}
-                className="px-3 py-1 text-xs rounded-md text-gray-900"
-                style={{ background: currentTheme.primary }}
-              >
-                Apply
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => {
+                    setIsEditorOpen(false);
+                    setRawImage(null);
+                    setRawFile(null);
+                    endDrag();
+                  }}
+                  className="px-3 py-1 text-xs rounded-md text-gray-300 border border-gray-600"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={applyCrop}
+                  className="px-3 py-1 text-xs rounded-md text-gray-900"
+                  style={{ background: currentTheme.primary }}
+                >
+                  Apply
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -221,4 +279,3 @@ export const ProfilePictureUpload: React.FC<ProfilePictureUploadProps> = ({
     </div>
   );
 };
-

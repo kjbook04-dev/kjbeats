@@ -116,7 +116,8 @@ export default function ManageMusicPage() {
                   <div className="flex items-center justify-center gap-4">
                     <button
                       onClick={() => { setAuthMode('login'); setShowAuthModal(true); }}
-                      className={`${currentTheme.bg} ${currentTheme.bgHover} text-gray-900 px-4 py-2 rounded-md`}
+                      className="px-4 py-2 rounded-md transition-colors hover:opacity-80"
+                      style={{ color: currentTheme.primary }}
                     >
                       Login
                     </button>

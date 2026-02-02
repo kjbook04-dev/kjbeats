@@ -85,7 +85,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         if (result.success) {
           // If there's a profile picture, update it after signup
           if (profilePicture) {
-            await updateProfilePicture(profilePicture);
+            await updateProfilePicture(profilePicture, profilePicture);
           }
           onClose();
           // Redirect to home after successful signup
@@ -271,7 +271,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           <button
             type="submit"
             disabled={isSubmitting}
-            className={`w-full ${currentTheme.bg} ${currentTheme.bgHover} disabled:opacity-70 text-gray-900 py-2 px-4 rounded-md font-medium transition-colors`}
+            className={`w-full ${currentTheme.bg} ${currentTheme.bgHover} text-gray-900 disabled:opacity-70 py-2 px-4 rounded-md font-medium transition-colors`}
           >
             {isSubmitting ? 'Please wait...' : (mode === 'login' ? 'Login' : 'Sign Up')}
           </button>

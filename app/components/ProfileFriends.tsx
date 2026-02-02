@@ -74,12 +74,9 @@ export const ProfileFriends: React.FC<ProfileFriendsProps> = ({ compact = false 
           {(user?.friends || []).length === 0 ? (
             <div className="muted text-sm">You have no friends added yet.</div>
           ) : (
-            (user!.friends || []).map((f) => (
-              <div key={f} className={`${compact ? 'flex items-center justify-between p-1' : 'flex items-center justify-between p-2'} panel-surface rounded-md`}>
-                <div className={`${compact ? 'text-sm pl-2' : 'text-white pl-2'}`}>{f}</div>
-                <button onClick={() => handleRemove(f)} className={`text-sm btn btn-ghost text-red-400 hover:text-red-300 ${compact ? 'px-2 py-0.5' : ''}`}>Remove</button>
-              </div>
-            ))
+            <div className="muted text-sm">
+              Friends added: {(user?.friends || []).length}
+            </div>
           )}
         </div>
       </div>

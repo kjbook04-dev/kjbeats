@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
 import {
   addDoc,
   collection,
@@ -36,7 +37,7 @@ const conversationIdFor = (a: string, b: string) => [a, b].sort().join('__');
 
 export default function FriendsPage() {
   const { currentTheme } = useTheme();
-  const { user } = useUser();
+  const { user, removeFriend } = useUser();
   const { songs, addSongs } = useMusicLibrary();
   const { playlists, createPlaylist, addToPlaylist } = usePlaylist();
   const [selectedFriend, setSelectedFriend] = useState<string>('');
@@ -45,8 +46,10 @@ export default function FriendsPage() {
   const [newText, setNewText] = useState('');
   const [shareSongId, setShareSongId] = useState('');
   const [sharePlaylistId, setSharePlaylistId] = useState('');
+  const [removeTarget, setRemoveTarget] = useState<string>('');
   const gText = gradientTextStyle();
   const gBg = gradientBgStyle();
+  const canChat = Boolean(selectedFriend && selectedFriendUid);
 
   const friends = user?.friends || [];
 
@@ -174,110 +177,177 @@ export default function FriendsPage() {
       <h1 className="text-4xl font-bold mb-6" style={gText}>Friends</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
-          <h2 className="text-xl font-semibold mb-3" style={gText}>Your Friends</h2>
+          <h3 className={`text-xl font-semibold mb-3 ${currentTheme.text}`}>Your Friends</h3>
           {friends.length === 0 ? (
-            <p className="text-gray-300 text-sm">No friends yet. Add friends from your profile page.</p>
+            <>
+              <p className="text-gray-400 mb-4">No friends yet. Add friends from your profile page.</p>
+              <div className="text-center">
+                <Link
+                  href="/profile"
+                  className="inline-block px-4 py-2 rounded-md text-sm font-medium hover:scale-105 transition-all text-gray-900"
+                  style={gBg}
+                >
+                  Go to Profile → Add Friends
+                </Link>
+              </div>
+            </>
           ) : (
-            <div className="space-y-2">
+            <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
               {friends.map((friendName) => (
-                <button
+                <div
                   key={friendName}
-                  onClick={() => setSelectedFriend(friendName)}
-                  className={`w-full text-left px-3 py-2 rounded-md transition-colors ${
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-md transition-colors ${
                     selectedFriend === friendName ? 'bg-gray-700 text-white' : 'text-gray-300 hover:bg-gray-700'
                   }`}
                 >
-                  {friendName}
-                </button>
+                  <button onClick={() => setSelectedFriend(friendName)} className="flex-1 text-left">
+                    {friendName}
+                  </button>
+                  <button
+                    onClick={() => setRemoveTarget(friendName)}
+                    className="ml-2 text-white hover:text-white/80 text-2xl leading-none"
+                    aria-label={`Remove ${friendName}`}
+                    title={`Remove ${friendName}`}
+                  >
+                    ×
+                  </button>
+                </div>
               ))}
             </div>
           )}
         </div>
 
         <div className="md:col-span-2 bg-gray-800 p-4 rounded-lg border border-gray-700 min-h-[28rem] flex flex-col">
-          <h2 className="text-xl font-semibold mb-3" style={gText}>
-            {selectedFriend ? `DM with ${selectedFriend}` : 'Select a friend to start chatting'}
-          </h2>
-
-          <div className="flex-1 overflow-y-auto space-y-2 mb-4">
-            {messages.map((msg) => (
-              <div key={msg.id} className={`p-3 rounded-md ${msg.senderId === user?.id ? 'bg-gray-700 ml-8' : 'bg-gray-900 mr-8'}`}>
-                <p className="text-xs text-gray-400 mb-1">{msg.senderName}</p>
-                {msg.type === 'text' && <p className="text-gray-100">{msg.text}</p>}
-                {msg.type === 'song' && (
-                  <div className="text-gray-100">
-                    <p className="font-semibold">Shared Song: {msg.song?.title}</p>
-                    <p className="text-sm text-gray-300">{msg.song?.artist}</p>
-                    <button onClick={() => saveSharedSong(msg.song)} className="mt-2 px-3 py-1 rounded-md text-gray-900 text-sm" style={gBg}>
-                      Save to My Library
-                    </button>
-                  </div>
-                )}
-                {msg.type === 'playlist' && (
-                  <div className="text-gray-100">
-                    <p className="font-semibold">Shared Playlist: {msg.playlist?.title}</p>
-                    <p className="text-sm text-gray-300">{msg.playlist?.songs?.length || 0} songs</p>
-                    <button onClick={() => saveSharedPlaylist(msg.playlist)} className="mt-2 px-3 py-1 rounded-md text-gray-900 text-sm" style={gBg}>
-                      Add Playlist
-                    </button>
-                  </div>
-                )}
-              </div>
-            ))}
+          <div className="flex items-center justify-between mb-3">
+            <h3 className={`text-xl font-semibold ${currentTheme.text}`}>
+              {selectedFriend ? `DM with ${selectedFriend}` : 'Select a friend to start chatting'}
+            </h3>
+            {selectedFriend && <span className="text-xs text-gray-400">Private thread</span>}
           </div>
 
-          <div className="space-y-2 border-t border-gray-700 pt-3">
-            <div className="flex gap-2">
-              <input
-                value={newText}
-                onChange={(e) => setNewText(e.target.value)}
-                placeholder="Type a message..."
-                className="flex-1 px-3 py-2 bg-gray-900 border border-gray-700 rounded-md text-white"
-                disabled={!selectedFriend}
-              />
-              <button onClick={sendText} disabled={!selectedFriend} className="px-4 py-2 rounded-md text-gray-900 disabled:opacity-50" style={gBg}>
-                Send
-              </button>
+          <div className="flex-1 bg-gray-900 border border-gray-700 rounded-lg p-3 overflow-y-auto space-y-2 mb-4">
+            {!selectedFriend ? (
+              <div className="text-gray-400 text-sm">Choose a friend to view and send messages.</div>
+            ) : messages.length === 0 ? (
+              <div className="text-gray-400 text-sm">No messages yet. Say hi!</div>
+            ) : (
+              messages.map((msg) => (
+                <div key={msg.id} className={`p-3 rounded-md ${msg.senderId === user?.id ? 'bg-gray-700 ml-8' : 'bg-gray-800 mr-8'}`}>
+                  <p className="text-xs text-gray-400 mb-1">{msg.senderName}</p>
+                  {msg.type === 'text' && <p className="text-gray-100">{msg.text}</p>}
+                  {msg.type === 'song' && (
+                    <div className="text-gray-100">
+                      <p className="font-semibold">Shared Song: {msg.song?.title}</p>
+                      <p className="text-sm text-gray-300">{msg.song?.artist}</p>
+                      <button onClick={() => saveSharedSong(msg.song)} className="mt-2 px-3 py-1 rounded-md text-gray-900 text-sm" style={gBg}>
+                        Save to My Library
+                      </button>
+                    </div>
+                  )}
+                  {msg.type === 'playlist' && (
+                    <div className="text-gray-100">
+                      <p className="font-semibold">Shared Playlist: {msg.playlist?.title}</p>
+                      <p className="text-sm text-gray-300">{msg.playlist?.songs?.length || 0} songs</p>
+                      <button onClick={() => saveSharedPlaylist(msg.playlist)} className="mt-2 px-3 py-1 rounded-md text-gray-900 text-sm" style={gBg}>
+                        Add Playlist
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ))
+            )}
+          </div>
+
+          <div className="space-y-3 border-t border-gray-700 pt-3">
+            <div>
+              <label className="block text-xs text-gray-400 mb-1">Message</label>
+              <div className="flex gap-2">
+                <input
+                  value={newText}
+                  onChange={(e) => setNewText(e.target.value)}
+                  placeholder="Type a message..."
+                  className="flex-1 px-3 py-2 bg-gray-900 border border-gray-700 rounded-md text-white"
+                  disabled={!canChat}
+                />
+                <button onClick={sendText} disabled={!canChat} className="px-4 py-2 rounded-md text-gray-900 disabled:opacity-50" style={gBg}>
+                  Send
+                </button>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-              <div className="flex gap-2">
-                <select
-                  value={shareSongId}
-                  onChange={(e) => setShareSongId(e.target.value)}
-                  className="flex-1 px-3 py-2 bg-gray-900 border border-gray-700 rounded-md text-white"
-                  disabled={!selectedFriend}
-                >
-                  <option value="">Share a song...</option>
-                  {songs.map((song) => (
-                    <option key={song.id} value={song.id}>{song.title}</option>
-                  ))}
-                </select>
-                <button onClick={sendSong} disabled={!shareSongId || !selectedFriend} className="px-3 py-2 rounded-md text-gray-900 disabled:opacity-50" style={gBg}>
-                  Share
-                </button>
+              <div>
+                <label className="block text-xs text-gray-400 mb-1">Share a song</label>
+                <div className="flex gap-2">
+                  <select
+                    value={shareSongId}
+                    onChange={(e) => setShareSongId(e.target.value)}
+                    className="flex-1 px-3 py-2 bg-gray-900 border border-gray-700 rounded-md text-white"
+                    disabled={!canChat}
+                  >
+                    <option value="">Select a song...</option>
+                    {songs.map((song) => (
+                      <option key={song.id} value={song.id}>{song.title}</option>
+                    ))}
+                  </select>
+                  <button onClick={sendSong} disabled={!shareSongId || !canChat} className="px-3 py-2 rounded-md text-gray-900 disabled:opacity-50" style={gBg}>
+                    Share
+                  </button>
+                </div>
               </div>
 
-              <div className="flex gap-2">
-                <select
-                  value={sharePlaylistId}
-                  onChange={(e) => setSharePlaylistId(e.target.value)}
-                  className="flex-1 px-3 py-2 bg-gray-900 border border-gray-700 rounded-md text-white"
-                  disabled={!selectedFriend}
-                >
-                  <option value="">Share a playlist...</option>
-                  {playlists.map((playlist) => (
-                    <option key={playlist.id} value={playlist.id}>{playlist.title}</option>
-                  ))}
-                </select>
-                <button onClick={sendPlaylist} disabled={!sharePlaylistId || !selectedFriend} className="px-3 py-2 rounded-md text-gray-900 disabled:opacity-50" style={gBg}>
-                  Share
-                </button>
+              <div>
+                <label className="block text-xs text-gray-400 mb-1">Share a playlist</label>
+                <div className="flex gap-2">
+                  <select
+                    value={sharePlaylistId}
+                    onChange={(e) => setSharePlaylistId(e.target.value)}
+                    className="flex-1 px-3 py-2 bg-gray-900 border border-gray-700 rounded-md text-white"
+                    disabled={!canChat}
+                  >
+                    <option value="">Select a playlist...</option>
+                    {playlists.map((playlist) => (
+                      <option key={playlist.id} value={playlist.id}>{playlist.title}</option>
+                    ))}
+                  </select>
+                  <button onClick={sendPlaylist} disabled={!sharePlaylistId || !canChat} className="px-3 py-2 rounded-md text-gray-900 disabled:opacity-50" style={gBg}>
+                    Share
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {removeTarget && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+          <div className="w-full max-w-sm rounded-lg border border-gray-700 bg-gray-900 p-5 shadow-xl">
+            <h4 className={`text-lg font-semibold ${currentTheme.text}`}>Remove friend?</h4>
+            <p className="text-sm text-white mt-2">
+              Are you sure you want to remove <span className="text-white font-semibold">{removeTarget}</span> as a friend?
+            </p>
+            <div className="mt-4 flex items-center justify-end gap-2">
+              <button
+                onClick={() => setRemoveTarget('')}
+                className="px-3 py-2 rounded-md text-sm text-gray-300 hover:text-white border border-white/10 hover:bg-white/5"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  removeFriend(removeTarget);
+                  setRemoveTarget('');
+                }}
+                className="px-3 py-2 rounded-md text-sm text-gray-900"
+                style={gBg}
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
