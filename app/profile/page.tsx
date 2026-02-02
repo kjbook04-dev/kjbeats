@@ -109,10 +109,10 @@ export default function ProfilePage() {
       <div className="-mt-2 px-4 pb-4 flex flex-wrap items-end sm:items-center justify-between gap-3 sm:gap-4">
               <div className="flex items-end gap-4 min-w-0">
             <div className="w-20 h-20 md:w-28 md:h-28 rounded-full border-4 border-white shadow-lg overflow-hidden bg-gray-800 relative -mt-6 z-20">
-              <ProfilePictureUpload onImageSelect={handleProfilePictureUpdate} className="w-full h-full" />
+              <ProfilePictureUpload currentImage={user.profilePicture} onImageSelect={handleProfilePictureUpdate} className="w-full h-full" />
             </div>
             <div className="min-w-0">
-              <h1 className="text-2xl md:text-3xl font-bold text-white break-words">{user.firstName || user.username}</h1>
+              <h1 className="text-2xl md:text-3xl font-bold text-white break-words mt-1 sm:mt-0">{user.firstName || user.username}</h1>
               <p className="muted">@{user.username} • Member since {formatDate(user.createdAt)}</p>
             </div>
           </div>
@@ -198,7 +198,13 @@ export default function ProfilePage() {
                   <label className="card-sub mb-1">Profile Visibility</label>
                   <div className="mt-1">
                     <button
-                      onClick={() => setPublicProfile(p => !p)}
+                      onClick={() => {
+                        setPublicProfile(p => {
+                          const next = !p;
+                          showNotification(next ? 'Profile set to public' : 'Profile set to private', 'success');
+                          return next;
+                        });
+                      }}
                       className={`px-2 py-1 h-8 text-sm rounded-md`}
                       style={publicProfile ? gBg : undefined}
                     >

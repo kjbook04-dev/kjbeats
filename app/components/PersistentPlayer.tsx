@@ -532,14 +532,14 @@ export default function PersistentPlayer() {
         preload="metadata"
       />
       
-      <div className="container mx-auto flex items-center justify-between">
+      <div className="container mx-auto flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
         {/* Song Info */}
-        <div className="flex items-center space-x-3 flex-shrink-0">
+        <div className="flex items-center space-x-3 md:flex-shrink-0 min-w-0">
           {currentSong.coverUrl && (
             <img
               src={currentSong.coverUrl}
               alt={currentSong.title}
-              className="w-10 h-10 rounded bg-gray-800"
+              className="w-10 h-10 rounded bg-gray-800 flex-shrink-0"
             />
           )}
           <div className="min-w-0">
@@ -549,9 +549,9 @@ export default function PersistentPlayer() {
         </div>
 
     {/* Controls */}
-    <div className="flex-1 mx-6">
+    <div className="w-full md:flex-1 md:mx-6">
       {/* Regular Audio Controls */}
-            <div className="flex items-center justify-between space-x-3">
+            <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between md:space-x-3">
               {/* Previous Button */}
               <button
                 onClick={skipToPrevious}
@@ -590,8 +590,8 @@ export default function PersistentPlayer() {
               </button>
               
               {/* Progress Bar */}
-              <div className="flex items-center space-x-3 flex-1">
-                <span className="text-gray-300 text-sm w-10">{formatTime(currentTime)}</span>
+              <div className="flex items-center space-x-3 flex-1 min-w-0">
+                <span className="text-gray-300 text-sm w-10 hidden sm:inline">{formatTime(currentTime)}</span>
                 <input
                   data-range
                   type="range"
@@ -604,7 +604,7 @@ export default function PersistentPlayer() {
                     ['--thumb-color' as any]: currentTheme.primary,
                   } as React.CSSProperties}
                 />
-                <span className="text-gray-300 text-sm w-10">{formatTime(duration)}</span>
+                <span className="text-gray-300 text-sm w-10 hidden sm:inline">{formatTime(duration)}</span>
               </div>
               
               {/* Volume */}
@@ -624,18 +624,18 @@ export default function PersistentPlayer() {
                   value={volume}
                   onChange={handleVolumeChange}
                   data-range
-                  className={`w-18 h-1.5 bg-gray-700 rounded-lg appearance-none`}
+                  className={`w-16 sm:w-20 h-1.5 bg-gray-700 rounded-lg appearance-none`}
                   style={{
                     ['--thumb-color' as any]: currentTheme.primary,
                   } as React.CSSProperties}
                 />
-                <span className="text-gray-300 text-sm w-8">{Math.round(volume * 100)}%</span>
+                <span className="text-gray-300 text-sm w-8 hidden sm:inline">{Math.round(volume * 100)}%</span>
               </div>
             </div>
         </div>
 
         {/* Close Button */}
-        <div className="flex-shrink-0">
+        <div className="flex-shrink-0 self-end md:self-auto">
           <button
             onClick={() => setCurrentSong(null)}
             className={`${currentTheme.text} ${currentTheme.textHover} text-sm`}

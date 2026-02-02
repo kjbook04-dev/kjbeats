@@ -27,9 +27,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   });
   const [profilePicture, setProfilePicture] = useState<File | null>(null);
   const [error, setError] = useState('');
+  const [info, setInfo] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [rememberMe, setRememberMe] = useState<boolean>(true);
-  const { login, signup, updateProfilePicture, clearAllUserData } = useUser();
+  const { login, signup, requestPasswordReset, updateProfilePicture, clearAllUserData } = useUser();
   const { currentTheme } = useTheme();
   const router = useRouter();
 
@@ -47,6 +48,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       setProfilePicture(null);
       setRememberMe(true);
       setError('');
+      setInfo('');
     }
   }, [isOpen, initialMode]);
 
@@ -58,6 +60,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       [e.target.name]: e.target.value
     });
     setError('');
+    setInfo('');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -98,6 +101,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           try { router.push('/'); } catch (e) { /* ignore navigation errors */ }
         } else {
           setError(result.error || 'Login failed');
+          setInfo('Forgot your password? We can email you a reset link.');
         }
       }
     } catch {
@@ -117,6 +121,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     });
     setProfilePicture(null);
     setError('');
+    setInfo('');
   };
 
   const switchMode = () => {
@@ -257,6 +262,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               {error}
             </div>
           )}
+          {info && (
+            <div className="text-gray-300 text-sm">
+              {info}
+            </div>
+          )}
 
           <button
             type="submit"
@@ -268,6 +278,23 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         </form>
 
         <div className="mt-6 text-center">
+          {mode === 'login' && (
+            <button
+              onClick={async () => {
+                const res = await requestPasswordReset(formData.username || formData.email);
+                if (res.success) {
+                  setError('');
+                  setInfo('Password reset email sent. Check your inbox.');
+                } else {
+                  setError(res.error || 'Unable to send reset email');
+                }
+              }}
+              className="mb-3 text-sm underline"
+              style={{ color: currentTheme.primary }}
+            >
+              Forgot password?
+            </button>
+          )}
           <p className="text-gray-400">
             {mode === 'login' ? "Don't have an account?" : "Already have an account?"}
           </p>

@@ -6,6 +6,7 @@ import {
   browserSessionPersistence,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  sendPasswordResetEmail,
   setPersistence,
   signInWithEmailAndPassword,
   signOut,
@@ -39,6 +40,7 @@ interface UserContextType {
   user: User | null;
   login: (username: string, password: string, remember?: boolean) => Promise<{ success: boolean; error?: string }>;
   signup: (firstName: string, username: string, email: string, password: string, remember?: boolean) => Promise<{ success: boolean; error?: string }>;
+  requestPasswordReset: (usernameOrEmail: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
   updateProfilePicture: (imageFile: File) => Promise<boolean>;
   updateUserTheme: (themeColor: string) => Promise<boolean>;
@@ -155,6 +157,34 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     } catch (error) {
       setIsLoading(false);
       return { success: false, error: 'Invalid username or password' };
+    }
+  };
+
+  const requestPasswordReset = async (usernameOrEmail: string): Promise<{ success: boolean; error?: string }> => {
+    const authClient = auth;
+    const dbClient = db;
+    if (!firebaseConfigured || !authClient || !dbClient) {
+      return { success: false, error: 'Firebase is not configured yet' };
+    }
+    const input = usernameOrEmail.trim();
+    if (!input) return { success: false, error: 'Enter your username or email' };
+
+    try {
+      // If input looks like email, use it directly. Otherwise resolve username -> email.
+      let email = input;
+      if (!input.includes('@')) {
+        const uname = normalizeUsername(input);
+        const usernameDoc = await getDoc(doc(dbClient, 'usernames', uname));
+        if (!usernameDoc.exists()) {
+          return { success: false, error: 'No account found for that username' };
+        }
+        email = usernameDoc.data().email as string;
+      }
+      await sendPasswordResetEmail(authClient, email);
+      return { success: true };
+    } catch (error) {
+      console.error('Password reset failed', error);
+      return { success: false, error: 'Unable to send reset email' };
     }
   };
 
@@ -328,6 +358,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         user,
         login,
         signup,
+        requestPasswordReset,
         logout,
         updateProfilePicture,
         updateUserTheme,

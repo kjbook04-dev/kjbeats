@@ -121,21 +121,15 @@ export default function Header() {
                 <div className="flex items-center space-x-4">
                   <Link href="/profile" className={`flex items-center space-x-2 ${currentTheme.text} ${currentTheme.textHover} transition-colors`}>
                               {user.profilePicture ? (
-                                // Show a small bordered circular avatar whose inner color matches the current theme
                                 <div
-                                    className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${currentTheme.border} shadow-sm cursor-pointer`}
-                                    role="button"
-                                    tabIndex={0}
-                                    onClick={() => router.push('/profile')}
-                                    onKeyDown={(e) => { if (e.key === 'Enter') router.push('/profile'); }}
-                                  >
-                                      {/* centered dark "cutout" inner circle with plus icon */}
-                                      <div className="w-6 h-6 rounded-full bg-gray-900 flex items-center justify-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-4 h-4 text-white" fill="none" stroke="white">
-                                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                        </svg>
-                                      </div>
-                                    </div>
+                                  className={`w-8 h-8 rounded-full border-2 ${currentTheme.border} shadow-sm overflow-hidden flex items-center justify-center cursor-pointer`}
+                                  role="button"
+                                  tabIndex={0}
+                                  onClick={() => router.push('/profile')}
+                                  onKeyDown={(e) => { if (e.key === 'Enter') router.push('/profile'); }}
+                                >
+                                  <img src={user.profilePicture} alt="Profile" className="w-full h-full object-cover" />
+                                </div>
                               ) : (
                                 // Match the profile page's "circle-in-a-circle" placeholder but scaled for the header.
                                 <div

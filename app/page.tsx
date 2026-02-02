@@ -272,10 +272,10 @@ export default function Home() {
                 <div className="mt-4">
                   <a
                     href="/manage"
-                    className={`inline-block px-4 py-2 rounded-lg text-sm font-medium hover:scale-105 transition-all`}
-                    style={gBg}
+                    className={`inline-block px-4 py-2 rounded-lg text-sm font-medium hover:scale-105 transition-all text-gray-900 sm:text-[color:var(--btn-text)]`}
+                    style={{ ...gBg, ['--btn-text' as any]: pageBgColor }}
                   >
-                    <span style={{ color: pageBgColor }}>View Library</span>
+                    View Library
                   </a>
                 </div>
               </div>
@@ -338,7 +338,8 @@ export default function Home() {
               <div className="flex items-center justify-center space-x-4">
                 <button
                   onClick={() => { setAuthMode('login'); setShowAuthModal(true); }}
-                  className={`${currentTheme.bg} ${currentTheme.bgHover} text-gray-900 px-4 py-2 rounded-md`}
+                  className="px-4 py-2 rounded-md transition-colors hover:opacity-80"
+                  style={{ color: currentTheme.primary }}
                 >
                   Login
                 </button>
