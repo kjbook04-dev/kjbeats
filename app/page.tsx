@@ -338,7 +338,7 @@ export default function Home() {
               <div className="flex items-center justify-center space-x-4">
                 <button
                   onClick={() => { setAuthMode('login'); setShowAuthModal(true); }}
-                  className="px-4 py-2 rounded-md transition-colors hover:opacity-80"
+                  className="px-4 py-2 transition-colors hover:opacity-80"
                   style={{ color: currentTheme.primary }}
                 >
                   Login
