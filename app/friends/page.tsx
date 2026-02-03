@@ -80,11 +80,12 @@ export default function FriendsPage() {
       setMessages([]);
       return;
     }
+    const dbClient = db;
     let unsubscribe: (() => void) | undefined;
     const setup = async () => {
       const conversationId = await ensureConversation();
       if (!conversationId) return;
-      const messagesRef = collection(db, 'conversations', conversationId, 'messages');
+      const messagesRef = collection(dbClient, 'conversations', conversationId, 'messages');
       const q = query(messagesRef, orderBy('createdAt', 'asc'));
       unsubscribe = onSnapshot(q, (snapshot) => {
         const next = snapshot.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<ChatMessage, 'id'>) }));
