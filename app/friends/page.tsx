@@ -80,13 +80,21 @@ export default function FriendsPage() {
       setMessages([]);
       return;
     }
-    const conversationId = conversationIdFor(user.id, selectedFriendUid);
-    const messagesRef = collection(db, 'conversations', conversationId, 'messages');
-    const q = query(messagesRef, orderBy('createdAt', 'asc'));
-    return onSnapshot(q, (snapshot) => {
-      const next = snapshot.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<ChatMessage, 'id'>) }));
-      setMessages(next);
-    });
+    let unsubscribe: (() => void) | undefined;
+    const setup = async () => {
+      const conversationId = await ensureConversation();
+      if (!conversationId) return;
+      const messagesRef = collection(db, 'conversations', conversationId, 'messages');
+      const q = query(messagesRef, orderBy('createdAt', 'asc'));
+      unsubscribe = onSnapshot(q, (snapshot) => {
+        const next = snapshot.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<ChatMessage, 'id'>) }));
+        setMessages(next);
+      });
+    };
+    setup();
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
   }, [selectedFriendUid, user]);
 
   const ensureConversation = async () => {

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useUser } from '../context/UserContext';
 import { useTheme } from '../context/ThemeContext';
 import { gradientBgStyle } from '../context/themeHelpers';
+import { Notification } from './Notification';
 
 interface ProfileFriendsProps {
   compact?: boolean;
@@ -16,6 +17,11 @@ export const ProfileFriends: React.FC<ProfileFriendsProps> = ({ compact = false 
   const [busy, setBusy] = useState(false);
   const gBg = gradientBgStyle();
   const [pageBgColor, setPageBgColor] = useState<string>('transparent');
+  const [notification, setNotification] = useState<{
+    message: string;
+    type: 'success' | 'error' | 'info';
+    isVisible: boolean;
+  }>({ message: '', type: 'success', isVisible: false });
 
   useEffect(() => {
     try {
@@ -26,13 +32,21 @@ export const ProfileFriends: React.FC<ProfileFriendsProps> = ({ compact = false 
     }
   }, []);
 
+  const showNotification = (message: string, type: 'success' | 'error' | 'info' = 'success') => {
+    setNotification({ message, type, isVisible: true });
+  };
+
+  const hideNotification = () => {
+    setNotification((prev) => ({ ...prev, isVisible: false }));
+  };
+
   const handleAdd = async () => {
     if (!newFriend.trim()) return;
     setBusy(true);
     const res = await addFriend(newFriend.trim());
     setBusy(false);
     if (!res.success) {
-      alert(res.error || 'Could not add friend');
+      showNotification(res.error || 'Failed to add friend. Please try again.', 'error');
     } else {
       setNewFriend('');
     }
@@ -80,6 +94,12 @@ export const ProfileFriends: React.FC<ProfileFriendsProps> = ({ compact = false 
           )}
         </div>
       </div>
+      <Notification
+        message={notification.message}
+        type={notification.type}
+        isVisible={notification.isVisible}
+        onClose={hideNotification}
+      />
     </>
   );
 };
