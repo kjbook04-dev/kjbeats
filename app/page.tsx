@@ -12,7 +12,7 @@ import { AuthModal } from './components/AuthModal';
 // All-in-one music search removed
 
 export default function Home() {
-  const { lastPlayed, playAudio, setCurrentSong, setIsPlaying, currentSong, isPlaying, togglePlay, restartCurrentSong } = useLastPlayed();
+  const { lastPlayedHistory, playAudio, setCurrentSong, setIsPlaying, currentSong, isPlaying, togglePlay, restartCurrentSong } = useLastPlayed();
   const { currentTheme } = useTheme();
   const gText = gradientTextStyle();
   const gBg = gradientBgStyle();
@@ -359,27 +359,14 @@ export default function Home() {
               <h2 className="text-3xl font-bold mb-6 text-center" style={gText}>Last Played</h2>
               <div className="max-w-4xl mx-auto">
                 <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 text-center">
-                  {lastPlayed ? (
-                    <div>
-                      <h3 className="text-white font-semibold">{lastPlayed.title}</h3>
-                      <p className={`${(lastPlayed.artist === 'Local Upload' || (lastPlayed as any)?.audioUrl?.startsWith?.('blob:')) ? 'text-gray-300' : 'text-gray-400'}`}>{lastPlayed.artist}</p>
-                      <div className="mt-4">
-                        <button
-                          onClick={() => {
-                            if (!lastPlayed) return;
-                            if (playAudio) {
-                              playAudio(lastPlayed);
-                            } else {
-                              setCurrentSong(lastPlayed);
-                              setIsPlaying(true);
-                            }
-                          }}
-                          className={`inline-block text-gray-900 px-4 py-2 rounded-lg text-sm font-medium hover:scale-105 transition-all`}
-                          style={gBg}
-                        >
-                          Play
-                        </button>
-                      </div>
+                  {lastPlayedHistory.length ? (
+                    <div className="max-h-72 overflow-y-auto space-y-3 pr-1">
+                      {lastPlayedHistory.map((song, index) => (
+                        <div key={`${song.id || song.audioUrl || song.title}-${index}`} className="border-b border-gray-700/60 pb-2 last:border-b-0 last:pb-0 text-left">
+                          <h3 className="text-white font-semibold">{song.title}</h3>
+                          <p className={`${(song.artist === 'Local Upload' || (song as any)?.audioUrl?.startsWith?.('blob:')) ? 'text-gray-300' : 'text-gray-400'}`}>{song.artist}</p>
+                        </div>
+                      ))}
                     </div>
                   ) : (
                     <p className="text-gray-400">No recently played songs.</p>

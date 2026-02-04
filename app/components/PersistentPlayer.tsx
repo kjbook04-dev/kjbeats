@@ -106,8 +106,10 @@ export default function PersistentPlayer() {
       try {
         const stored = localStorage.getItem('playerVolume');
         if (stored !== null) {
-          const v = Number(stored);
+          let v = Number(stored);
           if (!Number.isNaN(v)) {
+            if (v > 1) v = v / 100;
+            v = Math.min(Math.max(v, 0), 1);
             setVolume(v);
             if (v > 0) setPreviousVolume(v);
             setIsMuted(v === 0);
@@ -118,10 +120,13 @@ export default function PersistentPlayer() {
           const snap = await getDoc(doc(db, 'users', user.id));
           const cloudVolume = snap.data()?.playerVolume;
           if (typeof cloudVolume === 'number' && !Number.isNaN(cloudVolume)) {
-            setVolume(cloudVolume);
-            if (cloudVolume > 0) setPreviousVolume(cloudVolume);
-            setIsMuted(cloudVolume === 0);
-            if (audioRef.current) audioRef.current.volume = cloudVolume;
+            let v = cloudVolume;
+            if (v > 1) v = v / 100;
+            v = Math.min(Math.max(v, 0), 1);
+            setVolume(v);
+            if (v > 0) setPreviousVolume(v);
+            setIsMuted(v === 0);
+            if (audioRef.current) audioRef.current.volume = v;
           }
         }
       } catch (e) {

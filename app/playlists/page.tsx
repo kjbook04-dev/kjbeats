@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { usePlaylist } from "../context/PlaylistContext";
 import { useMusicLibrary } from "../context/MusicLibraryContext";
 import { useTheme } from "../context/ThemeContext";
+import { useUser } from "../context/UserContext";
 import { Song, Playlist } from "../types/music";
 
 interface WindowWithPlayTrack {
@@ -10,17 +11,21 @@ interface WindowWithPlayTrack {
 }
 
 import { Notification } from "../components/Notification";
+import { AuthModal } from "../components/AuthModal";
 import { gradientTextStyle, gradientBgStyle } from "../context/themeHelpers";
 
 export default function PlaylistsPage() {
   const { playlists, createPlaylist, deletePlaylist, addToPlaylist, removeFromPlaylist, updatePlaylistCover } = usePlaylist();
   const { songs: allSongs } = useMusicLibrary();
   const { currentTheme } = useTheme();
+  const { user } = useUser();
   const gText = gradientTextStyle();
   const gBg = gradientBgStyle();
 
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showAddSongsModal, setShowAddSongsModal] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
   const [selectedPlaylistId, setSelectedPlaylistId] = useState<string>('');
   const [newPlaylistTitle, setNewPlaylistTitle] = useState('');
   const [newPlaylistDescription, setNewPlaylistDescription] = useState('');
@@ -106,6 +111,15 @@ export default function PlaylistsPage() {
     }));
   };
 
+  const openCreatePlaylist = () => {
+    if (!user) {
+      setAuthMode('login');
+      setShowAuthModal(true);
+      return;
+    }
+    setShowCreateModal(true);
+  };
+
   const handlePlayPlaylist = async (playlist: Playlist) => {
     if (!playlist.songs || playlist.songs.length === 0) {
       showNotification('This playlist is empty', 'info');
@@ -180,7 +194,7 @@ export default function PlaylistsPage() {
     )}
   </h1>
         <button
-          onClick={() => setShowCreateModal(true)}
+          onClick={openCreatePlaylist}
           className={`${currentTheme.bg} text-gray-900 px-6 py-3 rounded-full font-semibold ${currentTheme.bgHover} transition-colors`}
         >
           Create Playlist
@@ -195,7 +209,7 @@ export default function PlaylistsPage() {
             Create your first playlist to organize your music.
           </p>
           <button
-            onClick={() => setShowCreateModal(true)}
+            onClick={openCreatePlaylist}
             className={`${currentTheme.bg} text-gray-900 px-6 py-3 rounded-full font-semibold ${currentTheme.bgHover} transition-colors`}
           >
             Create Your First Playlist
@@ -326,7 +340,7 @@ export default function PlaylistsPage() {
                   type="text"
                   value={newPlaylistTitle}
                   onChange={(e) => setNewPlaylistTitle(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[var(--accent)]"
                   placeholder="My Awesome Playlist"
                   required
                 />
@@ -339,7 +353,7 @@ export default function PlaylistsPage() {
                 <textarea
                   value={newPlaylistDescription}
                   onChange={(e) => setNewPlaylistDescription(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-pink-500 h-20 resize-none"
+                  className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[var(--accent)] h-20 resize-none"
                   placeholder="Describe your playlist..."
                 />
               </div>
@@ -436,6 +450,11 @@ export default function PlaylistsPage() {
         type={notification.type}
         isVisible={notification.isVisible}
         onClose={hideNotification}
+      />
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        initialMode={authMode}
       />
     </div>
   );

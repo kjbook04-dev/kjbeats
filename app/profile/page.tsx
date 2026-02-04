@@ -108,15 +108,15 @@ export default function ProfilePage() {
         />
       <div className="-mt-2 px-4 pb-4 flex flex-wrap items-end sm:items-center justify-between gap-3 sm:gap-4">
               <div className="flex items-end gap-4 min-w-0">
-            <div className={`w-20 h-20 md:w-28 md:h-28 rounded-full ${user.profilePicture ? 'border-0' : `border-4 ${currentTheme.border}`} shadow-lg overflow-hidden bg-gray-800 relative -mt-4 z-20`}>
+            <div className={`w-20 h-20 md:w-28 md:h-28 aspect-square rounded-full ${user.profilePicture ? 'border-0' : `border-4 ${currentTheme.border}`} shadow-lg overflow-hidden bg-gray-800 relative -mt-4 z-20`}>
               <ProfilePictureUpload currentImage={user.profilePicture} originalImage={user.profilePictureOriginal || user.profilePicture} onImageSelect={handleProfilePictureUpdate} className="w-full h-full" />
             </div>
-            <div className="min-w-0">
-              <h1 className="text-2xl md:text-3xl font-bold text-white break-words mt-1 sm:mt-0">{user.firstName || user.username}</h1>
+            <div className="min-w-0 mt-2 sm:mt-0">
+              <h1 className="text-2xl md:text-3xl font-bold text-white break-words mt-2 sm:mt-0">{user.firstName || user.username}</h1>
               <p className="muted">@{user.username} • Member since {formatDate(user.createdAt)}</p>
             </div>
           </div>
-          <div className="flex items-center gap-3 mt-2 sm:mt-5 sm:ml-auto">
+          <div className="flex w-full sm:w-auto items-center justify-end gap-3 mt-2 sm:mt-5 sm:ml-auto">
             <button
               onClick={logout}
               className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md text-sm transition-colors"

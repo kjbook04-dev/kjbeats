@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUser } from '../context/UserContext';
 import { useTheme } from '../context/ThemeContext';
@@ -30,7 +30,7 @@ export default function Header() {
   const [showFriendToast, setShowFriendToast] = useState(false);
   const [unreadMessageCount, setUnreadMessageCount] = useState(0);
   const [showMessageToast, setShowMessageToast] = useState(false);
-  const [lastUnreadCount, setLastUnreadCount] = useState(0);
+  const lastUnreadCountRef = useRef(0);
 
   useEffect(() => {
     if (friendNotificationCount > 0) {
@@ -67,15 +67,15 @@ export default function Header() {
         }
       });
       setUnreadMessageCount(unread);
-      if (hasNew && unread > lastUnreadCount) {
+      if (hasNew && unread > lastUnreadCountRef.current) {
         setShowMessageToast(true);
       }
       if (unread === 0) {
         setShowMessageToast(false);
       }
-      setLastUnreadCount(unread);
+      lastUnreadCountRef.current = unread;
     });
-  }, [user, lastUnreadCount]);
+  }, [user]);
 
   return (
     <header className="bg-gray-900 p-4">
@@ -106,27 +106,7 @@ export default function Header() {
           <span style={gText}>KJBeats</span>
         </Link>
 
-        {/* Mobile menu button (hidden in favor of bottom tabs) */}
-        <button
-          className="hidden md:block"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            {isMenuOpen ? (
-              <path d="M6 18L18 6M6 6l12 12" />
-            ) : (
-              <path d="M4 6h16M4 12h16M4 18h16" />
-            )}
-          </svg>
-        </button>
+        {/* Mobile menu button removed; bottom tabs handle mobile navigation */}
 
         {/* Navigation links */}
         <nav
@@ -192,7 +172,7 @@ export default function Header() {
                   <Link href="/profile" className={`flex items-center space-x-2 ${currentTheme.text} ${currentTheme.textHover} transition-colors`}>
                               {user.profilePicture ? (
                                 <div
-                                  className={`w-8 h-8 rounded-full ${user.profilePicture ? 'border-0' : `border-2 ${currentTheme.border}`} shadow-sm overflow-hidden flex items-center justify-center cursor-pointer`}
+                                  className={`w-8 h-8 aspect-square rounded-full ${user.profilePicture ? 'border-0' : `border-2 ${currentTheme.border}`} shadow-sm overflow-hidden flex items-center justify-center cursor-pointer`}
                                   role="button"
                                   tabIndex={0}
                                   onClick={() => router.push('/profile')}
@@ -203,14 +183,14 @@ export default function Header() {
                               ) : (
                                 // Match the profile page's "circle-in-a-circle" placeholder but scaled for the header.
                                 <div
-                                  className={`w-8 h-8 rounded-full border-2 ${currentTheme.border} shadow-sm overflow-hidden relative flex items-center justify-center cursor-pointer`}
+                                  className={`w-8 h-8 aspect-square rounded-full border-2 ${currentTheme.border} shadow-sm overflow-hidden relative flex items-center justify-center cursor-pointer`}
                                   role="button"
                                   tabIndex={0}
                                   onClick={() => router.push('/profile')}
                                   onKeyDown={(e) => { if (e.key === 'Enter') router.push('/profile'); }}
                                 >
                                   {/* inner dark "cutout" circle with plus icon to match profile placeholder */}
-                                  <div className="w-6 h-6 rounded-full bg-gray-900 flex items-center justify-center">
+                                  <div className="w-6 h-6 aspect-square rounded-full bg-gray-900 flex items-center justify-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-4 h-4 text-white" fill="none" stroke="white">
                                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                                     </svg>
@@ -304,9 +284,9 @@ export default function Header() {
             <li>
               <Link href="/manage" className="flex flex-col items-center gap-1 text-[10px]" onClick={() => setIsMenuOpen(false)}>
                 <svg viewBox="0 0 24 24" className={`h-5 w-5 ${pathname === '/manage' ? currentTheme.text : 'text-gray-400'}`} aria-hidden="true">
-                  <path d="M12 4l2.5 4.5L20 9l-4 3.5L17 18l-5-2.5L7 18l1-5.5L4 9l5.5-.5L12 4z" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
+                  <path d="M12 3v12m0-12a4 4 0 0 0-4 4v9a4 4 0 1 0 8 0V7a2 2 0 1 0-4 0v8" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-                <span className={`${pathname === '/manage' ? currentTheme.text : 'text-gray-400'}`}>Manage</span>
+                <span className={`${pathname === '/manage' ? currentTheme.text : 'text-gray-400'}`}>Music</span>
               </Link>
             </li>
             <li>

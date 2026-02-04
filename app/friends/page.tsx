@@ -89,6 +89,7 @@ export default function FriendsPage() {
 
   const friends = user?.friends || [];
   const friendRequests = user?.friendRequests || [];
+  const isFriend = (name: string) => friends.some((f) => f.toLowerCase() === name.toLowerCase());
 
   const selectedSong = useMemo(
     () => songs.find((s) => s.id === shareSongId),
@@ -413,10 +414,10 @@ export default function FriendsPage() {
                   <img
                     src={selectedFriendProfile.profilePicture}
                     alt={selectedFriendProfile.username || selectedFriend}
-                    className="w-10 h-10 rounded-full object-cover"
+                    className="w-10 h-10 aspect-square rounded-full object-cover"
                   />
                 ) : (
-                  <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 text-sm">
+                  <div className="w-10 h-10 aspect-square rounded-full bg-gray-800 flex items-center justify-center text-gray-400 text-sm">
                     {selectedFriendProfile.firstName?.[0] || selectedFriendProfile.username?.[0] || 'U'}
                   </div>
                 )}
@@ -430,7 +431,7 @@ export default function FriendsPage() {
                   <span className="ml-auto text-xs text-gray-400">Private</span>
                 )}
               </div>
-              {!friends.includes(selectedFriendProfile.username || selectedFriend) && (
+              {!isFriend(selectedFriendProfile.username || selectedFriend) && (
                 <div className="mt-3">
                   <button
                     onClick={async () => {
@@ -448,6 +449,16 @@ export default function FriendsPage() {
                     style={gBg}
                   >
                     {requestSentFor[selectedFriendProfile.username || selectedFriend] ? 'Friend Request Sent' : 'Send Friend Request'}
+                  </button>
+                </div>
+              )}
+              {isFriend(selectedFriendProfile.username || selectedFriend) && (
+                <div className="mt-3">
+                  <button
+                    onClick={() => removeFriend(selectedFriendProfile.username || selectedFriend)}
+                    className="px-3 py-1 rounded-md text-sm text-gray-300 border border-white/10 hover:bg-white/5"
+                  >
+                    Remove Friend
                   </button>
                 </div>
               )}
@@ -572,12 +583,12 @@ export default function FriendsPage() {
             <div className="space-y-3 border-t border-white/10 pt-3">
               <div>
                 <label className="block text-xs text-gray-400 mb-1 uppercase tracking-wide">Message</label>
-                <div className="flex gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-2 items-stretch">
                   <input
                     value={newText}
                     onChange={(e) => setNewText(e.target.value)}
                     placeholder="Type a message..."
-                    className="flex-1 px-4 py-2 bg-gray-900/70 border border-white/10 rounded-full text-white"
+                    className="flex-1 px-4 py-2 bg-gray-900/70 border border-white/10 rounded-full text-white h-10"
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' && !e.shiftKey) {
                         e.preventDefault();
@@ -585,7 +596,7 @@ export default function FriendsPage() {
                       }
                     }}
                   />
-                  <button onClick={sendText} className="px-5 py-2 rounded-full text-gray-900" style={gBg}>
+                  <button onClick={sendText} className="px-5 py-2 rounded-full text-gray-900 h-10 w-full sm:w-auto" style={gBg}>
                     Send
                   </button>
                 </div>
