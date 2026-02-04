@@ -23,6 +23,7 @@ import { usePlaylist } from '../context/PlaylistContext';
 import { gradientTextStyle, gradientBgStyle } from '../context/themeHelpers';
 import { db, storage } from '../lib/firebase';
 import type { Song, Playlist } from '../types/music';
+import { Notification } from '../components/Notification';
 
 type ChatMessage = {
   id: string;
@@ -68,6 +69,12 @@ export default function FriendsPage() {
   const [conversations, setConversations] = useState<ConversationSummary[]>([]);
   const [participantNames, setParticipantNames] = useState<Record<string, string>>({});
   const [selectedFriendProfile, setSelectedFriendProfile] = useState<FriendProfile | null>(null);
+  const [requestSentFor, setRequestSentFor] = useState<Record<string, boolean>>({});
+  const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' | 'info'; isVisible: boolean }>({
+    message: '',
+    type: 'success',
+    isVisible: false,
+  });
   const gText = gradientTextStyle();
   const gBg = gradientBgStyle();
   const canChat = Boolean(selectedFriend && selectedFriendUid);
@@ -418,11 +425,21 @@ export default function FriendsPage() {
               {!friends.includes(selectedFriendProfile.username || selectedFriend) && (
                 <div className="mt-3">
                   <button
-                    onClick={() => addFriend(selectedFriendProfile.username || selectedFriend)}
-                    className="px-3 py-1 rounded-md text-sm text-gray-900"
+                    onClick={async () => {
+                      const name = selectedFriendProfile.username || selectedFriend;
+                      const res = await addFriend(name);
+                      if (res.success) {
+                        setRequestSentFor((prev) => ({ ...prev, [name]: true }));
+                        showNotification('Friend request sent successfully!', 'success');
+                      } else {
+                        showNotification(res.error || 'Failed to send request.', 'error');
+                      }
+                    }}
+                    disabled={requestSentFor[selectedFriendProfile.username || selectedFriend]}
+                    className="px-3 py-1 rounded-md text-sm text-gray-900 disabled:opacity-60 disabled:cursor-default"
                     style={gBg}
                   >
-                    Send Friend Request
+                    {requestSentFor[selectedFriendProfile.username || selectedFriend] ? 'Friend Request Sent' : 'Send Friend Request'}
                   </button>
                 </div>
               )}
@@ -638,6 +655,19 @@ export default function FriendsPage() {
           </div>
         </div>
       )}
+      <Notification
+        message={notification.message}
+        type={notification.type}
+        isVisible={notification.isVisible}
+        onClose={hideNotification}
+      />
     </div>
   );
 }
+  const showNotification = (message: string, type: 'success' | 'error' | 'info' = 'success') => {
+    setNotification({ message, type, isVisible: true });
+  };
+
+  const hideNotification = () => {
+    setNotification((prev) => ({ ...prev, isVisible: false }));
+  };
