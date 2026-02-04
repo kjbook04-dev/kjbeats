@@ -88,11 +88,15 @@ export default function PlaylistDetailPage() {
     try {
       // Try to play locally using the global playTrack function
       if (song.audioUrl && (window as WindowWithPlayTrack).playTrack) {
+        const queue = playlist?.songs || [];
+        const queueIndex = queue.findIndex((s) => s.id === song.id);
         const trackData = {
           title: song.title,
           artist: song.artist,
           audioUrl: song.audioUrl,
-          id: song.id // Pass the song ID for file lookup
+          id: song.id,
+          queue,
+          queueIndex: queueIndex >= 0 ? queueIndex : 0,
         };
         (window as WindowWithPlayTrack).playTrack!(trackData);
         setNotification({

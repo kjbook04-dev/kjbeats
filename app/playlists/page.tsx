@@ -121,7 +121,9 @@ export default function PlaylistsPage() {
           title: firstSong.title,
           artist: firstSong.artist,
           audioUrl: firstSong.audioUrl,
-          id: firstSong.id // Pass the song ID for file lookup
+          id: firstSong.id,
+          queue: playlist.songs || [],
+          queueIndex: 0,
         };
         (window as WindowWithPlayTrack).playTrack!(trackData);
         showNotification(`Playing "${playlist.title}"`, 'success');

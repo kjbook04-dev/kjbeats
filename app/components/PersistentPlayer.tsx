@@ -23,6 +23,8 @@ export default function PersistentPlayer() {
   const [volume, setVolume] = useState(1);
   const [previousVolume, setPreviousVolume] = useState(1);
   const [isMuted, setIsMuted] = useState(false);
+  const [playQueue, setPlayQueue] = useState<Song[] | null>(null);
+  const [queueIndex, setQueueIndex] = useState<number>(-1);
   const audioRef = useRef<HTMLAudioElement>(null);
   const currentSongIdRef = useRef<string | null>(null);
   const previousPressAtRef = useRef<number>(0);
@@ -254,6 +256,7 @@ export default function PersistentPlayer() {
     win.universalPlayer = win.universalPlayer || {};
     win.universalPlayer.playTrack = (data: any) => {
       try {
+        const queueFromData = Array.isArray(data.queue) ? data.queue : null;
         // Normalize incoming data to our Song shape as best-effort.
         const song = {
           id: data.id || data.youtubeId || `legacy-${Date.now()}`,
@@ -263,6 +266,32 @@ export default function PersistentPlayer() {
           audioUrl: data.audioUrl || data.url || data.youtubeId || '',
           coverUrl: data.coverUrl || data.song?.coverUrl || undefined,
         } as Song;
+
+        if (queueFromData && queueFromData.length > 0) {
+          const normalizedQueue = queueFromData.map((q: any) => ({
+            id: q.id,
+            title: q.title,
+            artist: q.artist,
+            duration: q.duration || '0:00',
+            audioUrl: q.audioUrl,
+            coverUrl: q.coverUrl,
+          })) as Song[];
+          setPlayQueue(normalizedQueue);
+          const idx = typeof data.queueIndex === 'number'
+            ? data.queueIndex
+            : normalizedQueue.findIndex((q) => q.id === song.id);
+          setQueueIndex(idx >= 0 ? idx : 0);
+        } else {
+          // Default to library queue when possible
+          const idx = songs.findIndex((s) => s.id === song.id);
+          if (idx >= 0) {
+            setPlayQueue(songs);
+            setQueueIndex(idx);
+          } else {
+            setPlayQueue(null);
+            setQueueIndex(-1);
+          }
+        }
 
         // If this exact track is already loaded, restart it from the beginning.
         if (audioRef.current && currentSongIdRef.current === song.id) {
@@ -340,7 +369,7 @@ export default function PersistentPlayer() {
         // ignore
       }
     };
-  }, [setCurrentSong, setIsPlaying]);
+  }, [setCurrentSong, setIsPlaying, songs]);
 
   const handleTimeUpdate = () => {
     if (audioRef.current) {
@@ -406,6 +435,16 @@ export default function PersistentPlayer() {
     }
   };
 
+  const resolveActiveQueue = () => {
+    if (playQueue && playQueue.length > 0) return playQueue;
+    return songs;
+  };
+
+  const resolveQueueIndex = (queue: Song[]) => {
+    if (!currentSong) return -1;
+    return queue.findIndex((song) => song.id === currentSong.id);
+  };
+
   const skipToPrevious = () => {
     // UX: first press restarts and plays the current song from the beginning.
     // If the user presses again within 2000ms of that restart, go to the previous track.
@@ -416,7 +455,8 @@ export default function PersistentPlayer() {
     const firstPressAt = previousPressAtRef.current;
     const RESTART_WINDOW_MS = 2000; // 2 seconds
 
-    const currentIndex = songs.findIndex(song => song.id === currentSong.id);
+    const queue = resolveActiveQueue();
+    const currentIndex = resolveQueueIndex(queue);
     if (currentIndex === -1) return;
 
     // Determine current time in seconds
@@ -425,9 +465,10 @@ export default function PersistentPlayer() {
     // If this is a second press within the restart window, go to the previous track.
     // Otherwise, treat as a restart.
     if (firstPressAt && (now - firstPressAt) <= RESTART_WINDOW_MS) {
-      const previousIndex = currentIndex === 0 ? songs.length - 1 : currentIndex - 1;
-      const previousSong = songs[previousIndex];
+      const previousIndex = currentIndex === 0 ? queue.length - 1 : currentIndex - 1;
+      const previousSong = queue[previousIndex];
       console.log('Second press within window: skipping to previous:', previousSong.title);
+      setQueueIndex(previousIndex);
       setCurrentSong(previousSong);
       if (isPlaying) setIsPlaying(true);
       previousPressAtRef.current = 0;
@@ -469,16 +510,18 @@ export default function PersistentPlayer() {
   };
 
   const skipToNext = () => {
-    if (!currentSong || songs.length === 0) return;
+    const queue = resolveActiveQueue();
+    if (!currentSong || queue.length === 0) return;
     
-    const currentIndex = songs.findIndex(song => song.id === currentSong.id);
+    const currentIndex = resolveQueueIndex(queue);
     if (currentIndex === -1) return;
     
     // Go to next song, or wrap to first song if at end
-    const nextIndex = currentIndex === songs.length - 1 ? 0 : currentIndex + 1;
-    const nextSong = songs[nextIndex];
+    const nextIndex = currentIndex === queue.length - 1 ? 0 : currentIndex + 1;
+    const nextSong = queue[nextIndex];
     
     console.log('Skipping to next:', nextSong.title);
+    setQueueIndex(nextIndex);
     setCurrentSong(nextSong);
     if (isPlaying) {
       // Keep playing the new song
@@ -487,7 +530,11 @@ export default function PersistentPlayer() {
   };
 
   const handleEnded = () => {
-    setIsPlaying(false);
+    if (isPlaying) {
+      skipToNext();
+    } else {
+      setIsPlaying(false);
+    }
   };
 
   const handleError = (e: React.SyntheticEvent<HTMLAudioElement, Event>) => {
@@ -590,8 +637,8 @@ export default function PersistentPlayer() {
               </button>
               
               {/* Progress Bar */}
-              <div className="flex items-center space-x-3 flex-1 min-w-0">
-                <span className="text-gray-300 text-sm w-10">{formatTime(currentTime)}</span>
+              <div className="flex items-center space-x-2 flex-1 min-w-0">
+                <span className="text-gray-300 text-xs w-9">{formatTime(currentTime)}</span>
                 <input
                   data-range
                   type="range"
@@ -604,7 +651,7 @@ export default function PersistentPlayer() {
                     ['--thumb-color' as any]: currentTheme.primary,
                   } as React.CSSProperties}
                 />
-                <span className="text-gray-300 text-sm w-10">{formatTime(duration)}</span>
+                <span className="text-gray-300 text-xs w-9">{formatTime(duration)}</span>
               </div>
               
               {/* Volume */}
@@ -624,12 +671,12 @@ export default function PersistentPlayer() {
                   value={volume}
                   onChange={handleVolumeChange}
                   data-range
-                  className={`w-16 sm:w-20 h-1.5 bg-gray-700 rounded-lg appearance-none`}
+                  className={`w-12 sm:w-20 h-1.5 bg-gray-700 rounded-lg appearance-none`}
                   style={{
                     ['--thumb-color' as any]: currentTheme.primary,
                   } as React.CSSProperties}
                 />
-                <span className="text-gray-300 text-sm w-8">{Math.round(volume * 100)}%</span>
+                <span className="text-gray-300 text-xs w-7">{Math.round(volume * 100)}%</span>
               </div>
             </div>
         </div>

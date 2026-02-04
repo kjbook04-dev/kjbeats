@@ -9,7 +9,7 @@ import { usePathname } from 'next/navigation';
 import { AuthModal } from './AuthModal';
 import { gradientTextStyle } from '../context/themeHelpers';
 import { Notification } from './Notification';
-import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import { collection, doc, onSnapshot, query, updateDoc, where } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 
 export default function Header() {
@@ -48,14 +48,25 @@ export default function Header() {
     return onSnapshot(q, (snapshot) => {
       const reads = user.conversationReads || {};
       let unread = 0;
+      let hasNew = false;
       snapshot.docs.forEach((docSnap) => {
         const data = docSnap.data() as { updatedAt?: any };
         const updatedAt = data.updatedAt?.seconds ? data.updatedAt.seconds * 1000 : 0;
         const lastRead = reads[docSnap.id] ? Date.parse(reads[docSnap.id]) : 0;
-        if (updatedAt > lastRead) unread += 1;
+        if (!lastRead && updatedAt) {
+          // First time seeing this convo; mark as read to avoid false positives.
+          updateDoc(doc(db, 'users', user.id), {
+            [`conversationReads.${docSnap.id}`]: new Date(updatedAt).toISOString(),
+          }).catch(() => {});
+          return;
+        }
+        if (updatedAt > lastRead) {
+          unread += 1;
+          hasNew = true;
+        }
       });
       setUnreadMessageCount(unread);
-      if (unread > lastUnreadCount) {
+      if (hasNew && unread > lastUnreadCount) {
         setShowMessageToast(true);
       }
       if (unread === 0) {
