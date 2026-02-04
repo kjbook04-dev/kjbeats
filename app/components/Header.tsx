@@ -43,7 +43,8 @@ export default function Header() {
       setUnreadMessageCount(0);
       return;
     }
-    const convRef = collection(db, 'conversations');
+    const dbClient = db;
+    const convRef = collection(dbClient, 'conversations');
     const q = query(convRef, where('participants', 'array-contains', user.id));
     return onSnapshot(q, (snapshot) => {
       const reads = user.conversationReads || {};
@@ -55,7 +56,7 @@ export default function Header() {
         const lastRead = reads[docSnap.id] ? Date.parse(reads[docSnap.id]) : 0;
         if (!lastRead && updatedAt) {
           // First time seeing this convo; mark as read to avoid false positives.
-          updateDoc(doc(db, 'users', user.id), {
+          updateDoc(doc(dbClient, 'users', user.id), {
             [`conversationReads.${docSnap.id}`]: new Date(updatedAt).toISOString(),
           }).catch(() => {});
           return;
