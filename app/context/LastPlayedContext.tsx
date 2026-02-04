@@ -54,10 +54,14 @@ export function LastPlayedProvider({ children }: { children: ReactNode }) {
   }, [user]);
 
   const setLastPlayed = (song: Song) => {
-    setLastPlayedState(song);
-    localStorage.setItem("lastPlayedSong", JSON.stringify(song));
+    // Firestore does not allow undefined values in documents.
+    const cleaned = Object.fromEntries(
+      Object.entries(song).filter(([, value]) => value !== undefined)
+    ) as Song;
+    setLastPlayedState(cleaned);
+    localStorage.setItem("lastPlayedSong", JSON.stringify(cleaned));
     if (user && db) {
-      updateDoc(doc(db, "users", user.id), { lastPlayedSong: song }).catch(() => {
+      updateDoc(doc(db, "users", user.id), { lastPlayedSong: cleaned }).catch(() => {
         // ignore cloud sync failures
       });
     }

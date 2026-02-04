@@ -53,6 +53,10 @@ export default function MusicUpload() {
     setNotification(prev => ({ ...prev, isVisible: false }));
   };
 
+  const MAX_SONGS_PER_USER = 50;
+  const MAX_FILE_SIZE_MB = 20;
+  const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setFiles(Array.from(e.target.files));
@@ -60,12 +64,26 @@ export default function MusicUpload() {
   };
 
   const handleUpload = async () => {
+    if (uploadedSongs.length >= MAX_SONGS_PER_USER) {
+      showNotification(`You’ve reached the ${MAX_SONGS_PER_USER}-song limit.`, 'error');
+      return;
+    }
+    const validFiles = files.filter((file) => file.size <= MAX_FILE_SIZE_BYTES);
+    if (validFiles.length !== files.length) {
+      showNotification(`Some files were too large (max ${MAX_FILE_SIZE_MB}MB).`, 'error');
+    }
+    if (validFiles.length === 0) return;
+    if (uploadedSongs.length + validFiles.length > MAX_SONGS_PER_USER) {
+      showNotification(`You can only add ${MAX_SONGS_PER_USER - uploadedSongs.length} more song(s).`, 'error');
+      return;
+    }
+
     setUploading(true);
     
     try {
       const newSongs: Song[] = [];
       
-      for (const file of files) {
+      for (const file of validFiles) {
         if (file.type.startsWith('audio/')) {
           // Temporary local URL used before Firebase Storage returns a durable URL.
           const audioUrl = URL.createObjectURL(file);
