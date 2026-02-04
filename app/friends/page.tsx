@@ -233,47 +233,8 @@ export default function FriendsPage() {
       <h1 className="text-4xl font-bold mb-6" style={gText}>Friends</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
-          <h3 className={`text-xl font-semibold mb-3 ${currentTheme.text}`}>Your Friends</h3>
-          {friends.length === 0 ? (
-            <>
-              <p className="text-gray-400 mb-4">No friends yet. Add friends from your profile page.</p>
-              <div className="text-center">
-                <Link
-                  href="/profile"
-                  className="inline-block px-4 py-2 rounded-md text-sm font-medium hover:scale-105 transition-all text-gray-900"
-                  style={gBg}
-                >
-                  Go to Profile → Add Friends
-                </Link>
-              </div>
-            </>
-          ) : (
-            <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
-              {friends.map((friendName) => (
-                <div
-                  key={friendName}
-                  className={`w-full flex items-center justify-between px-3 py-2 rounded-md transition-colors ${
-                    selectedFriend === friendName ? 'bg-gray-700 text-white' : 'text-gray-300 hover:bg-gray-700'
-                  }`}
-                >
-                  <button onClick={() => setSelectedFriend(friendName)} className="flex-1 text-left">
-                    {friendName}
-                  </button>
-                  <button
-                    onClick={() => setRemoveTarget(friendName)}
-                    className="ml-2 text-white hover:text-white/80 text-2xl leading-none"
-                    aria-label={`Remove ${friendName}`}
-                    title={`Remove ${friendName}`}
-                  >
-                    ×
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-
-          <div className="mt-4 border-t border-gray-700 pt-3">
-            <h4 className={`text-sm font-semibold mb-2 ${currentTheme.text}`}>Requests</h4>
+          <div className="mb-4">
+            <h3 className={`text-xl font-semibold mb-3 ${currentTheme.text}`}>Requests</h3>
             {friendRequests.length === 0 ? (
               <p className="text-gray-400 text-sm">No requests right now.</p>
             ) : (
@@ -296,6 +257,47 @@ export default function FriendsPage() {
                         Decline
                       </button>
                     </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="border-t border-gray-700 pt-4">
+            <h3 className={`text-xl font-semibold mb-3 ${currentTheme.text}`}>Your Friends</h3>
+            {friends.length === 0 ? (
+              <>
+                <p className="text-gray-400 mb-4">No friends yet. Add friends from your profile page.</p>
+                <div className="text-center">
+                  <Link
+                    href="/profile"
+                    className="inline-block px-4 py-2 rounded-md text-sm font-medium hover:scale-105 transition-all text-gray-900"
+                    style={gBg}
+                  >
+                    Go to Profile → Add Friends
+                  </Link>
+                </div>
+              </>
+            ) : (
+              <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
+                {friends.map((friendName) => (
+                  <div
+                    key={friendName}
+                    className={`w-full flex items-center justify-between px-3 py-2 rounded-md transition-colors ${
+                      selectedFriend === friendName ? 'bg-gray-700 text-white' : 'text-gray-300 hover:bg-gray-700'
+                    }`}
+                  >
+                    <button onClick={() => setSelectedFriend(friendName)} className="flex-1 text-left">
+                      {friendName}
+                    </button>
+                    <button
+                      onClick={() => setRemoveTarget(friendName)}
+                      className="ml-2 text-white hover:text-white/80 text-2xl leading-none"
+                      aria-label={`Remove ${friendName}`}
+                      title={`Remove ${friendName}`}
+                    >
+                      ×
+                    </button>
                   </div>
                 ))}
               </div>
@@ -373,65 +375,64 @@ export default function FriendsPage() {
             )}
           </div>
 
-          <div className="space-y-3 border-t border-gray-700 pt-3">
-            <div>
-              <label className="block text-xs text-gray-400 mb-1">Message</label>
-              <div className="flex gap-2">
-                <input
-                  value={newText}
-                  onChange={(e) => setNewText(e.target.value)}
-                  placeholder="Type a message..."
-                  className="flex-1 px-3 py-2 bg-gray-900 border border-gray-700 rounded-md text-white"
-                  disabled={!canChat}
-                />
-                <button onClick={sendText} disabled={!canChat} className="px-4 py-2 rounded-md text-gray-900 disabled:opacity-50" style={gBg}>
-                  Send
-                </button>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          {selectedFriend && (
+            <div className="space-y-3 border-t border-gray-700 pt-3">
               <div>
-                <label className="block text-xs text-gray-400 mb-1">Share a song</label>
+                <label className="block text-xs text-gray-400 mb-1">Message</label>
                 <div className="flex gap-2">
-                  <select
-                    value={shareSongId}
-                    onChange={(e) => setShareSongId(e.target.value)}
+                  <input
+                    value={newText}
+                    onChange={(e) => setNewText(e.target.value)}
+                    placeholder="Type a message..."
                     className="flex-1 px-3 py-2 bg-gray-900 border border-gray-700 rounded-md text-white"
-                    disabled={!canChat}
-                  >
-                    <option value="">Select a song...</option>
-                    {songs.map((song) => (
-                      <option key={song.id} value={song.id}>{song.title}</option>
-                    ))}
-                  </select>
-                  <button onClick={sendSong} disabled={!shareSongId || !canChat} className="px-3 py-2 rounded-md text-gray-900 disabled:opacity-50" style={gBg}>
-                    Share
+                  />
+                  <button onClick={sendText} className="px-4 py-2 rounded-md text-gray-900" style={gBg}>
+                    Send
                   </button>
                 </div>
               </div>
 
-              <div>
-                <label className="block text-xs text-gray-400 mb-1">Share a playlist</label>
-                <div className="flex gap-2">
-                  <select
-                    value={sharePlaylistId}
-                    onChange={(e) => setSharePlaylistId(e.target.value)}
-                    className="flex-1 px-3 py-2 bg-gray-900 border border-gray-700 rounded-md text-white"
-                    disabled={!canChat}
-                  >
-                    <option value="">Select a playlist...</option>
-                    {playlists.map((playlist) => (
-                      <option key={playlist.id} value={playlist.id}>{playlist.title}</option>
-                    ))}
-                  </select>
-                  <button onClick={sendPlaylist} disabled={!sharePlaylistId || !canChat} className="px-3 py-2 rounded-md text-gray-900 disabled:opacity-50" style={gBg}>
-                    Share
-                  </button>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                <div>
+                  <label className="block text-xs text-gray-400 mb-1">Share a song</label>
+                  <div className="flex gap-2">
+                    <select
+                      value={shareSongId}
+                      onChange={(e) => setShareSongId(e.target.value)}
+                      className="flex-1 px-3 py-2 bg-gray-900 border border-gray-700 rounded-md text-white"
+                    >
+                      <option value="">Select a song...</option>
+                      {songs.map((song) => (
+                        <option key={song.id} value={song.id}>{song.title}</option>
+                      ))}
+                    </select>
+                    <button onClick={sendSong} disabled={!shareSongId} className="px-3 py-2 rounded-md text-gray-900 disabled:opacity-50" style={gBg}>
+                      Share
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs text-gray-400 mb-1">Share a playlist</label>
+                  <div className="flex gap-2">
+                    <select
+                      value={sharePlaylistId}
+                      onChange={(e) => setSharePlaylistId(e.target.value)}
+                      className="flex-1 px-3 py-2 bg-gray-900 border border-gray-700 rounded-md text-white"
+                    >
+                      <option value="">Select a playlist...</option>
+                      {playlists.map((playlist) => (
+                        <option key={playlist.id} value={playlist.id}>{playlist.title}</option>
+                      ))}
+                    </select>
+                    <button onClick={sendPlaylist} disabled={!sharePlaylistId} className="px-3 py-2 rounded-md text-gray-900 disabled:opacity-50" style={gBg}>
+                      Share
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
 
