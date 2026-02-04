@@ -79,6 +79,14 @@ export default function FriendsPage() {
   const gBg = gradientBgStyle();
   const canChat = Boolean(selectedFriend && selectedFriendUid);
 
+  const showNotification = (message: string, type: 'success' | 'error' | 'info' = 'success') => {
+    setNotification({ message, type, isVisible: true });
+  };
+
+  const hideNotification = () => {
+    setNotification((prev) => ({ ...prev, isVisible: false }));
+  };
+
   const friends = user?.friends || [];
   const friendRequests = user?.friendRequests || [];
 
@@ -586,7 +594,7 @@ export default function FriendsPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2 items-stretch">
                 <div>
                   <label className="block text-xs text-gray-400 mb-1 uppercase tracking-wide">Share a song</label>
-                  <div className="grid grid-cols-[1fr_auto] gap-2 items-stretch">
+                  <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-2 items-stretch">
                     <select
                       value={shareSongId}
                       onChange={(e) => setShareSongId(e.target.value)}
@@ -597,7 +605,7 @@ export default function FriendsPage() {
                         <option key={song.id} value={song.id}>{song.title}</option>
                       ))}
                     </select>
-                    <button onClick={sendSong} disabled={!shareSongId} className="px-4 py-2 rounded-full text-gray-900 disabled:opacity-50 h-10 w-24" style={gBg}>
+                    <button onClick={sendSong} disabled={!shareSongId} className="px-4 py-2 rounded-full text-gray-900 disabled:opacity-50 h-10 w-full sm:w-24" style={gBg}>
                       Share
                     </button>
                   </div>
@@ -605,7 +613,7 @@ export default function FriendsPage() {
 
                 <div>
                   <label className="block text-xs text-gray-400 mb-1 uppercase tracking-wide">Share a playlist</label>
-                  <div className="grid grid-cols-[1fr_auto] gap-2 items-stretch">
+                  <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-2 items-stretch">
                     <select
                       value={sharePlaylistId}
                       onChange={(e) => setSharePlaylistId(e.target.value)}
@@ -616,7 +624,7 @@ export default function FriendsPage() {
                         <option key={playlist.id} value={playlist.id}>{playlist.title}</option>
                       ))}
                     </select>
-                    <button onClick={sendPlaylist} disabled={!sharePlaylistId} className="px-4 py-2 rounded-full text-gray-900 disabled:opacity-50 h-10 w-24" style={gBg}>
+                    <button onClick={sendPlaylist} disabled={!sharePlaylistId} className="px-4 py-2 rounded-full text-gray-900 disabled:opacity-50 h-10 w-full sm:w-24" style={gBg}>
                       Share
                     </button>
                   </div>
@@ -664,10 +672,3 @@ export default function FriendsPage() {
     </div>
   );
 }
-  const showNotification = (message: string, type: 'success' | 'error' | 'info' = 'success') => {
-    setNotification({ message, type, isVisible: true });
-  };
-
-  const hideNotification = () => {
-    setNotification((prev) => ({ ...prev, isVisible: false }));
-  };
