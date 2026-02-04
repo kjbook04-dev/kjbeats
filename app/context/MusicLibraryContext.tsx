@@ -80,7 +80,12 @@ export function MusicLibraryProvider({ children }: { children: ReactNode }) {
         uploadedAt: incoming.uploadedAt || new Date().toISOString(),
       };
 
-      await setDoc(doc(db, "users", user.id, "songs", song.id), song, { merge: true });
+      // Firestore does not allow undefined values in documents.
+      const cleaned = Object.fromEntries(
+        Object.entries(song).filter(([, value]) => value !== undefined)
+      ) as Song;
+
+      await setDoc(doc(db, "users", user.id, "songs", song.id), cleaned, { merge: true });
       uploaded.push(song);
     }
 
@@ -116,4 +121,3 @@ export function MusicLibraryProvider({ children }: { children: ReactNode }) {
     </MusicLibraryContext.Provider>
   );
 }
-
