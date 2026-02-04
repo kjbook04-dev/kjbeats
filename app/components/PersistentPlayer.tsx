@@ -510,7 +510,7 @@ export default function PersistentPlayer() {
   if (!currentSong) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-700 p-3 z-50">
+    <div className="fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-700 p-2 sm:p-3 z-50">
       <style>{`
         /* Scoped slider thumb styling for player ranges */
         [data-range] { --thumb-color: rgb(236 72 153); }
@@ -532,9 +532,9 @@ export default function PersistentPlayer() {
         preload="metadata"
       />
       
-      <div className="container mx-auto flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+      <div className="container mx-auto flex flex-wrap items-center gap-2 md:flex-nowrap md:justify-between">
         {/* Song Info */}
-        <div className="flex items-center space-x-3 md:flex-shrink-0 min-w-0">
+        <div className="flex items-center space-x-3 min-w-0 flex-1 md:flex-shrink-0 md:flex-none">
           {currentSong.coverUrl && (
             <img
               src={currentSong.coverUrl}
@@ -551,7 +551,7 @@ export default function PersistentPlayer() {
     {/* Controls */}
     <div className="w-full md:flex-1 md:mx-6">
       {/* Regular Audio Controls */}
-            <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between md:space-x-3">
+            <div className="flex flex-row flex-wrap items-center justify-between gap-2 md:flex-row md:items-center md:justify-between md:space-x-3">
               {/* Previous Button */}
               <button
                 onClick={skipToPrevious}
@@ -591,7 +591,7 @@ export default function PersistentPlayer() {
               
               {/* Progress Bar */}
               <div className="flex items-center space-x-3 flex-1 min-w-0">
-                <span className="text-gray-300 text-sm w-10 hidden sm:inline">{formatTime(currentTime)}</span>
+                <span className="text-gray-300 text-sm w-10">{formatTime(currentTime)}</span>
                 <input
                   data-range
                   type="range"
@@ -604,7 +604,7 @@ export default function PersistentPlayer() {
                     ['--thumb-color' as any]: currentTheme.primary,
                   } as React.CSSProperties}
                 />
-                <span className="text-gray-300 text-sm w-10 hidden sm:inline">{formatTime(duration)}</span>
+                <span className="text-gray-300 text-sm w-10">{formatTime(duration)}</span>
               </div>
               
               {/* Volume */}
@@ -629,13 +629,13 @@ export default function PersistentPlayer() {
                     ['--thumb-color' as any]: currentTheme.primary,
                   } as React.CSSProperties}
                 />
-                <span className="text-gray-300 text-sm w-8 hidden sm:inline">{Math.round(volume * 100)}%</span>
+                <span className="text-gray-300 text-sm w-8">{Math.round(volume * 100)}%</span>
               </div>
             </div>
         </div>
 
         {/* Close Button */}
-        <div className="flex-shrink-0 self-end md:self-auto">
+        <div className="flex-shrink-0 self-auto">
           <button
             onClick={() => setCurrentSong(null)}
             className={`${currentTheme.text} ${currentTheme.textHover} text-sm`}

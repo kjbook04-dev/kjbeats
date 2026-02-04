@@ -9,6 +9,8 @@ import { usePathname } from 'next/navigation';
 import { AuthModal } from './AuthModal';
 import { gradientTextStyle } from '../context/themeHelpers';
 import { Notification } from './Notification';
+import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import { db } from '../lib/firebase';
 
 export default function Header() {
   const router = useRouter();
@@ -25,12 +27,39 @@ export default function Header() {
   const friendNotificationCount = user?.friendNotifications?.length || 0;
   const latestFriendNotification = user?.friendNotifications?.[user.friendNotifications.length - 1];
   const [showFriendToast, setShowFriendToast] = useState(false);
+  const [unreadMessageCount, setUnreadMessageCount] = useState(0);
+  const [showMessageToast, setShowMessageToast] = useState(false);
+  const [lastUnreadCount, setLastUnreadCount] = useState(0);
 
   useEffect(() => {
     if (friendNotificationCount > 0) {
       setShowFriendToast(true);
     }
   }, [friendNotificationCount]);
+
+  useEffect(() => {
+    if (!db || !user) {
+      setUnreadMessageCount(0);
+      return;
+    }
+    const convRef = collection(db, 'conversations');
+    const q = query(convRef, where('participants', 'array-contains', user.id));
+    return onSnapshot(q, (snapshot) => {
+      const reads = user.conversationReads || {};
+      let unread = 0;
+      snapshot.docs.forEach((docSnap) => {
+        const data = docSnap.data() as { updatedAt?: any };
+        const updatedAt = data.updatedAt?.seconds ? data.updatedAt.seconds * 1000 : 0;
+        const lastRead = reads[docSnap.id] ? Date.parse(reads[docSnap.id]) : 0;
+        if (updatedAt > lastRead) unread += 1;
+      });
+      setUnreadMessageCount(unread);
+      if (unread > lastUnreadCount) {
+        setShowMessageToast(true);
+      }
+      setLastUnreadCount(unread);
+    });
+  }, [user, lastUnreadCount]);
 
   return (
     <header className="bg-gray-900 p-4">
@@ -87,26 +116,26 @@ export default function Header() {
         <nav
           className={`${
             isMenuOpen ? 'block' : 'hidden'
-          } md:block absolute md:relative top-16 md:top-0 left-0 right-0 bg-black md:bg-transparent`}
+          } md:block absolute md:relative top-16 md:top-0 left-0 right-0 bg-black/90 backdrop-blur border-b border-white/10 md:border-0 md:bg-transparent z-40 max-h-[70vh] overflow-y-auto md:max-h-none md:overflow-visible`}
         >
           <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-8 p-4 md:p-0">
             <ul className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8">
               <li>
-                <Link href="/" className={`${currentTheme.text} ${currentTheme.textHover}`}>
+                <Link href="/" className={`${currentTheme.text} ${currentTheme.textHover}`} onClick={() => setIsMenuOpen(false)}>
                   <span style={gText}>Home</span>
                 </Link>
               </li>
               {/* Library tab removed per request */}
               {user && (
                 <li>
-        <Link href="/playlists" className={`${currentTheme.text} ${currentTheme.textHover}`}>
+        <Link href="/playlists" className={`${currentTheme.text} ${currentTheme.textHover}`} onClick={() => setIsMenuOpen(false)}>
         <span style={gText}>Playlists</span>
         </Link>
                 </li>
               )}
               {user && (
                 <li>
-                  <Link href="/manage" className={`${currentTheme.text} ${currentTheme.textHover}`}>
+                  <Link href="/manage" className={`${currentTheme.text} ${currentTheme.textHover}`} onClick={() => setIsMenuOpen(false)}>
                     <span style={gText}>Manage Music</span>
                   </Link>
                 </li>
@@ -119,16 +148,17 @@ export default function Header() {
                     onClick={() => {
                       clearFriendNotifications();
                       setShowFriendToast(false);
+                      setIsMenuOpen(false);
                     }}
                   >
                     <span className="relative inline-flex items-center" style={gText}>
                       Friends
-                      {friendNotificationCount > 0 && (
+                      {(friendNotificationCount > 0 || unreadMessageCount > 0) && (
                         <span
                           className="absolute -top-2 -right-3 min-w-[1.1rem] h-4 px-1 rounded-full text-[10px] leading-4 text-white text-center"
                           style={{ backgroundColor: currentTheme.primary }}
                         >
-                          {friendNotificationCount > 9 ? '9+' : friendNotificationCount}
+                          {friendNotificationCount + unreadMessageCount > 9 ? '9+' : friendNotificationCount + unreadMessageCount}
                         </span>
                       )}
                     </span>
@@ -136,7 +166,7 @@ export default function Header() {
                 </li>
               )}
               <li>
-                <Link href="/about" className={`${currentTheme.text} ${currentTheme.textHover}`}>
+                <Link href="/about" className={`${currentTheme.text} ${currentTheme.textHover}`} onClick={() => setIsMenuOpen(false)}>
                   <span style={gText}>About</span>
                 </Link>
               </li>
@@ -223,6 +253,12 @@ export default function Header() {
           type="success"
           isVisible={showFriendToast}
           onClose={() => setShowFriendToast(false)}
+        />
+        <Notification
+          message={`You have ${unreadMessageCount} new message${unreadMessageCount === 1 ? '' : 's'}.`}
+          type="success"
+          isVisible={showMessageToast}
+          onClose={() => setShowMessageToast(false)}
         />
 
         <AuthModal

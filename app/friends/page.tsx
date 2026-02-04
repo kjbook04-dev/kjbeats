@@ -33,6 +33,7 @@ type ChatMessage = {
   song?: Song;
   playlist?: Playlist;
   createdAt?: any;
+  likedBy?: string[];
 };
 
 type ConversationSummary = {
@@ -134,6 +135,7 @@ export default function FriendsPage() {
     const setup = async () => {
       const conversationId = await ensureConversation();
       if (!conversationId) return;
+      await markConversationRead(conversationId);
       const messagesRef = collection(dbClient, 'conversations', conversationId, 'messages');
       const q = query(messagesRef, orderBy('createdAt', 'asc'));
       unsubscribe = onSnapshot(q, (snapshot) => {
@@ -161,6 +163,17 @@ export default function FriendsPage() {
     return id;
   };
 
+  const markConversationRead = async (conversationId: string) => {
+    if (!db || !user) return;
+    try {
+      await updateDoc(doc(db, 'users', user.id), {
+        [`conversationReads.${conversationId}`]: new Date().toISOString(),
+      });
+    } catch (error) {
+      console.error('Failed to mark conversation read', error);
+    }
+  };
+
   const sendText = async () => {
     if (!db || !user || !newText.trim() || !selectedFriendUid) return;
     const conversationId = await ensureConversation();
@@ -171,9 +184,24 @@ export default function FriendsPage() {
       type: 'text',
       text: newText.trim(),
       createdAt: serverTimestamp(),
+      likedBy: [],
     });
     await updateDoc(doc(db, 'conversations', conversationId), { updatedAt: serverTimestamp() });
     setNewText('');
+  };
+
+  const toggleLikeMessage = async (msg: ChatMessage) => {
+    if (!db || !user || !selectedFriendUid) return;
+    const conversationId = conversationIdFor(user.id, selectedFriendUid);
+    const likedBy = Array.isArray(msg.likedBy) ? msg.likedBy : [];
+    const next = likedBy.includes(user.id)
+      ? likedBy.filter((id) => id !== user.id)
+      : [...likedBy, user.id];
+    try {
+      await updateDoc(doc(db, 'conversations', conversationId, 'messages', msg.id), { likedBy: next });
+    } catch (error) {
+      console.error('Failed to like message', error);
+    }
   };
 
   const sendSong = async () => {
@@ -206,8 +234,17 @@ export default function FriendsPage() {
     setSharePlaylistId('');
   };
 
+  const isSongAlreadyAdded = (song?: Song) => {
+    if (!song) return false;
+    return songs.some((s) =>
+      (song.storagePath && s.storagePath === song.storagePath)
+      || (song.audioUrl && s.audioUrl === song.audioUrl)
+      || (s.title === song.title && s.artist === song.artist)
+    );
+  };
+
   const saveSharedSong = async (song?: Song) => {
-    if (!song) return;
+    if (!song || isSongAlreadyAdded(song)) return;
     let audioUrl = song.audioUrl;
     let storagePath = song.storagePath;
     if (audioUrl && audioUrl.startsWith('https://firebasestorage.googleapis.com') && storage && user) {
@@ -325,16 +362,33 @@ export default function FriendsPage() {
           </div>
         </div>
 
-        <div className="md:col-span-2 bg-gray-800 p-4 rounded-lg border border-gray-700 min-h-[28rem] flex flex-col">
+        <div className="md:col-span-2 bg-gray-800/80 p-4 rounded-2xl border border-white/10 shadow-xl min-h-[28rem] flex flex-col">
           <div className="flex items-center justify-between mb-3">
-            <h3 className={`text-xl font-semibold ${currentTheme.text}`}>
-              {selectedFriend ? `DM with ${selectedFriend}` : 'Select a friend to start chatting'}
-            </h3>
+            <div className="flex items-center gap-2">
+              {selectedFriend && (
+                <button
+                  onClick={() => {
+                    setSelectedFriend('');
+                    setSelectedFriendUid('');
+                  }}
+                  className="text-sm text-gray-300 hover:text-white border border-white/10 rounded-full px-2 py-1"
+                  aria-label="Back to DM list"
+                  title="Back"
+                >
+                  <svg viewBox="0 0 24 24" className="w-4 h-4" aria-hidden="true">
+                    <path d="M14 6L8 12L14 18" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+              )}
+              <h3 className={`text-xl font-semibold ${currentTheme.text}`}>
+                {selectedFriend ? `DM with ${selectedFriend}` : 'Select a friend to start chatting'}
+              </h3>
+            </div>
             {selectedFriend && <span className="text-xs text-gray-400">Private thread</span>}
           </div>
 
-          <div className="mb-3 rounded-lg border border-gray-700 bg-gray-900 p-3">
-            <h4 className={`text-sm font-semibold mb-2 ${currentTheme.text}`}>Direct Messages</h4>
+          <div className="mb-3 rounded-2xl border border-white/10 bg-gray-900/70 p-3 shadow-inner">
+            <h4 className={`text-xs font-semibold uppercase tracking-wide mb-2 ${currentTheme.text}`}>Direct Messages</h4>
             {conversations.length === 0 ? (
               <div className="text-gray-400 text-sm">No DMs yet.</div>
             ) : (
@@ -350,8 +404,8 @@ export default function FriendsPage() {
                         setSelectedFriend(name);
                         setSelectedFriendUid(otherId);
                       }}
-                      className={`w-full text-left px-3 py-2 rounded-md transition-colors ${
-                        isActive ? 'bg-gray-700 text-white' : 'text-gray-300 hover:bg-gray-700'
+                      className={`w-full text-left px-3 py-2 rounded-xl transition-colors border border-transparent ${
+                        isActive ? 'bg-gray-700 text-white border-white/10' : 'text-gray-300 hover:bg-gray-700/70'
                       }`}
                     >
                       {name}
@@ -362,22 +416,38 @@ export default function FriendsPage() {
             )}
           </div>
 
-          <div className="flex-1 bg-gray-900 border border-gray-700 rounded-lg p-3 overflow-y-auto space-y-2 mb-4 max-h-[28rem]">
+          <div className="flex-1 bg-gray-900/70 border border-white/10 rounded-2xl p-3 overflow-y-auto space-y-3 mb-4 max-h-[20rem] shadow-inner">
             {!selectedFriend ? (
               <div className="text-gray-400 text-sm">Choose a friend to view and send messages.</div>
             ) : messages.length === 0 ? (
               <div className="text-gray-400 text-sm">No messages yet. Say hi!</div>
             ) : (
               messages.map((msg) => (
-                <div key={msg.id} className={`p-3 rounded-md ${msg.senderId === user?.id ? 'bg-gray-700 ml-8' : 'bg-gray-800 mr-8'}`}>
-                  <p className="text-xs text-gray-400 mb-1">{msg.senderName}</p>
+                <div
+                  key={msg.id}
+                  onDoubleClick={() => toggleLikeMessage(msg)}
+                  className={`p-3 rounded-2xl shadow-sm border border-white/10 ${
+                    msg.senderId === user?.id ? 'bg-gray-700/90 ml-8' : 'bg-gray-800/90 mr-8'
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-1">
+                    <p className="text-xs text-gray-400">{msg.senderName}</p>
+                    {msg.likedBy?.length ? (
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-pink-500/20 text-pink-300">♥ {msg.likedBy.length}</span>
+                    ) : null}
+                  </div>
                   {msg.type === 'text' && <p className="text-gray-100">{msg.text}</p>}
                   {msg.type === 'song' && (
                     <div className="text-gray-100">
                       <p className="font-semibold">Shared Song: {msg.song?.title}</p>
                       <p className="text-sm text-gray-300">{msg.song?.artist}</p>
-                      <button onClick={() => saveSharedSong(msg.song)} className="mt-2 px-3 py-1 rounded-md text-gray-900 text-sm" style={gBg}>
-                        Save to My Library
+                      <button
+                        onClick={() => saveSharedSong(msg.song)}
+                        disabled={isSongAlreadyAdded(msg.song)}
+                        className="mt-2 px-3 py-1 rounded-md text-gray-900 text-sm disabled:opacity-60 disabled:cursor-default"
+                        style={gBg}
+                      >
+                        {isSongAlreadyAdded(msg.song) ? 'Saved to Library' : 'Save to My Library'}
                       </button>
                     </div>
                   )}
@@ -396,17 +466,23 @@ export default function FriendsPage() {
           </div>
 
           {selectedFriend && (
-            <div className="space-y-3 border-t border-gray-700 pt-3">
+            <div className="space-y-3 border-t border-white/10 pt-3">
               <div>
-                <label className="block text-xs text-gray-400 mb-1">Message</label>
+                <label className="block text-xs text-gray-400 mb-1 uppercase tracking-wide">Message</label>
                 <div className="flex gap-2">
                   <input
                     value={newText}
                     onChange={(e) => setNewText(e.target.value)}
                     placeholder="Type a message..."
-                    className="flex-1 px-3 py-2 bg-gray-900 border border-gray-700 rounded-md text-white"
+                    className="flex-1 px-4 py-2 bg-gray-900/70 border border-white/10 rounded-full text-white"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        sendText();
+                      }
+                    }}
                   />
-                  <button onClick={sendText} className="px-4 py-2 rounded-md text-gray-900" style={gBg}>
+                  <button onClick={sendText} className="px-5 py-2 rounded-full text-gray-900" style={gBg}>
                     Send
                   </button>
                 </div>
@@ -414,38 +490,38 @@ export default function FriendsPage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-xs text-gray-400 mb-1">Share a song</label>
+                  <label className="block text-xs text-gray-400 mb-1 uppercase tracking-wide">Share a song</label>
                   <div className="flex gap-2">
                     <select
                       value={shareSongId}
                       onChange={(e) => setShareSongId(e.target.value)}
-                      className="flex-1 px-3 py-2 bg-gray-900 border border-gray-700 rounded-md text-white"
+                      className="flex-1 px-3 py-2 bg-gray-900/70 border border-white/10 rounded-full text-white"
                     >
                       <option value="">Select a song...</option>
                       {songs.map((song) => (
                         <option key={song.id} value={song.id}>{song.title}</option>
                       ))}
                     </select>
-                    <button onClick={sendSong} disabled={!shareSongId} className="px-3 py-2 rounded-md text-gray-900 disabled:opacity-50" style={gBg}>
+                    <button onClick={sendSong} disabled={!shareSongId} className="px-4 py-2 rounded-full text-gray-900 disabled:opacity-50" style={gBg}>
                       Share
                     </button>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs text-gray-400 mb-1">Share a playlist</label>
+                  <label className="block text-xs text-gray-400 mb-1 uppercase tracking-wide">Share a playlist</label>
                   <div className="flex gap-2">
                     <select
                       value={sharePlaylistId}
                       onChange={(e) => setSharePlaylistId(e.target.value)}
-                      className="flex-1 px-3 py-2 bg-gray-900 border border-gray-700 rounded-md text-white"
+                      className="flex-1 px-3 py-2 bg-gray-900/70 border border-white/10 rounded-full text-white"
                     >
                       <option value="">Select a playlist...</option>
                       {playlists.map((playlist) => (
                         <option key={playlist.id} value={playlist.id}>{playlist.title}</option>
                       ))}
                     </select>
-                    <button onClick={sendPlaylist} disabled={!sharePlaylistId} className="px-3 py-2 rounded-md text-gray-900 disabled:opacity-50" style={gBg}>
+                    <button onClick={sendPlaylist} disabled={!sharePlaylistId} className="px-4 py-2 rounded-full text-gray-900 disabled:opacity-50" style={gBg}>
                       Share
                     </button>
                   </div>

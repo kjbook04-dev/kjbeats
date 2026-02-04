@@ -35,6 +35,7 @@ export interface User {
   friends?: string[];
   friendNotifications?: Array<{ from: string; createdAt?: string; type?: string }>;
   friendRequests?: string[];
+  conversationReads?: Record<string, string>;
   bio?: string;
   website?: string;
   publicProfile?: boolean;
@@ -86,6 +87,7 @@ const userDocToSession = (uid: string, data: any): User => ({
   friends: Array.isArray(data.friends) ? data.friends : [],
   friendNotifications: Array.isArray(data.friendNotifications) ? data.friendNotifications : [],
   friendRequests: Array.isArray(data.friendRequests) ? data.friendRequests : [],
+  conversationReads: data.conversationReads || {},
   bio: data.bio || '',
   website: data.website || '',
   publicProfile: !!data.publicProfile,
