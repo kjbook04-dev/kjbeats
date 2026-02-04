@@ -14,6 +14,7 @@ import { db } from '../lib/firebase';
 
 export default function Header() {
   const router = useRouter();
+  const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
@@ -57,6 +58,9 @@ export default function Header() {
       if (unread > lastUnreadCount) {
         setShowMessageToast(true);
       }
+      if (unread === 0) {
+        setShowMessageToast(false);
+      }
       setLastUnreadCount(unread);
     });
   }, [user, lastUnreadCount]);
@@ -90,9 +94,9 @@ export default function Header() {
           <span style={gText}>KJBeats</span>
         </Link>
 
-        {/* Mobile menu button */}
+        {/* Mobile menu button (hidden in favor of bottom tabs) */}
         <button
-          className="md:hidden"
+          className="hidden md:block"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
           <svg
@@ -114,9 +118,7 @@ export default function Header() {
 
         {/* Navigation links */}
         <nav
-          className={`${
-            isMenuOpen ? 'block' : 'hidden'
-          } md:block absolute md:relative top-16 md:top-0 left-0 right-0 bg-black/90 backdrop-blur border-b border-white/10 md:border-0 md:bg-transparent z-40 max-h-[70vh] overflow-y-auto md:max-h-none md:overflow-visible`}
+          className={`hidden md:block absolute md:relative top-16 md:top-0 left-0 right-0 bg-black/90 backdrop-blur border-b border-white/10 md:border-0 md:bg-transparent z-40 max-h-[70vh] overflow-y-auto md:max-h-none md:overflow-visible`}
         >
           <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-8 p-4 md:p-0">
             <ul className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8">
@@ -155,8 +157,7 @@ export default function Header() {
                       Friends
                       {(friendNotificationCount > 0 || unreadMessageCount > 0) && (
                         <span
-                          className="absolute -top-2 -right-3 min-w-[1.1rem] h-4 px-1 rounded-full text-[10px] leading-4 text-white text-center"
-                          style={{ backgroundColor: currentTheme.primary }}
+                          className="absolute -top-2 -right-3 min-w-[1.1rem] h-4 px-1 rounded-full text-[10px] leading-4 text-white text-center bg-red-500"
                         >
                           {friendNotificationCount + unreadMessageCount > 9 ? '9+' : friendNotificationCount + unreadMessageCount}
                         </span>
@@ -257,7 +258,7 @@ export default function Header() {
         <Notification
           message={`You have ${unreadMessageCount} new message${unreadMessageCount === 1 ? '' : 's'}.`}
           type="success"
-          isVisible={showMessageToast}
+          isVisible={showMessageToast && unreadMessageCount > 0}
           onClose={() => setShowMessageToast(false)}
         />
 
@@ -266,6 +267,67 @@ export default function Header() {
           onClose={() => setShowAuthModal(false)}
           initialMode={authMode}
         />
+      </div>
+
+      {/* Mobile bottom tabs */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 border-t border-white/10 bg-gray-900/90 backdrop-blur">
+        <nav className="mx-auto max-w-screen-sm px-2">
+          <ul className="grid grid-cols-5 py-2">
+            <li>
+              <Link href="/" className="flex flex-col items-center gap-1 text-[10px]" onClick={() => setIsMenuOpen(false)}>
+                <svg viewBox="0 0 24 24" className={`h-5 w-5 ${pathname === '/' ? currentTheme.text : 'text-gray-400'}`} aria-hidden="true">
+                  <path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-6v-6H10v6H4a1 1 0 0 1-1-1v-10.5z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+                </svg>
+                <span className={`${pathname === '/' ? currentTheme.text : 'text-gray-400'}`}>Home</span>
+              </Link>
+            </li>
+            <li>
+              <Link href="/playlists" className="flex flex-col items-center gap-1 text-[10px]" onClick={() => setIsMenuOpen(false)}>
+                <svg viewBox="0 0 24 24" className={`h-5 w-5 ${pathname?.startsWith('/playlists') ? currentTheme.text : 'text-gray-400'}`} aria-hidden="true">
+                  <path d="M4 6h12M4 12h12M4 18h8" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                </svg>
+                <span className={`${pathname?.startsWith('/playlists') ? currentTheme.text : 'text-gray-400'}`}>Playlists</span>
+              </Link>
+            </li>
+            <li>
+              <Link href="/manage" className="flex flex-col items-center gap-1 text-[10px]" onClick={() => setIsMenuOpen(false)}>
+                <svg viewBox="0 0 24 24" className={`h-5 w-5 ${pathname === '/manage' ? currentTheme.text : 'text-gray-400'}`} aria-hidden="true">
+                  <path d="M12 4l2.5 4.5L20 9l-4 3.5L17 18l-5-2.5L7 18l1-5.5L4 9l5.5-.5L12 4z" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
+                </svg>
+                <span className={`${pathname === '/manage' ? currentTheme.text : 'text-gray-400'}`}>Manage</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/friends"
+                className="relative flex flex-col items-center gap-1 text-[10px]"
+                onClick={() => {
+                  clearFriendNotifications();
+                  setShowFriendToast(false);
+                  setIsMenuOpen(false);
+                }}
+              >
+                <svg viewBox="0 0 24 24" className={`h-5 w-5 ${pathname === '/friends' ? currentTheme.text : 'text-gray-400'}`} aria-hidden="true">
+                  <path d="M7 13a3 3 0 1 0-3-3 3 3 0 0 0 3 3zm10 0a3 3 0 1 0-3-3 3 3 0 0 0 3 3zM4 20a4 4 0 0 1 6-3.4M14 20a4 4 0 0 1 6-3.4" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+                </svg>
+                <span className={`${pathname === '/friends' ? currentTheme.text : 'text-gray-400'}`}>Friends</span>
+                {(friendNotificationCount > 0 || unreadMessageCount > 0) && (
+                  <span className="absolute -top-1 right-3 min-w-[1.1rem] h-4 px-1 rounded-full text-[10px] leading-4 text-white text-center bg-red-500">
+                    {friendNotificationCount + unreadMessageCount > 9 ? '9+' : friendNotificationCount + unreadMessageCount}
+                  </span>
+                )}
+              </Link>
+            </li>
+            <li>
+              <Link href="/profile" className="flex flex-col items-center gap-1 text-[10px]" onClick={() => setIsMenuOpen(false)}>
+                <svg viewBox="0 0 24 24" className={`h-5 w-5 ${pathname === '/profile' ? currentTheme.text : 'text-gray-400'}`} aria-hidden="true">
+                  <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm-7 8a7 7 0 0 1 14 0" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+                <span className={`${pathname === '/profile' ? currentTheme.text : 'text-gray-400'}`}>Profile</span>
+              </Link>
+            </li>
+          </ul>
+        </nav>
       </div>
     </header>
   );

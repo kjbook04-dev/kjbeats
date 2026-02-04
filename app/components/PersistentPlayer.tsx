@@ -510,7 +510,7 @@ export default function PersistentPlayer() {
   if (!currentSong) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-700 p-2 sm:p-3 z-50">
+    <div className="fixed bottom-16 md:bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-700 p-2 sm:p-3 z-50">
       <style>{`
         /* Scoped slider thumb styling for player ranges */
         [data-range] { --thumb-color: rgb(236 72 153); }
