@@ -105,12 +105,13 @@ export default function FriendsPage() {
 
   useEffect(() => {
     if (!db || !user || conversations.length === 0) return;
+    const dbClient = db;
     const loadNames = async () => {
       const updates: Record<string, string> = {};
       for (const convo of conversations) {
         const otherId = convo.participants?.find((id) => id !== user.id);
         if (!otherId || participantNames[otherId]) continue;
-        const snap = await getDoc(doc(db, 'users', otherId));
+        const snap = await getDoc(doc(dbClient, 'users', otherId));
         if (snap.exists()) {
           updates[otherId] = snap.data().username || snap.data().firstName || 'Friend';
         }
@@ -342,7 +343,7 @@ export default function FriendsPage() {
             )}
           </div>
 
-          <div className="flex-1 bg-gray-900 border border-gray-700 rounded-lg p-3 overflow-y-auto space-y-2 mb-4">
+          <div className="flex-1 bg-gray-900 border border-gray-700 rounded-lg p-3 overflow-y-auto space-y-2 mb-4 max-h-[28rem]">
             {!selectedFriend ? (
               <div className="text-gray-400 text-sm">Choose a friend to view and send messages.</div>
             ) : messages.length === 0 ? (
