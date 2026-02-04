@@ -312,12 +312,22 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
       const canonical = (targetSnap.data().username as string) || usernameToAdd.trim();
       const targetUid = targetSnap.data().uid as string;
+      const targetUserSnap = await getDoc(doc(db, 'users', targetUid));
+      const targetData = targetUserSnap.exists() ? targetUserSnap.data() : {};
+      const targetFriends = Array.isArray(targetData.friends) ? targetData.friends : [];
+      const targetRequests = Array.isArray(targetData.friendRequests) ? targetData.friendRequests : [];
+      if (targetFriends.includes(user.username)) {
+        return { success: false, error: 'You are already friends.' };
+      }
+      if (targetRequests.includes(user.username)) {
+        return { success: false, error: 'Friend request already sent.' };
+      }
       if (targetUid) {
         await updateDoc(doc(db, 'users', targetUid), {
           friendNotifications: arrayUnion({
             from: user.username,
             createdAt: new Date().toISOString(),
-            type: 'friend_added',
+            type: 'friend_request',
           }),
           friendRequests: arrayUnion(user.username),
         });
@@ -347,6 +357,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const acceptFriendRequest = async (usernameToAccept: string): Promise<boolean> => {
     if (!user || !db) return false;
     try {
+      const targetSnap = await getDoc(doc(db, 'usernames', normalizeUsername(usernameToAccept)));
+      const targetUid = targetSnap.exists() ? (targetSnap.data().uid as string) : '';
       await updateDoc(doc(db, 'users', user.id), {
         friends: arrayUnion(usernameToAccept),
         friendRequests: arrayRemove(usernameToAccept),
@@ -357,6 +369,16 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         const nextRequests = (prev.friendRequests || []).filter((r) => r !== usernameToAccept);
         return { ...prev, friends: nextFriends, friendRequests: nextRequests };
       });
+      if (targetUid) {
+        await updateDoc(doc(db, 'users', targetUid), {
+          friends: arrayUnion(user.username),
+          friendNotifications: arrayUnion({
+            from: user.username,
+            createdAt: new Date().toISOString(),
+            type: 'friend_accepted',
+          }),
+        });
+      }
       return true;
     } catch (error) {
       console.error('Failed to accept friend request', error);

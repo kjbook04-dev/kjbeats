@@ -23,6 +23,7 @@ export default function Header() {
   // Use helper-backed gradient text style (ThemeProvider ensures --theme-gradient exists)
   const gText = gradientTextStyle();
   const friendNotificationCount = user?.friendNotifications?.length || 0;
+  const latestFriendNotification = user?.friendNotifications?.[user.friendNotifications.length - 1];
   const [showFriendToast, setShowFriendToast] = useState(false);
 
   useEffect(() => {
@@ -212,7 +213,13 @@ export default function Header() {
         </nav>
 
         <Notification
-          message={`You have ${friendNotificationCount} new friend ${friendNotificationCount === 1 ? 'add' : 'adds'}.`}
+          message={
+            latestFriendNotification?.type === 'friend_accepted'
+              ? `${latestFriendNotification.from} accepted your friend request.`
+              : latestFriendNotification?.type === 'friend_request'
+                ? `New friend request from ${latestFriendNotification.from}.`
+                : `You have ${friendNotificationCount} new friend ${friendNotificationCount === 1 ? 'update' : 'updates'}.`
+          }
           type="success"
           isVisible={showFriendToast}
           onClose={() => setShowFriendToast(false)}

@@ -58,9 +58,9 @@ service cloud.firestore {
       allow create: if request.auth != null && request.auth.uid == uid;
       allow update, delete: if request.auth != null && request.auth.uid == uid
         || (
-          // Allow friend notification or request appends by other authed users
+          // Allow friend notification, request, or friends appends by other authed users
           request.auth != null
-          && request.resource.data.diff(resource.data).changedKeys().hasOnly(['friendNotifications', 'friendRequests'])
+          && request.resource.data.diff(resource.data).changedKeys().hasOnly(['friendNotifications', 'friendRequests', 'friends'])
           && (
             (
               request.resource.data.friendNotifications is list
@@ -74,6 +74,13 @@ service cloud.firestore {
               && (!resource.data.keys().hasAny(['friendRequests']) || resource.data.friendRequests is list)
               && (!resource.data.keys().hasAny(['friendRequests']) || request.resource.data.friendRequests.hasAll(resource.data.friendRequests))
               && request.resource.data.friendRequests.size() > (resource.data.keys().hasAny(['friendRequests']) ? resource.data.friendRequests.size() : 0)
+            )
+            ||
+            (
+              request.resource.data.friends is list
+              && (!resource.data.keys().hasAny(['friends']) || resource.data.friends is list)
+              && (!resource.data.keys().hasAny(['friends']) || request.resource.data.friends.hasAll(resource.data.friends))
+              && request.resource.data.friends.size() > (resource.data.keys().hasAny(['friends']) ? resource.data.friends.size() : 0)
             )
           )
         );

@@ -15,12 +15,13 @@ import {
   updateDoc,
   where,
 } from 'firebase/firestore';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useTheme } from '../context/ThemeContext';
 import { useUser } from '../context/UserContext';
 import { useMusicLibrary } from '../context/MusicLibraryContext';
 import { usePlaylist } from '../context/PlaylistContext';
 import { gradientTextStyle, gradientBgStyle } from '../context/themeHelpers';
-import { db } from '../lib/firebase';
+import { db, storage } from '../lib/firebase';
 import type { Song, Playlist } from '../types/music';
 
 type ChatMessage = {
@@ -207,11 +208,29 @@ export default function FriendsPage() {
 
   const saveSharedSong = async (song?: Song) => {
     if (!song) return;
+    let audioUrl = song.audioUrl;
+    let storagePath = song.storagePath;
+    if (audioUrl && audioUrl.startsWith('https://firebasestorage.googleapis.com') && storage && user) {
+      try {
+        const res = await fetch(audioUrl);
+        const blob = await res.blob();
+        const ext = song.title?.toLowerCase().includes('.mp3') ? '' : '.mp3';
+        const path = `users/${user.id}/songs/shared-${Date.now()}-${Math.random().toString(36).slice(2, 8)}${ext}`;
+        const fileRef = ref(storage, path);
+        await uploadBytes(fileRef, blob);
+        audioUrl = await getDownloadURL(fileRef);
+        storagePath = path;
+      } catch (error) {
+        console.error('Failed to copy shared song to storage', error);
+      }
+    }
     const copy: Song = {
       ...song,
       id: `shared-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
       sharedFromUserId: song.ownerId || song.userId,
       uploadedAt: new Date().toISOString(),
+      audioUrl,
+      storagePath,
     };
     await addSongs([copy]);
   };
