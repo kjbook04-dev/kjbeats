@@ -34,6 +34,7 @@ export interface User {
   themeColor?: string;
   friends?: string[];
   friendNotifications?: Array<{ from: string; createdAt?: string; type?: string }>;
+  friendRequests?: string[];
   bio?: string;
   website?: string;
   publicProfile?: boolean;
@@ -51,6 +52,8 @@ interface UserContextType {
   isLoading: boolean;
   addFriend: (username: string) => Promise<{ success: boolean; error?: string }>;
   removeFriend: (username: string) => Promise<boolean>;
+  acceptFriendRequest: (username: string) => Promise<boolean>;
+  declineFriendRequest: (username: string) => Promise<boolean>;
   clearFriendNotifications: () => Promise<void>;
   updateUserProfile: (data: { bio?: string; website?: string; publicProfile?: boolean }) => Promise<boolean>;
 }
@@ -82,6 +85,7 @@ const userDocToSession = (uid: string, data: any): User => ({
   themeColor: data.themeColor,
   friends: Array.isArray(data.friends) ? data.friends : [],
   friendNotifications: Array.isArray(data.friendNotifications) ? data.friendNotifications : [],
+  friendRequests: Array.isArray(data.friendRequests) ? data.friendRequests : [],
   bio: data.bio || '',
   website: data.website || '',
   publicProfile: !!data.publicProfile,
@@ -122,6 +126,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             createdAt: new Date().toISOString(),
             friends: [],
             friendNotifications: [],
+            friendRequests: [],
           };
           await setDoc(doc(dbClient, 'users', authUser.uid), {
             ...fallback,
@@ -244,6 +249,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         createdAt,
         friends: [] as string[],
         friendNotifications: [] as Array<{ from: string; createdAt?: string; type?: string }>,
+        friendRequests: [] as string[],
         bio: '',
         website: '',
         publicProfile: false,
@@ -306,12 +312,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
       const canonical = (targetSnap.data().username as string) || usernameToAdd.trim();
       const targetUid = targetSnap.data().uid as string;
-      await updateDoc(doc(db, 'users', user.id), { friends: arrayUnion(canonical) });
-      setUser((prev) => {
-        if (!prev) return prev;
-        const next = Array.from(new Set([...(prev.friends || []), canonical]));
-        return { ...prev, friends: next };
-      });
       if (targetUid) {
         await updateDoc(doc(db, 'users', targetUid), {
           friendNotifications: arrayUnion({
@@ -319,6 +319,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             createdAt: new Date().toISOString(),
             type: 'friend_added',
           }),
+          friendRequests: arrayUnion(user.username),
         });
       }
       return { success: true };
@@ -339,6 +340,44 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       return true;
     } catch (error) {
       console.error('Failed to remove friend', error);
+      return false;
+    }
+  };
+
+  const acceptFriendRequest = async (usernameToAccept: string): Promise<boolean> => {
+    if (!user || !db) return false;
+    try {
+      await updateDoc(doc(db, 'users', user.id), {
+        friends: arrayUnion(usernameToAccept),
+        friendRequests: arrayRemove(usernameToAccept),
+      });
+      setUser((prev) => {
+        if (!prev) return prev;
+        const nextFriends = Array.from(new Set([...(prev.friends || []), usernameToAccept]));
+        const nextRequests = (prev.friendRequests || []).filter((r) => r !== usernameToAccept);
+        return { ...prev, friends: nextFriends, friendRequests: nextRequests };
+      });
+      return true;
+    } catch (error) {
+      console.error('Failed to accept friend request', error);
+      return false;
+    }
+  };
+
+  const declineFriendRequest = async (usernameToDecline: string): Promise<boolean> => {
+    if (!user || !db) return false;
+    try {
+      await updateDoc(doc(db, 'users', user.id), {
+        friendRequests: arrayRemove(usernameToDecline),
+      });
+      setUser((prev) => {
+        if (!prev) return prev;
+        const nextRequests = (prev.friendRequests || []).filter((r) => r !== usernameToDecline);
+        return { ...prev, friendRequests: nextRequests };
+      });
+      return true;
+    } catch (error) {
+      console.error('Failed to decline friend request', error);
       return false;
     }
   };
@@ -421,6 +460,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         clearAllUserData,
         addFriend,
         removeFriend,
+        acceptFriendRequest,
+        declineFriendRequest,
         clearFriendNotifications,
         updateUserProfile,
         isLoading,

@@ -13,6 +13,7 @@ import {
   serverTimestamp,
   setDoc,
   updateDoc,
+  where,
 } from 'firebase/firestore';
 import { useTheme } from '../context/ThemeContext';
 import { useUser } from '../context/UserContext';
@@ -33,11 +34,17 @@ type ChatMessage = {
   createdAt?: any;
 };
 
+type ConversationSummary = {
+  id: string;
+  participants: string[];
+  updatedAt?: any;
+};
+
 const conversationIdFor = (a: string, b: string) => [a, b].sort().join('__');
 
 export default function FriendsPage() {
   const { currentTheme } = useTheme();
-  const { user, removeFriend } = useUser();
+  const { user, removeFriend, acceptFriendRequest, declineFriendRequest } = useUser();
   const { songs, addSongs } = useMusicLibrary();
   const { playlists, createPlaylist, addToPlaylist } = usePlaylist();
   const [selectedFriend, setSelectedFriend] = useState<string>('');
@@ -47,11 +54,14 @@ export default function FriendsPage() {
   const [shareSongId, setShareSongId] = useState('');
   const [sharePlaylistId, setSharePlaylistId] = useState('');
   const [removeTarget, setRemoveTarget] = useState<string>('');
+  const [conversations, setConversations] = useState<ConversationSummary[]>([]);
+  const [participantNames, setParticipantNames] = useState<Record<string, string>>({});
   const gText = gradientTextStyle();
   const gBg = gradientBgStyle();
   const canChat = Boolean(selectedFriend && selectedFriendUid);
 
   const friends = user?.friends || [];
+  const friendRequests = user?.friendRequests || [];
 
   const selectedSong = useMemo(
     () => songs.find((s) => s.id === shareSongId),
@@ -74,6 +84,43 @@ export default function FriendsPage() {
     };
     resolveFriend();
   }, [selectedFriend]);
+
+  useEffect(() => {
+    if (!db || !user) {
+      setConversations([]);
+      return;
+    }
+    const convRef = collection(db, 'conversations');
+    const q = query(convRef, where('participants', 'array-contains', user.id));
+    return onSnapshot(q, (snapshot) => {
+      const next = snapshot.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<ConversationSummary, 'id'>) }));
+      const sorted = [...next].sort((a, b) => {
+        const aTs = a.updatedAt?.seconds || 0;
+        const bTs = b.updatedAt?.seconds || 0;
+        return bTs - aTs;
+      });
+      setConversations(sorted);
+    });
+  }, [user]);
+
+  useEffect(() => {
+    if (!db || !user || conversations.length === 0) return;
+    const loadNames = async () => {
+      const updates: Record<string, string> = {};
+      for (const convo of conversations) {
+        const otherId = convo.participants?.find((id) => id !== user.id);
+        if (!otherId || participantNames[otherId]) continue;
+        const snap = await getDoc(doc(db, 'users', otherId));
+        if (snap.exists()) {
+          updates[otherId] = snap.data().username || snap.data().firstName || 'Friend';
+        }
+      }
+      if (Object.keys(updates).length) {
+        setParticipantNames((prev) => ({ ...prev, ...updates }));
+      }
+    };
+    loadNames();
+  }, [conversations, user, participantNames]);
 
   useEffect(() => {
     if (!db || !user || !selectedFriendUid) {
@@ -224,6 +271,36 @@ export default function FriendsPage() {
               ))}
             </div>
           )}
+
+          <div className="mt-4 border-t border-gray-700 pt-3">
+            <h4 className={`text-sm font-semibold mb-2 ${currentTheme.text}`}>Requests</h4>
+            {friendRequests.length === 0 ? (
+              <p className="text-gray-400 text-sm">No requests right now.</p>
+            ) : (
+              <div className="space-y-2">
+                {friendRequests.map((req) => (
+                  <div key={req} className="flex items-center justify-between bg-gray-900 rounded-md px-3 py-2">
+                    <span className="text-gray-200 text-sm">{req}</span>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => acceptFriendRequest(req)}
+                        className="px-2 py-1 text-xs rounded-md text-gray-900"
+                        style={gBg}
+                      >
+                        Accept
+                      </button>
+                      <button
+                        onClick={() => declineFriendRequest(req)}
+                        className="px-2 py-1 text-xs rounded-md border border-white/10 text-gray-300 hover:bg-white/5"
+                      >
+                        Decline
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="md:col-span-2 bg-gray-800 p-4 rounded-lg border border-gray-700 min-h-[28rem] flex flex-col">
@@ -232,6 +309,35 @@ export default function FriendsPage() {
               {selectedFriend ? `DM with ${selectedFriend}` : 'Select a friend to start chatting'}
             </h3>
             {selectedFriend && <span className="text-xs text-gray-400">Private thread</span>}
+          </div>
+
+          <div className="mb-3 rounded-lg border border-gray-700 bg-gray-900 p-3">
+            <h4 className={`text-sm font-semibold mb-2 ${currentTheme.text}`}>Direct Messages</h4>
+            {conversations.length === 0 ? (
+              <div className="text-gray-400 text-sm">No DMs yet.</div>
+            ) : (
+              <div className="space-y-2 max-h-40 overflow-y-auto pr-1">
+                {conversations.map((convo) => {
+                  const otherId = convo.participants?.find((id) => id !== user?.id) || '';
+                  const name = participantNames[otherId] || 'Friend';
+                  const isActive = selectedFriendUid === otherId;
+                  return (
+                    <button
+                      key={convo.id}
+                      onClick={() => {
+                        setSelectedFriend(name);
+                        setSelectedFriendUid(otherId);
+                      }}
+                      className={`w-full text-left px-3 py-2 rounded-md transition-colors ${
+                        isActive ? 'bg-gray-700 text-white' : 'text-gray-300 hover:bg-gray-700'
+                      }`}
+                    >
+                      {name}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
           <div className="flex-1 bg-gray-900 border border-gray-700 rounded-lg p-3 overflow-y-auto space-y-2 mb-4">

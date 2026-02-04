@@ -58,13 +58,24 @@ service cloud.firestore {
       allow create: if request.auth != null && request.auth.uid == uid;
       allow update, delete: if request.auth != null && request.auth.uid == uid
         || (
-          // Allow friend notification appends by other authed users
+          // Allow friend notification or request appends by other authed users
           request.auth != null
-          && request.resource.data.diff(resource.data).changedKeys().hasOnly(['friendNotifications'])
-          && request.resource.data.friendNotifications is list
-          && (!resource.data.keys().hasAny(['friendNotifications']) || resource.data.friendNotifications is list)
-          && (!resource.data.keys().hasAny(['friendNotifications']) || request.resource.data.friendNotifications.hasAll(resource.data.friendNotifications))
-          && request.resource.data.friendNotifications.size() > (resource.data.keys().hasAny(['friendNotifications']) ? resource.data.friendNotifications.size() : 0)
+          && request.resource.data.diff(resource.data).changedKeys().hasOnly(['friendNotifications', 'friendRequests'])
+          && (
+            (
+              request.resource.data.friendNotifications is list
+              && (!resource.data.keys().hasAny(['friendNotifications']) || resource.data.friendNotifications is list)
+              && (!resource.data.keys().hasAny(['friendNotifications']) || request.resource.data.friendNotifications.hasAll(resource.data.friendNotifications))
+              && request.resource.data.friendNotifications.size() > (resource.data.keys().hasAny(['friendNotifications']) ? resource.data.friendNotifications.size() : 0)
+            )
+            ||
+            (
+              request.resource.data.friendRequests is list
+              && (!resource.data.keys().hasAny(['friendRequests']) || resource.data.friendRequests is list)
+              && (!resource.data.keys().hasAny(['friendRequests']) || request.resource.data.friendRequests.hasAll(resource.data.friendRequests))
+              && request.resource.data.friendRequests.size() > (resource.data.keys().hasAny(['friendRequests']) ? resource.data.friendRequests.size() : 0)
+            )
+          )
         );
 
       match /songs/{songId} {
