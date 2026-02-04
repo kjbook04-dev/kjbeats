@@ -47,7 +47,8 @@ export const ProfileFriends: React.FC<ProfileFriendsProps> = ({ compact = false 
     setBusy(false);
     if (!res.success) {
       const message = res.error || 'Failed to add friend. Please try again.';
-      const type = message.toLowerCase().includes('already') ? 'info' : 'error';
+      const lower = message.toLowerCase();
+      const type = lower.includes('already sent') ? 'info' : 'error';
       showNotification(message, type);
     } else {
       setNewFriend('');

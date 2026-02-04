@@ -55,7 +55,7 @@ const conversationIdFor = (a: string, b: string) => [a, b].sort().join('__');
 
 export default function FriendsPage() {
   const { currentTheme } = useTheme();
-  const { user, removeFriend, acceptFriendRequest, declineFriendRequest } = useUser();
+  const { user, removeFriend, acceptFriendRequest, declineFriendRequest, addFriend } = useUser();
   const { songs, addSongs } = useMusicLibrary();
   const { playlists, createPlaylist, addToPlaylist } = usePlaylist();
   const [selectedFriend, setSelectedFriend] = useState<string>('');
@@ -144,7 +144,7 @@ export default function FriendsPage() {
     const dbClient = db;
     let unsubscribe: (() => void) | undefined;
     const setup = async () => {
-      const conversationId = await ensureConversation();
+      const conversationId = await ensureConversation(false);
       if (!conversationId) return;
       await markConversationRead(conversationId);
       try {
@@ -179,14 +179,14 @@ export default function FriendsPage() {
     };
   }, [selectedFriendUid, user]);
 
-  const ensureConversation = async () => {
+  const ensureConversation = async (touchUpdatedAt: boolean = true) => {
     if (!db || !user || !selectedFriendUid) return null;
     const id = conversationIdFor(user.id, selectedFriendUid);
     await setDoc(
       doc(db, 'conversations', id),
       {
         participants: [user.id, selectedFriendUid].sort(),
-        updatedAt: serverTimestamp(),
+        ...(touchUpdatedAt ? { updatedAt: serverTimestamp() } : {}),
       },
       { merge: true }
     );
@@ -206,7 +206,7 @@ export default function FriendsPage() {
 
   const sendText = async () => {
     if (!db || !user || !newText.trim() || !selectedFriendUid) return;
-    const conversationId = await ensureConversation();
+    const conversationId = await ensureConversation(true);
     if (!conversationId) return;
     await addDoc(collection(db, 'conversations', conversationId, 'messages'), {
       senderId: user.id,
@@ -236,7 +236,7 @@ export default function FriendsPage() {
 
   const sendSong = async () => {
     if (!db || !user || !selectedFriendUid || !selectedSong) return;
-    const conversationId = await ensureConversation();
+    const conversationId = await ensureConversation(true);
     if (!conversationId) return;
     await addDoc(collection(db, 'conversations', conversationId, 'messages'), {
       senderId: user.id,
@@ -251,7 +251,7 @@ export default function FriendsPage() {
 
   const sendPlaylist = async () => {
     if (!db || !user || !selectedFriendUid || !selectedPlaylist) return;
-    const conversationId = await ensureConversation();
+    const conversationId = await ensureConversation(true);
     if (!conversationId) return;
     await addDoc(collection(db, 'conversations', conversationId, 'messages'), {
       senderId: user.id,
@@ -390,6 +390,54 @@ export default function FriendsPage() {
               </div>
             )}
           </div>
+
+          {selectedFriendProfile && (
+            <div className="mt-4 rounded-2xl border border-white/10 bg-gray-900/70 p-3 shadow-inner">
+              <div className="flex items-center gap-3">
+                {selectedFriendProfile.profilePicture ? (
+                  <img
+                    src={selectedFriendProfile.profilePicture}
+                    alt={selectedFriendProfile.username || selectedFriend}
+                    className="w-10 h-10 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 text-sm">
+                    {selectedFriendProfile.firstName?.[0] || selectedFriendProfile.username?.[0] || 'U'}
+                  </div>
+                )}
+                <div className="min-w-0">
+                  <p className="text-sm text-white font-semibold truncate">
+                    {selectedFriendProfile.firstName || selectedFriendProfile.username || selectedFriend}
+                  </p>
+                  <p className="text-xs text-gray-400 truncate">@{selectedFriendProfile.username || selectedFriend}</p>
+                </div>
+                {!selectedFriendProfile.publicProfile && (
+                  <span className="ml-auto text-xs text-gray-400">Private</span>
+                )}
+              </div>
+              {!friends.includes(selectedFriendProfile.username || selectedFriend) && (
+                <div className="mt-3">
+                  <button
+                    onClick={() => addFriend(selectedFriendProfile.username || selectedFriend)}
+                    className="px-3 py-1 rounded-md text-sm text-gray-900"
+                    style={gBg}
+                  >
+                    Send Friend Request
+                  </button>
+                </div>
+              )}
+              {selectedFriendProfile.publicProfile ? (
+                <div className="mt-2 text-sm text-gray-300 space-y-1">
+                  {selectedFriendProfile.bio && <p>{selectedFriendProfile.bio}</p>}
+                  {selectedFriendProfile.website && (
+                    <p className="text-gray-400">{selectedFriendProfile.website}</p>
+                  )}
+                </div>
+              ) : (
+                <p className="mt-2 text-xs text-gray-400">This profile is private.</p>
+              )}
+            </div>
+          )}
         </div>
 
         <div className="md:col-span-2 bg-gray-800/80 p-4 rounded-2xl border border-white/10 shadow-xl min-h-[28rem] flex flex-col">
@@ -445,43 +493,6 @@ export default function FriendsPage() {
               </div>
             )}
           </div>
-
-          {selectedFriendProfile && (
-            <div className="mb-3 rounded-2xl border border-white/10 bg-gray-900/70 p-3 shadow-inner">
-              <div className="flex items-center gap-3">
-                {selectedFriendProfile.profilePicture ? (
-                  <img
-                    src={selectedFriendProfile.profilePicture}
-                    alt={selectedFriendProfile.username || selectedFriend}
-                    className="w-10 h-10 rounded-full object-cover"
-                  />
-                ) : (
-                  <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 text-sm">
-                    {selectedFriendProfile.firstName?.[0] || selectedFriendProfile.username?.[0] || 'U'}
-                  </div>
-                )}
-                <div className="min-w-0">
-                  <p className="text-sm text-white font-semibold truncate">
-                    {selectedFriendProfile.firstName || selectedFriendProfile.username || selectedFriend}
-                  </p>
-                  <p className="text-xs text-gray-400 truncate">@{selectedFriendProfile.username || selectedFriend}</p>
-                </div>
-                {!selectedFriendProfile.publicProfile && (
-                  <span className="ml-auto text-xs text-gray-400">Private</span>
-                )}
-              </div>
-              {selectedFriendProfile.publicProfile ? (
-                <div className="mt-2 text-sm text-gray-300 space-y-1">
-                  {selectedFriendProfile.bio && <p>{selectedFriendProfile.bio}</p>}
-                  {selectedFriendProfile.website && (
-                    <p className="text-gray-400">{selectedFriendProfile.website}</p>
-                  )}
-                </div>
-              ) : (
-                <p className="mt-2 text-xs text-gray-400">This profile is private.</p>
-              )}
-            </div>
-          )}
 
           <div className="flex-1 bg-gray-900/70 border border-white/10 rounded-2xl p-3 overflow-y-auto space-y-3 mb-4 max-h-[20rem] shadow-inner">
             {!selectedFriend ? (
@@ -558,7 +569,7 @@ export default function FriendsPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2 items-stretch">
                 <div>
                   <label className="block text-xs text-gray-400 mb-1 uppercase tracking-wide">Share a song</label>
-                  <div className="flex gap-2 items-stretch">
+                  <div className="grid grid-cols-[1fr_auto] gap-2 items-stretch">
                     <select
                       value={shareSongId}
                       onChange={(e) => setShareSongId(e.target.value)}
@@ -569,7 +580,7 @@ export default function FriendsPage() {
                         <option key={song.id} value={song.id}>{song.title}</option>
                       ))}
                     </select>
-                    <button onClick={sendSong} disabled={!shareSongId} className="px-4 py-2 rounded-full text-gray-900 disabled:opacity-50 h-10 min-w-[88px]" style={gBg}>
+                    <button onClick={sendSong} disabled={!shareSongId} className="px-4 py-2 rounded-full text-gray-900 disabled:opacity-50 h-10 w-24" style={gBg}>
                       Share
                     </button>
                   </div>
@@ -577,7 +588,7 @@ export default function FriendsPage() {
 
                 <div>
                   <label className="block text-xs text-gray-400 mb-1 uppercase tracking-wide">Share a playlist</label>
-                  <div className="flex gap-2 items-stretch">
+                  <div className="grid grid-cols-[1fr_auto] gap-2 items-stretch">
                     <select
                       value={sharePlaylistId}
                       onChange={(e) => setSharePlaylistId(e.target.value)}
@@ -588,7 +599,7 @@ export default function FriendsPage() {
                         <option key={playlist.id} value={playlist.id}>{playlist.title}</option>
                       ))}
                     </select>
-                    <button onClick={sendPlaylist} disabled={!sharePlaylistId} className="px-4 py-2 rounded-full text-gray-900 disabled:opacity-50 h-10 min-w-[88px]" style={gBg}>
+                    <button onClick={sendPlaylist} disabled={!sharePlaylistId} className="px-4 py-2 rounded-full text-gray-900 disabled:opacity-50 h-10 w-24" style={gBg}>
                       Share
                     </button>
                   </div>
