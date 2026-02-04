@@ -69,7 +69,11 @@ export function PlaylistProvider({ children }: { children: ReactNode }) {
       ownerId: user.id,
       updatedAt: new Date().toISOString(),
     };
-    await setDoc(doc(db, 'users', user.id, 'playlists', id), newPlaylist);
+    // Firestore does not allow undefined values in documents.
+    const cleaned = Object.fromEntries(
+      Object.entries(newPlaylist).filter(([, value]) => value !== undefined)
+    ) as Playlist;
+    await setDoc(doc(db, 'users', user.id, 'playlists', id), cleaned);
     setPlaylists((prev) => [newPlaylist, ...prev]);
     return id;
   };
