@@ -16,6 +16,7 @@ export default function Home() {
   const { currentTheme } = useTheme();
   const gText = gradientTextStyle();
   const gBg = gradientBgStyle();
+  const lastPlayed = lastPlayedHistory[0];
   const bgImage = lastPlayed?.coverUrl;
   const [pageBgColor, setPageBgColor] = useState<string>('transparent');
   const { songs } = useMusicLibrary();
