@@ -69,11 +69,12 @@ export default function Header() {
       let unread = 0;
       let hasNew = false;
       snapshot.docs.forEach((docSnap) => {
-        const data = docSnap.data() as { updatedAt?: any };
+        const data = docSnap.data() as { updatedAt?: any; lastMessageSenderId?: string };
         const updatedAt = data.updatedAt?.seconds ? data.updatedAt.seconds * 1000 : 0;
         const lastRead = reads[docSnap.id] ? Date.parse(reads[docSnap.id]) : 0;
         if (!lastRead && updatedAt) return;
-        if (updatedAt > lastRead) {
+        const isFromOther = data.lastMessageSenderId ? data.lastMessageSenderId !== user.id : true;
+        if (updatedAt > lastRead && isFromOther) {
           unread += 1;
           hasNew = true;
         }

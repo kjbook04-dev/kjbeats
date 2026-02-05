@@ -298,7 +298,10 @@ export default function FriendsPage() {
       createdAt: serverTimestamp(),
       likedBy: [],
     });
-    await updateDoc(doc(db, 'conversations', conversationId), { updatedAt: serverTimestamp() });
+    await updateDoc(doc(db, 'conversations', conversationId), {
+      updatedAt: serverTimestamp(),
+      lastMessageSenderId: user.id,
+    });
     setNewText('');
   };
 
@@ -327,7 +330,10 @@ export default function FriendsPage() {
       song: selectedSong,
       createdAt: serverTimestamp(),
     });
-    await updateDoc(doc(db, 'conversations', conversationId), { updatedAt: serverTimestamp() });
+    await updateDoc(doc(db, 'conversations', conversationId), {
+      updatedAt: serverTimestamp(),
+      lastMessageSenderId: user.id,
+    });
     setShareSongId('');
   };
 
@@ -342,7 +348,10 @@ export default function FriendsPage() {
       playlist: selectedPlaylist,
       createdAt: serverTimestamp(),
     });
-    await updateDoc(doc(db, 'conversations', conversationId), { updatedAt: serverTimestamp() });
+    await updateDoc(doc(db, 'conversations', conversationId), {
+      updatedAt: serverTimestamp(),
+      lastMessageSenderId: user.id,
+    });
     setSharePlaylistId('');
   };
 
