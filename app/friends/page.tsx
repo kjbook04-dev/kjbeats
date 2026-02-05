@@ -102,10 +102,7 @@ export default function FriendsPage() {
     return conversations.find((c) => c.id === convoId) || null;
   }, [conversations, selectedFriendUid, user?.id]);
   const selectedHiddenAt = selectedConversation ? conversationParticipantMeta[selectedConversation.id]?.hiddenAt : null;
-  const effectiveFriendshipStatus =
-    friendshipStatus ||
-    (selectedConversation?.friendshipStatus as typeof friendshipStatus) ||
-    (selectedConversation?.friendshipEstablished ? 'accepted' : null);
+  const effectiveFriendshipStatus = friendshipStatus ?? selectedConversation?.friendshipStatus ?? (selectedConversation?.friendshipEstablished ? 'accepted' : null);
   const everAccepted = friendshipEverAccepted || !!selectedConversation?.friendshipEstablished;
   const canChat = Boolean(
     selectedFriend &&
