@@ -78,6 +78,9 @@ export default function FriendsPage() {
   const lastReadWriteAtRef = useRef<number>(0);
   const gText = gradientTextStyle();
   const gBg = gradientBgStyle();
+  const friends = user?.friends || [];
+  const friendRequests = user?.friendRequests || [];
+  const isFriend = (name: string) => friends.some((f) => f.toLowerCase() === name.toLowerCase());
   const isSelectedFriend = Boolean(selectedFriend && isFriend(selectedFriend));
   const canChat = Boolean(selectedFriend && selectedFriendUid && isSelectedFriend);
 
@@ -95,9 +98,7 @@ export default function FriendsPage() {
     setNotification((prev) => ({ ...prev, isVisible: false }));
   };
 
-  const friends = user?.friends || [];
-  const friendRequests = user?.friendRequests || [];
-  const isFriend = (name: string) => friends.some((f) => f.toLowerCase() === name.toLowerCase());
+ 
 
   const selectedSong = useMemo(
     () => songs.find((s) => s.id === shareSongId),
