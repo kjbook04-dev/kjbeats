@@ -108,7 +108,7 @@ export default function ProfilePage() {
         />
       <div className="-mt-2 px-4 pb-4 flex flex-wrap items-end sm:items-center justify-between gap-3 sm:gap-4">
               <div className="flex items-end gap-4 min-w-0">
-            <div className={`w-20 h-20 md:w-28 md:h-28 aspect-square rounded-full ${user.profilePicture ? 'border-0' : `border-4 ${currentTheme.border}`} shadow-lg overflow-hidden bg-gray-800 relative -mt-4 z-20`}>
+            <div className={`w-20 h-20 md:w-28 md:h-28 aspect-square flex-shrink-0 rounded-full ${user.profilePicture ? 'border-0' : `border-4 ${currentTheme.border}`} shadow-lg overflow-hidden bg-gray-800 relative -mt-4 z-20`}>
               <ProfilePictureUpload currentImage={user.profilePicture} originalImage={user.profilePictureOriginal || user.profilePicture} onImageSelect={handleProfilePictureUpdate} className="w-full h-full" />
             </div>
             <div className="min-w-0 mt-2 sm:mt-0">

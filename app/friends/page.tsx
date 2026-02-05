@@ -222,7 +222,14 @@ export default function FriendsPage() {
         [`conversationReads.${conversationId}`]: new Date().toISOString(),
       });
     } catch (error) {
-      console.error('Failed to mark conversation read', error);
+      try {
+        await updateDoc(doc(db, 'users', user.id), { conversationReads: {} });
+        await updateDoc(doc(db, 'users', user.id), {
+          [`conversationReads.${conversationId}`]: new Date().toISOString(),
+        });
+      } catch (inner) {
+        console.error('Failed to mark conversation read', inner);
+      }
     }
   };
 
@@ -615,14 +622,14 @@ export default function FriendsPage() {
                     <select
                       value={shareSongId}
                       onChange={(e) => setShareSongId(e.target.value)}
-                      className="flex-1 px-3 py-2 bg-gray-900/70 border border-white/10 rounded-full text-white h-10"
+                      className="flex-1 min-w-0 px-3 py-2 bg-gray-900/70 border border-white/10 rounded-full text-white h-10"
                     >
                       <option value="">Select a song...</option>
                       {songs.map((song) => (
                         <option key={song.id} value={song.id}>{song.title}</option>
                       ))}
                     </select>
-                    <button onClick={sendSong} disabled={!shareSongId} className="px-4 py-2 rounded-full text-gray-900 disabled:opacity-50 h-10 w-full md:w-24" style={gBg}>
+                    <button onClick={sendSong} disabled={!shareSongId} className="px-4 py-2 rounded-full text-gray-900 disabled:opacity-50 h-10 w-full md:w-24 md:flex-shrink-0" style={gBg}>
                       Share
                     </button>
                   </div>
@@ -634,14 +641,14 @@ export default function FriendsPage() {
                     <select
                       value={sharePlaylistId}
                       onChange={(e) => setSharePlaylistId(e.target.value)}
-                      className="flex-1 px-3 py-2 bg-gray-900/70 border border-white/10 rounded-full text-white h-10"
+                      className="flex-1 min-w-0 px-3 py-2 bg-gray-900/70 border border-white/10 rounded-full text-white h-10"
                     >
                       <option value="">Select a playlist...</option>
                       {playlists.map((playlist) => (
                         <option key={playlist.id} value={playlist.id}>{playlist.title}</option>
                       ))}
                     </select>
-                    <button onClick={sendPlaylist} disabled={!sharePlaylistId} className="px-4 py-2 rounded-full text-gray-900 disabled:opacity-50 h-10 w-full md:w-24" style={gBg}>
+                    <button onClick={sendPlaylist} disabled={!sharePlaylistId} className="px-4 py-2 rounded-full text-gray-900 disabled:opacity-50 h-10 w-full md:w-24 md:flex-shrink-0" style={gBg}>
                       Share
                     </button>
                   </div>

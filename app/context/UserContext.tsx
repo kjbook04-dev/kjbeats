@@ -87,7 +87,7 @@ const userDocToSession = (uid: string, data: any): User => ({
   friends: Array.isArray(data.friends) ? data.friends : [],
   friendNotifications: Array.isArray(data.friendNotifications) ? data.friendNotifications : [],
   friendRequests: Array.isArray(data.friendRequests) ? data.friendRequests : [],
-  conversationReads: data.conversationReads || {},
+  conversationReads: data.conversationReads && typeof data.conversationReads === 'object' ? data.conversationReads : {},
   bio: data.bio || '',
   website: data.website || '',
   publicProfile: !!data.publicProfile,
@@ -327,10 +327,12 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       const targetData = targetUserSnap.exists() ? targetUserSnap.data() : {};
       const targetFriends = Array.isArray(targetData.friends) ? targetData.friends : [];
       const targetRequests = Array.isArray(targetData.friendRequests) ? targetData.friendRequests : [];
-      if (targetFriends.includes(user.username)) {
+      const isAlreadyFriendTarget = targetFriends.some((f: string) => normalizeUsername(f) === normalizeUsername(user.username));
+      const isAlreadyFriendSelf = (user.friends || []).some((f) => normalizeUsername(f) === uname);
+      if (isAlreadyFriendTarget || isAlreadyFriendSelf) {
         return { success: false, error: 'You are already friends.' };
       }
-      if (targetRequests.includes(user.username)) {
+      if (targetRequests.some((r: string) => normalizeUsername(r) === normalizeUsername(user.username))) {
         return { success: false, error: 'Friend request already sent.' };
       }
       if (targetUid) {
@@ -353,10 +355,16 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const removeFriend = async (usernameToRemove: string): Promise<boolean> => {
     if (!user || !db) return false;
     try {
+      const uname = normalizeUsername(usernameToRemove);
       await updateDoc(doc(db, 'users', user.id), { friends: arrayRemove(usernameToRemove) });
+      const targetSnap = await getDoc(doc(db, 'usernames', uname));
+      const targetUid = targetSnap.exists() ? (targetSnap.data().uid as string) : '';
+      if (targetUid) {
+        await updateDoc(doc(db, 'users', targetUid), { friends: arrayRemove(user.username) });
+      }
       setUser((prev) => {
         if (!prev) return prev;
-        return { ...prev, friends: (prev.friends || []).filter((f) => f !== usernameToRemove) };
+        return { ...prev, friends: (prev.friends || []).filter((f) => normalizeUsername(f) !== uname) };
       });
       return true;
     } catch (error) {

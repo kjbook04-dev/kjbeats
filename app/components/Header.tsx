@@ -47,7 +47,7 @@ export default function Header() {
     const convRef = collection(dbClient, 'conversations');
     const q = query(convRef, where('participants', 'array-contains', user.id));
     return onSnapshot(q, (snapshot) => {
-      const reads = user.conversationReads || {};
+      const reads = user.conversationReads && typeof user.conversationReads === 'object' ? user.conversationReads : {};
       let unread = 0;
       let hasNew = false;
       snapshot.docs.forEach((docSnap) => {
@@ -284,7 +284,7 @@ export default function Header() {
             <li>
               <Link href="/manage" className="flex flex-col items-center gap-1 text-[10px]" onClick={() => setIsMenuOpen(false)}>
                 <svg viewBox="0 0 24 24" className={`h-5 w-5 ${pathname === '/manage' ? currentTheme.text : 'text-gray-400'}`} aria-hidden="true">
-                  <path d="M9 18a3 3 0 1 1 0-6c.35 0 .68.06 1 .18V5l10-2v10.5a3 3 0 1 1-2-2.83V6.5l-6 1.2V15a3 3 0 1 1-2-2.83V5.8" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M10 4v11.2a3 3 0 1 1-2-2.83V6.2l10-2v8.7a3 3 0 1 1-2-2.83V5.4l-6 1.2" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
                 <span className={`${pathname === '/manage' ? currentTheme.text : 'text-gray-400'}`}>Music</span>
               </Link>
