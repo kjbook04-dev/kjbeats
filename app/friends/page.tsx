@@ -75,7 +75,7 @@ export default function FriendsPage() {
     type: 'success',
     isVisible: false,
   });
-  const lastMarkedConversationRef = useRef<string | null>(null);
+  const lastReadWriteAtRef = useRef<number>(0);
   const gText = gradientTextStyle();
   const gBg = gradientBgStyle();
   const canChat = Boolean(selectedFriend && selectedFriendUid);
@@ -169,10 +169,6 @@ export default function FriendsPage() {
     const setup = async () => {
       const conversationId = await ensureConversation(false);
       if (!conversationId) return;
-      if (lastMarkedConversationRef.current !== conversationId) {
-        lastMarkedConversationRef.current = conversationId;
-        await markConversationRead(conversationId);
-      }
       try {
         const profileSnap = await getDoc(doc(dbClient, 'users', selectedFriendUid));
         if (profileSnap.exists()) {
@@ -197,6 +193,19 @@ export default function FriendsPage() {
       unsubscribe = onSnapshot(q, (snapshot) => {
         const next = snapshot.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<ChatMessage, 'id'>) }));
         setMessages(next);
+        const lastReadStr = user?.conversationReads?.[conversationId];
+        const lastReadMs = lastReadStr ? Date.parse(lastReadStr) : 0;
+        let newestMs = 0;
+        snapshot.docs.forEach((docSnap) => {
+          const data = docSnap.data() as { createdAt?: any };
+          const createdMs = data.createdAt?.seconds ? data.createdAt.seconds * 1000 : 0;
+          if (createdMs > newestMs) newestMs = createdMs;
+        });
+        const now = Date.now();
+        if (newestMs && newestMs > lastReadMs && now - lastReadWriteAtRef.current > 30000) {
+          lastReadWriteAtRef.current = now;
+          markConversationRead(conversationId);
+        }
       });
     };
     setup();
@@ -204,10 +213,6 @@ export default function FriendsPage() {
       if (unsubscribe) unsubscribe();
     };
   }, [selectedFriendUid, user]);
-
-  useEffect(() => {
-    lastMarkedConversationRef.current = null;
-  }, [selectedFriendUid]);
 
   const ensureConversation = async (touchUpdatedAt: boolean = true) => {
     if (!db || !user || !selectedFriendUid) return null;
