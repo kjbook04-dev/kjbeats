@@ -489,11 +489,30 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const acceptFriendRequest = async (usernameToAccept: string): Promise<boolean> => {
     if (!user || !db) return false;
     try {
-      const targetSnap = await getDoc(doc(db, 'usernames', normalizeUsername(usernameToAccept)));
-      const targetUid = targetSnap.exists() ? (targetSnap.data().uid as string) : '';
-      const canonical = targetSnap.exists()
-        ? ((targetSnap.data().username as string) || usernameToAccept)
-        : usernameToAccept;
+      const uname = normalizeUsername(usernameToAccept);
+      let targetUid = '';
+      let canonical = usernameToAccept;
+      const targetSnap = await getDoc(doc(db, 'usernames', uname));
+      if (targetSnap.exists()) {
+        targetUid = targetSnap.data().uid as string;
+        canonical = (targetSnap.data().username as string) || canonical;
+      } else {
+        const exactSnap = await getDoc(doc(db, 'usernames', usernameToAccept.trim()));
+        if (exactSnap.exists()) {
+          targetUid = exactSnap.data().uid as string;
+          canonical = (exactSnap.data().username as string) || canonical;
+        } else {
+          const usersRef = collection(db, 'users');
+          const q = query(usersRef, where('usernameLower', '==', uname), limit(1));
+          const qs = await getDocs(q);
+          if (!qs.empty) {
+            const docSnap = qs.docs[0];
+            const data = docSnap.data();
+            targetUid = docSnap.id;
+            canonical = data.username || canonical;
+          }
+        }
+      }
       const selfUpdates: Record<string, any> = {
         friends: arrayUnion(canonical),
         friendRequests: arrayRemove(usernameToAccept, canonical),
