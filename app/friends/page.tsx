@@ -108,6 +108,14 @@ export default function FriendsPage() {
     () => playlists.find((p) => p.id === sharePlaylistId),
     [playlists, sharePlaylistId]
   );
+  const visibleConversations = useMemo(() => {
+    if (!user) return [];
+    return conversations.filter((convo) => {
+      const otherId = convo.participants?.find((id) => id !== user.id) || '';
+      const name = participantNames[otherId];
+      return !!name && isFriend(name);
+    });
+  }, [conversations, participantNames, user, friends]);
 
   useEffect(() => {
     const resolveFriend = async () => {
@@ -540,11 +548,11 @@ export default function FriendsPage() {
 
           <div className="mb-3 rounded-2xl border border-white/10 bg-gray-900/70 p-3 shadow-inner">
             <h4 className={`text-xs font-semibold uppercase tracking-wide mb-2 ${currentTheme.text}`}>Direct Messages</h4>
-            {conversations.length === 0 ? (
+            {visibleConversations.length === 0 ? (
               <div className="text-gray-400 text-sm">No DMs yet.</div>
             ) : (
               <div className="space-y-2 max-h-40 overflow-y-auto pr-1">
-                {conversations.map((convo) => {
+                {visibleConversations.map((convo) => {
                   const otherId = convo.participants?.find((id) => id !== user?.id) || '';
                   const name = participantNames[otherId] || 'Friend';
                   const isActive = selectedFriendUid === otherId;
