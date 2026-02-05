@@ -54,13 +54,7 @@ export default function Header() {
         const data = docSnap.data() as { updatedAt?: any };
         const updatedAt = data.updatedAt?.seconds ? data.updatedAt.seconds * 1000 : 0;
         const lastRead = reads[docSnap.id] ? Date.parse(reads[docSnap.id]) : 0;
-        if (!lastRead && updatedAt) {
-          // First time seeing this convo; mark as read to avoid false positives.
-          updateDoc(doc(dbClient, 'users', user.id), {
-            [`conversationReads.${docSnap.id}`]: new Date(updatedAt).toISOString(),
-          }).catch(() => {});
-          return;
-        }
+        if (!lastRead && updatedAt) return;
         if (updatedAt > lastRead) {
           unread += 1;
           hasNew = true;
@@ -284,7 +278,8 @@ export default function Header() {
             <li>
               <Link href="/manage" className="flex flex-col items-center gap-1 text-[10px]" onClick={() => setIsMenuOpen(false)}>
                 <svg viewBox="0 0 24 24" className={`h-5 w-5 ${pathname === '/manage' ? currentTheme.text : 'text-gray-400'}`} aria-hidden="true">
-                  <path d="M10 18a3 3 0 1 1 0-6c.35 0 .68.06 1 .18V4l8-2v7" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M10 18a3 3 0 1 1 0-6c.35 0 .68.06 1 .18V4l8-2v9" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M18 3v6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
                 <span className={`${pathname === '/manage' ? currentTheme.text : 'text-gray-400'}`}>Music</span>
               </Link>

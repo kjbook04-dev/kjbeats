@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState, ReactNode } from 'react';
 import {
   browserLocalPersistence,
   browserSessionPersistence,
@@ -96,6 +96,7 @@ const userDocToSession = (uid: string, data: any): User => ({
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const defaultsPatchedRef = useRef(false);
 
   useEffect(() => {
     const authClient = auth;
@@ -143,11 +144,15 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             return;
           }
           const data = userSnap.data();
-          const patch: Record<string, any> = {};
-          if (!data.conversationReads) patch.conversationReads = {};
-          if (typeof data.playerVolume !== 'number') patch.playerVolume = 0.5;
-          if (Object.keys(patch).length) {
-            updateDoc(doc(dbClient, 'users', authUser.uid), patch).catch(() => {});
+          if (!defaultsPatchedRef.current) {
+            const patch: Record<string, any> = {};
+            const readsOk = data.conversationReads && typeof data.conversationReads === 'object' && !Array.isArray(data.conversationReads);
+            if (!readsOk) patch.conversationReads = {};
+            if (typeof data.playerVolume !== 'number') patch.playerVolume = 0.5;
+            if (Object.keys(patch).length) {
+              defaultsPatchedRef.current = true;
+              updateDoc(doc(dbClient, 'users', authUser.uid), patch).catch(() => {});
+            }
           }
           setUser(userDocToSession(authUser.uid, data));
           setIsLoading(false);

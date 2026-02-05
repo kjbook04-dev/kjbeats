@@ -24,6 +24,7 @@ export default function PersistentPlayer() {
   const [previousVolume, setPreviousVolume] = useState(1);
   const [isMuted, setIsMuted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const lastSavedVolumeRef = useRef<number | null>(null);
   const [playQueue, setPlayQueue] = useState<Song[] | null>(null);
   const [queueIndex, setQueueIndex] = useState<number>(-1);
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -134,6 +135,7 @@ export default function PersistentPlayer() {
             if (v > 0) setPreviousVolume(v);
             setIsMuted(v === 0);
             if (audioRef.current) audioRef.current.volume = v;
+            lastSavedVolumeRef.current = v;
           }
         }
         if (user && db) {
@@ -147,6 +149,7 @@ export default function PersistentPlayer() {
             if (v > 0) setPreviousVolume(v);
             setIsMuted(v === 0);
             if (audioRef.current) audioRef.current.volume = v;
+            lastSavedVolumeRef.current = v;
           }
         }
       } catch (e) {
@@ -159,12 +162,16 @@ export default function PersistentPlayer() {
   useEffect(() => {
     if (isMobile) return;
     try {
+      if (lastSavedVolumeRef.current !== null && Math.abs(volume - lastSavedVolumeRef.current) < 0.001) {
+        return;
+      }
       localStorage.setItem('playerVolume', String(volume));
       if (user && db) {
         updateDoc(doc(db, 'users', user.id), { playerVolume: volume }).catch(() => {
           // ignore cloud sync errors
         });
       }
+      lastSavedVolumeRef.current = volume;
     } catch (e) {
       // ignore storage errors
     }

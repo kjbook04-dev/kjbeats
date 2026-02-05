@@ -217,6 +217,13 @@ export default function FriendsPage() {
 
   const markConversationRead = async (conversationId: string) => {
     if (!db || !user) return;
+    const lastRead = user.conversationReads?.[conversationId];
+    if (lastRead) {
+      const last = Date.parse(lastRead);
+      if (!Number.isNaN(last) && Date.now() - last < 30000) {
+        return;
+      }
+    }
     try {
       await updateDoc(doc(db, 'users', user.id), {
         [`conversationReads.${conversationId}`]: new Date().toISOString(),
