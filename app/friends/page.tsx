@@ -167,6 +167,34 @@ export default function FriendsPage() {
     });
   }, [selectedFriendUid, user]);
 
+  useEffect(() => {
+    if (!db || !user || !selectedFriendUid || !isSelectedFriend) return;
+    const friendshipId = friendshipIdFor(user.id, selectedFriendUid);
+    setDoc(
+      doc(db, 'friendships', friendshipId),
+      {
+        userLowId: friendshipId.split('__')[0],
+        userHighId: friendshipId.split('__')[1],
+        status: 'accepted',
+        acceptedAt: new Date().toISOString(),
+        removedAt: null,
+        everAccepted: true,
+      },
+      { merge: true }
+    ).catch(() => {});
+    setDoc(
+      doc(db, 'conversations', friendshipId),
+      {
+        userLowId: friendshipId.split('__')[0],
+        userHighId: friendshipId.split('__')[1],
+        participants: [user.id, selectedFriendUid].sort(),
+        friendshipEstablished: true,
+        friendshipStatus: 'accepted',
+      },
+      { merge: true }
+    ).catch(() => {});
+  }, [selectedFriendUid, user, isSelectedFriend]);
+
   const showNotification = (message: string, type: 'success' | 'error' | 'info' = 'success') => {
     setNotification({ message, type, isVisible: true });
   };
