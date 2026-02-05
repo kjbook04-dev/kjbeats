@@ -36,10 +36,12 @@ export default function Header() {
   const lastFriendNotificationCountRef = useRef(0);
   const lastFriendRequestCountRef = useRef(0);
   const suppressMessageToastRef = useRef(0);
+  const [friendBadgeHidden, setFriendBadgeHidden] = useState(false);
 
   useEffect(() => {
     if (friendNotificationCount > lastFriendNotificationCountRef.current) {
       setShowFriendToast(true);
+      setFriendBadgeHidden(false);
       suppressMessageToastRef.current = Date.now() + 5000;
     }
     lastFriendNotificationCountRef.current = friendNotificationCount;
@@ -48,6 +50,7 @@ export default function Header() {
   useEffect(() => {
     if (friendRequestCount > lastFriendRequestCountRef.current) {
       setShowFriendToast(true);
+      setFriendBadgeHidden(false);
       suppressMessageToastRef.current = Date.now() + 5000;
     }
     lastFriendRequestCountRef.current = friendRequestCount;
@@ -153,16 +156,19 @@ export default function Header() {
                     onClick={() => {
                       clearFriendNotifications();
                       setShowFriendToast(false);
+                      setFriendBadgeHidden(true);
+                      lastFriendNotificationCountRef.current = friendNotificationCount;
+                      lastFriendRequestCountRef.current = friendRequestCount;
                       setIsMenuOpen(false);
                     }}
                   >
                     <span className="relative inline-flex items-center" style={gText}>
                       Friends
-                      {(friendNotificationCount > 0 || unreadMessageCount > 0) && (
+                      {((!friendBadgeHidden && (friendNotificationCount > 0 || friendRequestCount > 0)) || unreadMessageCount > 0) && (
                         <span
                           className="absolute -top-2 -right-3 min-w-[1.1rem] h-4 px-1 rounded-full text-[10px] leading-4 text-white text-center bg-red-500"
                         >
-                          {friendNotificationCount + unreadMessageCount > 9 ? '9+' : friendNotificationCount + unreadMessageCount}
+                          {friendNotificationCount + friendRequestCount + unreadMessageCount > 9 ? '9+' : friendNotificationCount + friendRequestCount + unreadMessageCount}
                         </span>
                       )}
                     </span>
@@ -310,6 +316,9 @@ export default function Header() {
                 onClick={() => {
                   clearFriendNotifications();
                   setShowFriendToast(false);
+                  setFriendBadgeHidden(true);
+                  lastFriendNotificationCountRef.current = friendNotificationCount;
+                  lastFriendRequestCountRef.current = friendRequestCount;
                   setIsMenuOpen(false);
                 }}
               >
@@ -317,9 +326,9 @@ export default function Header() {
                   <path d="M7 13a3 3 0 1 0-3-3 3 3 0 0 0 3 3zm10 0a3 3 0 1 0-3-3 3 3 0 0 0 3 3zM4 20a4 4 0 0 1 6-3.4M14 20a4 4 0 0 1 6-3.4" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
                 </svg>
                 <span className={`${pathname === '/friends' ? currentTheme.text : 'text-gray-400'}`}>Friends</span>
-                {(friendNotificationCount > 0 || unreadMessageCount > 0) && (
+                {((!friendBadgeHidden && (friendNotificationCount > 0 || friendRequestCount > 0)) || unreadMessageCount > 0) && (
                   <span className="absolute -top-1 right-3 min-w-[1.1rem] h-4 px-1 rounded-full text-[10px] leading-4 text-white text-center bg-red-500">
-                    {friendNotificationCount + unreadMessageCount > 9 ? '9+' : friendNotificationCount + unreadMessageCount}
+                    {friendNotificationCount + friendRequestCount + unreadMessageCount > 9 ? '9+' : friendNotificationCount + friendRequestCount + unreadMessageCount}
                   </span>
                 )}
               </Link>

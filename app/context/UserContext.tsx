@@ -80,6 +80,15 @@ interface UserProviderProps {
 
 const normalizeUsername = (value: string) => value.trim().toLowerCase();
 
+const normalizeStringList = (value: any): string[] => {
+  if (Array.isArray(value)) return value.filter((v) => typeof v === 'string');
+  if (value && typeof value === 'object') {
+    return Object.values(value).filter((v) => typeof v === 'string') as string[];
+  }
+  if (typeof value === 'string') return [value];
+  return [];
+};
+
 const userDocToSession = (uid: string, data: any): User => ({
   id: uid,
   username: data.username || '',
@@ -89,9 +98,9 @@ const userDocToSession = (uid: string, data: any): User => ({
   profilePicture: data.profilePicture,
   profilePictureOriginal: data.profilePictureOriginal,
   themeColor: data.themeColor,
-  friends: Array.isArray(data.friends) ? data.friends : [],
+  friends: normalizeStringList(data.friends),
   friendNotifications: Array.isArray(data.friendNotifications) ? data.friendNotifications : [],
-  friendRequests: Array.isArray(data.friendRequests) ? data.friendRequests : [],
+  friendRequests: normalizeStringList(data.friendRequests),
   conversationReads: data.conversationReads && typeof data.conversationReads === 'object' ? data.conversationReads : {},
   bio: data.bio || '',
   website: data.website || '',
@@ -154,8 +163,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             const readsOk = data.conversationReads && typeof data.conversationReads === 'object' && !Array.isArray(data.conversationReads);
             if (!readsOk) patch.conversationReads = {};
             if (typeof data.playerVolume !== 'number') patch.playerVolume = 0.5;
-            if (!Array.isArray(data.friends)) patch.friends = [];
-            if (!Array.isArray(data.friendRequests)) patch.friendRequests = [];
+            if (!Array.isArray(data.friends)) patch.friends = normalizeStringList(data.friends);
+            if (!Array.isArray(data.friendRequests)) patch.friendRequests = normalizeStringList(data.friendRequests);
             if (!Array.isArray(data.friendNotifications)) patch.friendNotifications = [];
             if (Object.keys(patch).length) {
               defaultsPatchedRef.current = true;
@@ -411,14 +420,17 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     try {
       const targetSnap = await getDoc(doc(db, 'usernames', normalizeUsername(usernameToAccept)));
       const targetUid = targetSnap.exists() ? (targetSnap.data().uid as string) : '';
+      const canonical = targetSnap.exists()
+        ? ((targetSnap.data().username as string) || usernameToAccept)
+        : usernameToAccept;
       await updateDoc(doc(db, 'users', user.id), {
-        friends: arrayUnion(usernameToAccept),
-        friendRequests: arrayRemove(usernameToAccept),
+        friends: arrayUnion(canonical),
+        friendRequests: arrayRemove(usernameToAccept, canonical),
       });
       setUser((prev) => {
         if (!prev) return prev;
-        const nextFriends = Array.from(new Set([...(prev.friends || []), usernameToAccept]));
-        const nextRequests = (prev.friendRequests || []).filter((r) => r !== usernameToAccept);
+        const nextFriends = Array.from(new Set([...(prev.friends || []), canonical]));
+        const nextRequests = (prev.friendRequests || []).filter((r) => normalizeUsername(r) !== normalizeUsername(usernameToAccept));
         return { ...prev, friends: nextFriends, friendRequests: nextRequests };
       });
       if (targetUid) {
