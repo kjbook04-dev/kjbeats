@@ -634,7 +634,7 @@ export default function FriendsPage() {
             </div>
           )}
 
-          {selectedFriend && isSelectedFriend && (
+          {selectedFriend && canChat && (
             <div className="space-y-3 border-t border-white/10 pt-3">
               <div>
                 <label className="block text-xs text-gray-400 mb-1 uppercase tracking-wide">Message</label>

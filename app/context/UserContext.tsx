@@ -373,7 +373,31 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       const isAlreadyFriendTarget = targetFriends.some((f: string) => normalizeUsername(f) === normalizeUsername(user.username));
       const isAlreadyFriendSelf = (user.friends || []).some((f) => normalizeUsername(f) === uname);
       if (isAlreadyFriendTarget || isAlreadyFriendSelf) {
-        return { success: false, error: 'You are already friends.' };
+        if (isAlreadyFriendTarget && isAlreadyFriendSelf) {
+          return { success: false, error: 'You are already friends.' };
+        }
+        try {
+          if (isAlreadyFriendSelf) {
+            const selfFriends = Array.isArray(user.friends) ? user.friends : [];
+            const selfFriendEntry = selfFriends.find((f) => normalizeUsername(f) === uname) || usernameToAdd;
+            const nextFriendNotifications = (user.friendNotifications || []).filter(
+              (n) => normalizeUsername(n.from) !== uname
+            );
+            await updateDoc(doc(db, 'users', user.id), {
+              friends: arrayRemove(selfFriendEntry, usernameToAdd),
+              friendRequests: arrayRemove(selfFriendEntry, usernameToAdd),
+              friendNotifications: nextFriendNotifications,
+            });
+          }
+          if (isAlreadyFriendTarget && targetUid) {
+            await updateDoc(doc(db, 'users', targetUid), {
+              friends: arrayRemove(user.username),
+              friendRequests: arrayRemove(user.username),
+            });
+          }
+        } catch (cleanupError) {
+          console.warn('Friend cleanup failed', cleanupError);
+        }
       }
       if (targetRequests.some((r: string) => normalizeUsername(r) === normalizeUsername(user.username))) {
         return { success: false, error: 'Friend request already sent.' };
