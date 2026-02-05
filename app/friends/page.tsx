@@ -91,6 +91,15 @@ export default function FriendsPage() {
   const lastReadWriteAtRef = useRef<number>(0);
   const gText = gradientTextStyle();
   const gBg = gradientBgStyle();
+  const confirmConversation = useMemo(
+    () => (confirmDeleteConversationId ? conversations.find((c) => c.id === confirmDeleteConversationId) || null : null),
+    [confirmDeleteConversationId, conversations]
+  );
+  const confirmConversationName = useMemo(() => {
+    if (!confirmConversation || !user) return '';
+    const otherId = confirmConversation.participants?.find((id) => id !== user.id) || '';
+    return participantNames[otherId] || 'this conversation';
+  }, [confirmConversation, participantNames, user]);
   const friends = user?.friends || [];
   const friendRequests = user?.friendRequests || [];
   const hiddenConversations = user?.hiddenConversations || [];
@@ -968,12 +977,3 @@ export default function FriendsPage() {
     </div>
   );
 }
-  const confirmConversation = useMemo(
-    () => (confirmDeleteConversationId ? conversations.find((c) => c.id === confirmDeleteConversationId) || null : null),
-    [confirmDeleteConversationId, conversations]
-  );
-  const confirmConversationName = useMemo(() => {
-    if (!confirmConversation || !user) return '';
-    const otherId = confirmConversation.participants?.find((id) => id !== user.id) || '';
-    return participantNames[otherId] || 'this conversation';
-  }, [confirmConversation, participantNames, user]);
