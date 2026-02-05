@@ -506,16 +506,6 @@ export default function FriendsPage() {
                   <span className="ml-auto text-xs text-gray-400">Private</span>
                 )}
               </div>
-              {isFriend(selectedFriendProfile.username || selectedFriend) && (
-                <div className="mt-3">
-                  <button
-                    onClick={() => removeFriend(selectedFriendProfile.username || selectedFriend)}
-                    className="px-3 py-1 rounded-md text-sm text-gray-300 border border-white/10 hover:bg-white/5"
-                  >
-                    Remove Friend
-                  </button>
-                </div>
-              )}
               {selectedFriendProfile.publicProfile ? (
                 <div className="mt-2 text-sm text-gray-300 space-y-1">
                   {selectedFriendProfile.bio && <p>{selectedFriendProfile.bio}</p>}
