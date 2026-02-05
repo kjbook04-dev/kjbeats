@@ -182,6 +182,20 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
               updateDoc(doc(dbClient, 'users', authUser.uid), patch).catch(() => {});
             }
           }
+          // Auto-sync friend accepts that may not have been written to the sender's doc.
+          const rawFriends = normalizeStringList(data.friends);
+          const acceptedNotifs = Array.isArray(data.friendNotifications)
+            ? data.friendNotifications.filter((n: { type?: string; from?: string }) => n?.type === 'friend_accepted' && n?.from)
+            : [];
+          const missingAccepted = acceptedNotifs
+            .map((n: { from?: string }) => n.from as string)
+            .filter((name) => !rawFriends.some((f) => normalizeUsername(f) === normalizeUsername(name)));
+          if (missingAccepted.length) {
+            updateDoc(doc(dbClient, 'users', authUser.uid), {
+              friends: arrayUnion(...missingAccepted),
+              friendRequests: arrayRemove(...missingAccepted),
+            }).catch(() => {});
+          }
           setUser(userDocToSession(authUser.uid, data));
           setIsLoading(false);
         });
