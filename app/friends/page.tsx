@@ -941,7 +941,7 @@ export default function FriendsPage() {
                 onClick={() => {
                   hideConversationForUser(confirmDeleteConversationId);
                   if (confirmConversation && selectedFriendUid) {
-                    const otherId = confirmConversation.participants?.find((id) => id !== user?.id) || '';
+                    const otherId = confirmConversation.participants?.find((id: string) => id !== user?.id) || '';
                     if (otherId === selectedFriendUid) {
                       setSelectedFriend('');
                       setSelectedFriendUid('');
