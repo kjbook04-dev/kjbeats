@@ -399,15 +399,44 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     if (!user || !db) return false;
     try {
       const uname = normalizeUsername(usernameToRemove);
-      await updateDoc(doc(db, 'users', user.id), { friends: arrayRemove(usernameToRemove) });
+      const currentFriends = Array.isArray(user.friends) ? user.friends : [];
+      const friendEntry = currentFriends.find((f) => normalizeUsername(f) === uname) || usernameToRemove;
+      const nextFriendNotifications = (user.friendNotifications || []).filter(
+        (n) => normalizeUsername(n.from) !== uname
+      );
+      await updateDoc(doc(db, 'users', user.id), {
+        friends: arrayRemove(friendEntry, usernameToRemove),
+        friendRequests: arrayRemove(friendEntry, usernameToRemove),
+        friendNotifications: nextFriendNotifications,
+      });
       const targetSnap = await getDoc(doc(db, 'usernames', uname));
       const targetUid = targetSnap.exists() ? (targetSnap.data().uid as string) : '';
       if (targetUid) {
-        await updateDoc(doc(db, 'users', targetUid), { friends: arrayRemove(user.username) });
+        const targetUserSnap = await getDoc(doc(db, 'users', targetUid));
+        const targetData = targetUserSnap.exists() ? targetUserSnap.data() : {};
+        const targetFriends = Array.isArray(targetData.friends) ? targetData.friends : [];
+        const targetFriendEntry =
+          targetFriends.find((f: string) => normalizeUsername(f) === normalizeUsername(user.username)) ||
+          user.username;
+        const targetFriendNotifications = Array.isArray(targetData.friendNotifications)
+          ? targetData.friendNotifications.filter(
+              (n: { from?: string }) => normalizeUsername(n?.from || '') !== normalizeUsername(user.username)
+            )
+          : [];
+        await updateDoc(doc(db, 'users', targetUid), {
+          friends: arrayRemove(targetFriendEntry, user.username),
+          friendRequests: arrayRemove(user.username, targetFriendEntry),
+          friendNotifications: targetFriendNotifications,
+        });
       }
       setUser((prev) => {
         if (!prev) return prev;
-        return { ...prev, friends: (prev.friends || []).filter((f) => normalizeUsername(f) !== uname) };
+        return {
+          ...prev,
+          friends: (prev.friends || []).filter((f) => normalizeUsername(f) !== uname),
+          friendRequests: (prev.friendRequests || []).filter((f) => normalizeUsername(f) !== uname),
+          friendNotifications: (prev.friendNotifications || []).filter((n) => normalizeUsername(n.from) !== uname),
+        };
       });
       return true;
     } catch (error) {

@@ -82,7 +82,12 @@ export default function FriendsPage() {
   const friendRequests = user?.friendRequests || [];
   const isFriend = (name: string) => friends.some((f) => f.toLowerCase() === name.toLowerCase());
   const isSelectedFriend = Boolean(selectedFriend && isFriend(selectedFriend));
-  const canChat = Boolean(selectedFriend && selectedFriendUid && isSelectedFriend);
+  const hasConversationHistory = useMemo(() => {
+    if (!user?.id || !selectedFriendUid) return false;
+    const convoId = conversationIdFor(user.id, selectedFriendUid);
+    return conversations.some((c) => c.id === convoId);
+  }, [conversations, selectedFriendUid, user?.id]);
+  const canChat = Boolean(selectedFriend && selectedFriendUid && (isSelectedFriend || hasConversationHistory));
 
   useEffect(() => {
     if (!isSelectedFriend) {
@@ -113,9 +118,9 @@ export default function FriendsPage() {
     return conversations.filter((convo) => {
       const otherId = convo.participants?.find((id) => id !== user.id) || '';
       const name = participantNames[otherId];
-      return !!name && isFriend(name);
+      return !!name;
     });
-  }, [conversations, participantNames, user, friends]);
+  }, [conversations, participantNames, user]);
 
   useEffect(() => {
     const resolveFriend = async () => {
@@ -287,7 +292,7 @@ export default function FriendsPage() {
   };
 
   const sendText = async () => {
-    if (!db || !user || !newText.trim() || !selectedFriendUid || !isSelectedFriend) return;
+    if (!db || !user || !newText.trim() || !selectedFriendUid || !canChat) return;
     const conversationId = await ensureConversation(true);
     if (!conversationId) return;
     await addDoc(collection(db, 'conversations', conversationId, 'messages'), {
@@ -320,7 +325,7 @@ export default function FriendsPage() {
   };
 
   const sendSong = async () => {
-    if (!db || !user || !selectedFriendUid || !selectedSong || !isSelectedFriend) return;
+    if (!db || !user || !selectedFriendUid || !selectedSong || !canChat) return;
     const conversationId = await ensureConversation(true);
     if (!conversationId) return;
     await addDoc(collection(db, 'conversations', conversationId, 'messages'), {
@@ -338,7 +343,7 @@ export default function FriendsPage() {
   };
 
   const sendPlaylist = async () => {
-    if (!db || !user || !selectedFriendUid || !selectedPlaylist || !isSelectedFriend) return;
+    if (!db || !user || !selectedFriendUid || !selectedPlaylist || !canChat) return;
     const conversationId = await ensureConversation(true);
     if (!conversationId) return;
     await addDoc(collection(db, 'conversations', conversationId, 'messages'), {
@@ -623,7 +628,7 @@ export default function FriendsPage() {
             )}
           </div>
 
-          {selectedFriend && !isSelectedFriend && (
+          {selectedFriend && !isSelectedFriend && !hasConversationHistory && (
             <div className="mt-2 text-sm text-gray-300">
               Friend request pending — you can’t send messages until they accept.
             </div>
