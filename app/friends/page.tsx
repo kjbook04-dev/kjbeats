@@ -7,6 +7,7 @@ import {
   collection,
   doc,
   getDoc,
+  getDocs,
   onSnapshot,
   orderBy,
   query,
@@ -14,6 +15,7 @@ import {
   setDoc,
   updateDoc,
   arrayUnion,
+  limit,
   where,
 } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
@@ -147,7 +149,13 @@ export default function FriendsPage() {
       }
       const uname = selectedFriend.trim().toLowerCase();
       const snap = await getDoc(doc(db, 'usernames', uname));
-      setSelectedFriendUid((snap.data()?.uid as string) || '');
+      if (snap.exists()) {
+        setSelectedFriendUid((snap.data()?.uid as string) || '');
+        return;
+      }
+      const usersQuery = query(collection(db, 'users'), where('usernameLower', '==', uname), limit(1));
+      const usersSnap = await getDocs(usersQuery);
+      setSelectedFriendUid(usersSnap.empty ? '' : usersSnap.docs[0].id);
     };
     resolveFriend();
   }, [selectedFriend]);
