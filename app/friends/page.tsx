@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import {
   addDoc,
+  arrayUnion,
   collection,
   doc,
   getDoc,
@@ -14,7 +15,6 @@ import {
   serverTimestamp,
   setDoc,
   updateDoc,
-  arrayUnion,
   limit,
   where,
 } from 'firebase/firestore';
@@ -46,6 +46,8 @@ type ConversationSummary = {
   updatedAt?: any;
   lastMessageSenderId?: string;
   friendshipEstablished?: boolean;
+  lastMessageAt?: any;
+  friendshipStatus?: 'pending' | 'accepted' | 'removed';
 };
 
 type FriendProfile = {
@@ -58,6 +60,7 @@ type FriendProfile = {
 };
 
 const conversationIdFor = (a: string, b: string) => [a, b].sort().join('__');
+const friendshipIdFor = (a: string, b: string) => [a, b].sort().join('__');
 
 export default function FriendsPage() {
   const { currentTheme } = useTheme();
@@ -80,6 +83,11 @@ export default function FriendsPage() {
     type: 'success',
     isVisible: false,
   });
+  const [hiddenConversationIds, setHiddenConversationIds] = useState<string[]>([]);
+  const [friendshipStatus, setFriendshipStatus] = useState<'pending' | 'accepted' | 'removed' | null>(null);
+  const [friendshipEverAccepted, setFriendshipEverAccepted] = useState(false);
+  const [conversationParticipantMeta, setConversationParticipantMeta] = useState<Record<string, { hiddenAt: any | null }>>({});
+  const [confirmDeleteConversationId, setConfirmDeleteConversationId] = useState<string>('');
   const lastReadWriteAtRef = useRef<number>(0);
   const gText = gradientTextStyle();
   const gBg = gradientBgStyle();
@@ -93,13 +101,17 @@ export default function FriendsPage() {
     const convoId = conversationIdFor(user.id, selectedFriendUid);
     return conversations.find((c) => c.id === convoId) || null;
   }, [conversations, selectedFriendUid, user?.id]);
+  const selectedHiddenAt = selectedConversation ? conversationParticipantMeta[selectedConversation.id]?.hiddenAt : null;
+  const effectiveFriendshipStatus =
+    friendshipStatus ||
+    (selectedConversation?.friendshipStatus as typeof friendshipStatus) ||
+    (selectedConversation?.friendshipEstablished ? 'accepted' : null);
+  const everAccepted = friendshipEverAccepted || !!selectedConversation?.friendshipEstablished;
   const canChat = Boolean(
     selectedFriend &&
       selectedFriendUid &&
-      (isSelectedFriend ||
-        user?.friendHistory?.includes(selectedFriendUid) ||
-        selectedConversation?.friendshipEstablished ||
-        selectedConversation?.lastMessageSenderId)
+      everAccepted &&
+      (effectiveFriendshipStatus === 'accepted' || !selectedHiddenAt)
   );
 
   useEffect(() => {
@@ -113,6 +125,47 @@ export default function FriendsPage() {
       setSelectedFriendProfile(null);
     }
   }, [isSelectedFriend, selectedFriend]);
+
+  useEffect(() => {
+    if (!db || !user) {
+      setHiddenConversationIds([]);
+      setConversationParticipantMeta({});
+      return;
+    }
+    const q = query(collection(db, 'conversationParticipants'), where('userId', '==', user.id));
+    return onSnapshot(q, (snapshot) => {
+      const meta: Record<string, { hiddenAt: any | null }> = {};
+      snapshot.docs.forEach((docSnap) => {
+        const data = docSnap.data() as any;
+        if (!data?.conversationId) return;
+        meta[data.conversationId] = { hiddenAt: data.hiddenAt || null };
+      });
+      setConversationParticipantMeta(meta);
+      const hidden = Object.entries(meta)
+        .filter(([, value]) => !!value.hiddenAt)
+        .map(([id]) => id);
+      setHiddenConversationIds(hidden);
+    });
+  }, [user]);
+
+  useEffect(() => {
+    if (!db || !user || !selectedFriendUid) {
+      setFriendshipEverAccepted(false);
+      setFriendshipStatus(null);
+      return;
+    }
+    const friendshipRef = doc(db, 'friendships', friendshipIdFor(user.id, selectedFriendUid));
+    return onSnapshot(friendshipRef, (snap) => {
+      if (!snap.exists()) {
+        setFriendshipEverAccepted(false);
+        setFriendshipStatus(null);
+        return;
+      }
+      const data = snap.data() as any;
+      setFriendshipEverAccepted(!!data.everAccepted || data.status === 'accepted');
+      setFriendshipStatus((data.status as any) || null);
+    });
+  }, [selectedFriendUid, user]);
 
   const showNotification = (message: string, type: 'success' | 'error' | 'info' = 'success') => {
     setNotification({ message, type, isVisible: true });
@@ -137,9 +190,17 @@ export default function FriendsPage() {
     return conversations.filter((convo) => {
       const otherId = convo.participants?.find((id) => id !== user.id) || '';
       const name = participantNames[otherId];
-      return !!name && !hiddenConversations.includes(convo.id);
+      if (!name) return false;
+      const meta = conversationParticipantMeta[convo.id];
+      const hiddenAt = meta?.hiddenAt;
+      if (convo.friendshipStatus === 'accepted' || convo.friendshipEstablished) return true;
+      if (!hiddenAt) return true;
+      if (!convo.lastMessageAt) return false;
+      const hiddenMs = hiddenAt?.toMillis ? hiddenAt.toMillis() : Date.parse(hiddenAt);
+      const lastMs = convo.lastMessageAt?.toMillis ? convo.lastMessageAt.toMillis() : Date.parse(convo.lastMessageAt);
+      return lastMs > hiddenMs;
     });
-  }, [conversations, participantNames, user, hiddenConversations]);
+  }, [conversations, participantNames, user, conversationParticipantMeta]);
 
   useEffect(() => {
     const resolveFriend = async () => {
@@ -219,7 +280,12 @@ export default function FriendsPage() {
   }, [conversations, user, participantNames]);
 
   useEffect(() => {
-    if (!db || !user || !selectedFriendUid || !isSelectedFriend) {
+    if (!db || !user || !selectedFriendUid || !selectedFriend) {
+      setMessages([]);
+      setSelectedFriendProfile(null);
+      return;
+    }
+    if (!everAccepted) {
       setMessages([]);
       setSelectedFriendProfile(null);
       return;
@@ -262,7 +328,10 @@ export default function FriendsPage() {
         setSelectedFriendProfile(null);
       }
       const messagesRef = collection(dbClient, 'conversations', conversationId, 'messages');
-      const q = query(messagesRef, orderBy('createdAt', 'asc'));
+      const hiddenAt = conversationParticipantMeta[conversationId]?.hiddenAt || null;
+      const q = hiddenAt
+        ? query(messagesRef, where('createdAt', '>', hiddenAt), orderBy('createdAt', 'asc'))
+        : query(messagesRef, orderBy('createdAt', 'asc'));
       unsubscribe = onSnapshot(q, (snapshot) => {
         const next = snapshot.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<ChatMessage, 'id'>) }));
         setMessages(next);
@@ -285,7 +354,7 @@ export default function FriendsPage() {
     return () => {
       if (unsubscribe) unsubscribe();
     };
-  }, [selectedFriendUid, user]);
+  }, [selectedFriendUid, user, everAccepted, conversationParticipantMeta, selectedFriend]);
 
   useEffect(() => {
     lastReadWriteAtRef.current = 0;
@@ -297,12 +366,45 @@ export default function FriendsPage() {
     await setDoc(
       doc(db, 'conversations', id),
       {
+        userLowId: id.split('__')[0],
+        userHighId: id.split('__')[1],
         participants: [user.id, selectedFriendUid].sort(),
         ...(touchUpdatedAt ? { updatedAt: serverTimestamp() } : {}),
       },
       { merge: true }
     );
+    await setDoc(
+      doc(db, 'conversationParticipants', `${id}__${user.id}`),
+      {
+        conversationId: id,
+        userId: user.id,
+        hiddenAt: null,
+      },
+      { merge: true }
+    );
+    await setDoc(
+      doc(db, 'conversationParticipants', `${id}__${selectedFriendUid}`),
+      {
+        conversationId: id,
+        userId: selectedFriendUid,
+        hiddenAt: null,
+      },
+      { merge: true }
+    );
     return id;
+  };
+
+  const hideConversationForUser = async (conversationId: string) => {
+    if (!db || !user) return;
+    await setDoc(
+      doc(db, 'conversationParticipants', `${conversationId}__${user.id}`),
+      {
+        conversationId,
+        userId: user.id,
+        hiddenAt: serverTimestamp(),
+      },
+      { merge: true }
+    );
   };
 
   const markConversationRead = async (conversationId: string) => {
@@ -344,6 +446,7 @@ export default function FriendsPage() {
     });
     await updateDoc(doc(db, 'conversations', conversationId), {
       updatedAt: serverTimestamp(),
+      lastMessageAt: serverTimestamp(),
       lastMessageSenderId: user.id,
     });
     setNewText('');
@@ -376,6 +479,7 @@ export default function FriendsPage() {
     });
     await updateDoc(doc(db, 'conversations', conversationId), {
       updatedAt: serverTimestamp(),
+      lastMessageAt: serverTimestamp(),
       lastMessageSenderId: user.id,
     });
     setShareSongId('');
@@ -394,6 +498,7 @@ export default function FriendsPage() {
     });
     await updateDoc(doc(db, 'conversations', conversationId), {
       updatedAt: serverTimestamp(),
+      lastMessageAt: serverTimestamp(),
       lastMessageSenderId: user.id,
     });
     setSharePlaylistId('');
@@ -614,12 +719,7 @@ export default function FriendsPage() {
                       </button>
                       <button
                         onClick={() => {
-                          hideConversation(convo.id);
-                          if (selectedFriendUid === otherId) {
-                            setSelectedFriend('');
-                            setSelectedFriendUid('');
-                            setMessages([]);
-                          }
+                          setConfirmDeleteConversationId(convo.id);
                         }}
                         className="h-8 w-8 rounded-full text-gray-300 hover:text-white border border-white/10 hover:border-white/30"
                         aria-label={`Hide conversation with ${name}`}
@@ -797,6 +897,43 @@ export default function FriendsPage() {
           </div>
         </div>
       )}
+      {confirmDeleteConversationId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+          <div className="w-full max-w-sm rounded-lg border border-gray-700 bg-gray-900 p-5 shadow-xl">
+            <h4 className={`text-lg font-semibold ${currentTheme.text}`}>Delete conversation?</h4>
+            <p className="text-sm text-white mt-2">
+              Are you sure you want to delete this conversation with{' '}
+              <span className="text-white font-semibold">{confirmConversationName}</span>?
+            </p>
+            <div className="mt-4 flex items-center justify-end gap-2">
+              <button
+                onClick={() => setConfirmDeleteConversationId('')}
+                className="px-3 py-2 rounded-md text-sm text-gray-300 hover:text-white border border-white/10 hover:bg-white/5"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  hideConversationForUser(confirmDeleteConversationId);
+                  if (confirmConversation && selectedFriendUid) {
+                    const otherId = confirmConversation.participants?.find((id) => id !== user?.id) || '';
+                    if (otherId === selectedFriendUid) {
+                      setSelectedFriend('');
+                      setSelectedFriendUid('');
+                      setMessages([]);
+                    }
+                  }
+                  setConfirmDeleteConversationId('');
+                }}
+                className="px-3 py-2 rounded-md text-sm text-gray-900"
+                style={gBg}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <Notification
         message={notification.message}
         type={notification.type}
@@ -806,3 +943,12 @@ export default function FriendsPage() {
     </div>
   );
 }
+  const confirmConversation = useMemo(
+    () => (confirmDeleteConversationId ? conversations.find((c) => c.id === confirmDeleteConversationId) || null : null),
+    [confirmDeleteConversationId, conversations]
+  );
+  const confirmConversationName = useMemo(() => {
+    if (!confirmConversation || !user) return '';
+    const otherId = confirmConversation.participants?.find((id) => id !== user.id) || '';
+    return participantNames[otherId] || 'this conversation';
+  }, [confirmConversation, participantNames, user]);

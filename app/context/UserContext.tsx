@@ -21,8 +21,10 @@ import {
   limit,
   onSnapshot,
   query,
+  runTransaction,
   setDoc,
   updateDoc,
+  writeBatch,
   where,
 } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
@@ -41,6 +43,7 @@ export interface User {
   friendHistory?: string[];
   friendNotifications?: Array<{ from: string; createdAt?: string; type?: string }>;
   friendRequests?: string[];
+  outgoingFriendRequests?: string[];
   hiddenConversations?: string[];
   conversationReads?: Record<string, string>;
   bio?: string;
@@ -83,6 +86,7 @@ interface UserProviderProps {
 }
 
 const normalizeUsername = (value: string) => value.trim().toLowerCase();
+const friendshipIdFor = (a: string, b: string) => [a, b].sort().join('__');
 
 const normalizeStringList = (value: any): string[] => {
   if (Array.isArray(value)) return value.filter((v) => typeof v === 'string');
@@ -106,6 +110,7 @@ const userDocToSession = (uid: string, data: any): User => ({
   friendHistory: normalizeStringList(data.friendHistory),
   friendNotifications: Array.isArray(data.friendNotifications) ? data.friendNotifications : [],
   friendRequests: normalizeStringList(data.friendRequests),
+  outgoingFriendRequests: normalizeStringList(data.outgoingFriendRequests),
   hiddenConversations: normalizeStringList(data.hiddenConversations),
   conversationReads: data.conversationReads && typeof data.conversationReads === 'object' ? data.conversationReads : {},
   bio: data.bio || '',
@@ -151,6 +156,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             friendHistory: [],
             friendNotifications: [],
             friendRequests: [],
+            outgoingFriendRequests: [],
             hiddenConversations: [],
           };
           await setDoc(doc(dbClient, 'users', authUser.uid), {
@@ -177,24 +183,11 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             if (!Array.isArray(data.friendNotifications)) patch.friendNotifications = [];
             if (!Array.isArray(data.hiddenConversations)) patch.hiddenConversations = normalizeStringList(data.hiddenConversations);
             if (!data.usernameLower && data.username) patch.usernameLower = normalizeUsername(data.username);
+            if (!Array.isArray(data.outgoingFriendRequests)) patch.outgoingFriendRequests = normalizeStringList(data.outgoingFriendRequests);
             if (Object.keys(patch).length) {
               defaultsPatchedRef.current = true;
               updateDoc(doc(dbClient, 'users', authUser.uid), patch).catch(() => {});
             }
-          }
-          // Auto-sync friend accepts that may not have been written to the sender's doc.
-          const rawFriends = normalizeStringList(data.friends);
-          const acceptedNotifs = Array.isArray(data.friendNotifications)
-            ? data.friendNotifications.filter((n: { type?: string; from?: string }) => n?.type === 'friend_accepted' && n?.from)
-            : [];
-          const missingAccepted = acceptedNotifs
-            .map((n: { from?: string }) => n.from as string)
-            .filter((name) => !rawFriends.some((f) => normalizeUsername(f) === normalizeUsername(name)));
-          if (missingAccepted.length) {
-            updateDoc(doc(dbClient, 'users', authUser.uid), {
-              friends: arrayUnion(...missingAccepted),
-              friendRequests: arrayRemove(...missingAccepted),
-            }).catch(() => {});
           }
           setUser(userDocToSession(authUser.uid, data));
           setIsLoading(false);
@@ -307,6 +300,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         friendHistory: [] as string[],
         friendNotifications: [] as Array<{ from: string; createdAt?: string; type?: string }>,
         friendRequests: [] as string[],
+        outgoingFriendRequests: [] as string[],
         hiddenConversations: [] as string[],
         bio: '',
         website: '',
@@ -392,44 +386,81 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
           }
         }
       }
-      const targetUserSnap = await getDoc(doc(db, 'users', targetUid));
-      const targetData = targetUserSnap.exists() ? targetUserSnap.data() : {};
-      const targetFriends = Array.isArray(targetData.friends) ? targetData.friends : [];
-      const targetRequests = Array.isArray(targetData.friendRequests) ? targetData.friendRequests : [];
-      const isAlreadyFriendTarget = targetFriends.some((f: string) => normalizeUsername(f) === normalizeUsername(user.username));
-      const isAlreadyFriendSelf = (user.friends || []).some((f) => normalizeUsername(f) === uname);
-      if (isAlreadyFriendTarget || isAlreadyFriendSelf) {
-        if (isAlreadyFriendTarget && isAlreadyFriendSelf) {
-          return { success: false, error: 'You are already friends.' };
+      const friendshipId = friendshipIdFor(user.id, targetUid);
+      const friendshipRef = doc(db, 'friendships', friendshipId);
+      await runTransaction(db, async (tx) => {
+        const friendshipSnap = await tx.get(friendshipRef);
+        const friendshipData = friendshipSnap.exists() ? (friendshipSnap.data() as any) : null;
+        const status = friendshipData?.status || null;
+        const requestedBy = friendshipData?.requestedByUserId || null;
+
+        if (status === 'accepted') {
+          throw new Error('ALREADY_FRIENDS');
         }
-        try {
-          if (isAlreadyFriendSelf) {
-            const selfFriends = Array.isArray(user.friends) ? user.friends : [];
-            const selfFriendEntry = selfFriends.find((f) => normalizeUsername(f) === uname) || usernameToAdd;
-            const nextFriendNotifications = (user.friendNotifications || []).filter(
-              (n) => normalizeUsername(n.from) !== uname
-            );
-            await updateDoc(doc(db, 'users', user.id), {
-              friends: arrayRemove(selfFriendEntry, usernameToAdd),
-              friendRequests: arrayRemove(selfFriendEntry, usernameToAdd),
-              friendNotifications: nextFriendNotifications,
-            });
-          }
-          if (isAlreadyFriendTarget && targetUid) {
-            await updateDoc(doc(db, 'users', targetUid), {
-              friends: arrayRemove(user.username),
-              friendRequests: arrayRemove(user.username),
-            });
-          }
-        } catch (cleanupError) {
-          console.warn('Friend cleanup failed', cleanupError);
+
+        // Cross-request: auto-accept.
+        if (status === 'pending' && requestedBy && requestedBy !== user.id) {
+          tx.set(
+            friendshipRef,
+            {
+              userLowId: friendshipId.split('__')[0],
+              userHighId: friendshipId.split('__')[1],
+              status: 'accepted',
+              requestedByUserId: requestedBy,
+              acceptedAt: new Date().toISOString(),
+              removedAt: null,
+              everAccepted: true,
+            },
+            { merge: true }
+          );
+          tx.update(doc(db, 'users', user.id), {
+            friends: arrayUnion(canonical),
+            friendRequests: arrayRemove(usernameToAdd, canonical),
+            outgoingFriendRequests: arrayRemove(canonical),
+          });
+          tx.update(doc(db, 'users', targetUid), {
+            friends: arrayUnion(user.username),
+            friendRequests: arrayRemove(user.username),
+            outgoingFriendRequests: arrayRemove(user.username),
+            friendNotifications: arrayUnion({
+              from: user.username,
+              createdAt: new Date().toISOString(),
+              type: 'friend_accepted',
+            }),
+          });
+          tx.set(
+            doc(db, 'conversations', friendshipId),
+            {
+              userLowId: friendshipId.split('__')[0],
+              userHighId: friendshipId.split('__')[1],
+              participants: [user.id, targetUid].sort(),
+              createdAt: new Date().toISOString(),
+              friendshipEstablished: true,
+              friendshipStatus: 'accepted',
+            },
+            { merge: true }
+          );
+          return;
         }
-      }
-      if (targetRequests.some((r: string) => normalizeUsername(r) === normalizeUsername(user.username))) {
-        return { success: false, error: 'Friend request already sent.' };
-      }
-      if (targetUid) {
-        await updateDoc(doc(db, 'users', targetUid), {
+
+        if (status === 'pending' && requestedBy === user.id) {
+          throw new Error('REQUEST_ALREADY_SENT');
+        }
+
+        tx.set(
+          friendshipRef,
+          {
+            userLowId: friendshipId.split('__')[0],
+            userHighId: friendshipId.split('__')[1],
+            status: 'pending',
+            requestedByUserId: user.id,
+            requestedAt: new Date().toISOString(),
+            removedAt: null,
+            everAccepted: !!friendshipData?.everAccepted,
+          },
+          { merge: true }
+        );
+        tx.update(doc(db, 'users', targetUid), {
           friendNotifications: arrayUnion({
             from: user.username,
             createdAt: new Date().toISOString(),
@@ -437,9 +468,25 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
           }),
           friendRequests: arrayUnion(user.username),
         });
-      }
+        tx.update(doc(db, 'users', user.id), {
+          outgoingFriendRequests: arrayUnion(canonical),
+        });
+      });
+      setUser((prev) => {
+        if (!prev) return prev;
+        const nextOutgoing = Array.from(new Set([...(prev.outgoingFriendRequests || []), canonical]));
+        return { ...prev, outgoingFriendRequests: nextOutgoing };
+      });
       return { success: true };
     } catch (error) {
+      if (error instanceof Error) {
+        if (error.message === 'ALREADY_FRIENDS') {
+          return { success: false, error: 'You are already friends.' };
+        }
+        if (error.message === 'REQUEST_ALREADY_SENT') {
+          return { success: false, error: 'Friend request already sent.' };
+        }
+      }
       console.error('Failed to add friend', error);
       return { success: false, error: 'Failed to add friend' };
     }
@@ -461,27 +508,34 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       };
       const targetSnap = await getDoc(doc(db, 'usernames', uname));
       const targetUid = targetSnap.exists() ? (targetSnap.data().uid as string) : '';
-      if (targetUid) selfUpdates.friendHistory = arrayUnion(targetUid);
-      await updateDoc(doc(db, 'users', user.id), selfUpdates);
-      if (targetUid) {
-        const targetUserSnap = await getDoc(doc(db, 'users', targetUid));
-        const targetData = targetUserSnap.exists() ? targetUserSnap.data() : {};
-        const targetFriends = Array.isArray(targetData.friends) ? targetData.friends : [];
-        const targetFriendEntry =
-          targetFriends.find((f: string) => normalizeUsername(f) === normalizeUsername(user.username)) ||
-          user.username;
-        const targetFriendNotifications = Array.isArray(targetData.friendNotifications)
-          ? targetData.friendNotifications.filter(
-              (n: { from?: string }) => normalizeUsername(n?.from || '') !== normalizeUsername(user.username)
-            )
-          : [];
-        await updateDoc(doc(db, 'users', targetUid), {
-          friends: arrayRemove(targetFriendEntry, user.username),
-          friendRequests: arrayRemove(user.username, targetFriendEntry),
-          friendNotifications: targetFriendNotifications,
-          friendHistory: arrayUnion(user.id),
-        });
-      }
+      await runTransaction(db, async (tx) => {
+        tx.update(doc(db, 'users', user.id), selfUpdates);
+        if (targetUid) {
+          const friendshipId = friendshipIdFor(user.id, targetUid);
+          tx.set(
+            doc(db, 'friendships', friendshipId),
+            {
+              userLowId: friendshipId.split('__')[0],
+              userHighId: friendshipId.split('__')[1],
+              status: 'removed',
+              removedAt: new Date().toISOString(),
+              everAccepted: true,
+            },
+            { merge: true }
+          );
+          tx.set(
+            doc(db, 'conversations', friendshipId),
+            {
+              friendshipStatus: 'removed',
+            },
+            { merge: true }
+          );
+          tx.update(doc(db, 'users', targetUid), {
+            friends: arrayRemove(user.username),
+            friendRequests: arrayRemove(user.username),
+          });
+        }
+      });
       setUser((prev) => {
         if (!prev) return prev;
         return {
@@ -489,9 +543,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
           friends: (prev.friends || []).filter((f) => normalizeUsername(f) !== uname),
           friendRequests: (prev.friendRequests || []).filter((f) => normalizeUsername(f) !== uname),
           friendNotifications: (prev.friendNotifications || []).filter((n) => normalizeUsername(n.from) !== uname),
-          friendHistory: targetUid
-            ? Array.from(new Set([...(prev.friendHistory || []), targetUid]))
-            : prev.friendHistory || [],
         };
       });
       return true;
@@ -530,43 +581,74 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
           }
         }
       }
-      const selfUpdates: Record<string, any> = {
-        friends: arrayUnion(canonical),
-        friendRequests: arrayRemove(usernameToAccept, canonical),
-      };
-      if (targetUid) selfUpdates.friendHistory = arrayUnion(targetUid);
-      await updateDoc(doc(db, 'users', user.id), selfUpdates);
-      setUser((prev) => {
-        if (!prev) return prev;
-        const nextFriends = Array.from(new Set([...(prev.friends || []), canonical]));
-        const nextRequests = (prev.friendRequests || []).filter((r) => normalizeUsername(r) !== normalizeUsername(usernameToAccept));
-        const nextHistory = targetUid
-          ? Array.from(new Set([...(prev.friendHistory || []), targetUid]))
-          : prev.friendHistory || [];
-        return { ...prev, friends: nextFriends, friendRequests: nextRequests, friendHistory: nextHistory };
-      });
-      if (targetUid) {
-        await updateDoc(doc(db, 'users', targetUid), {
+      await runTransaction(db, async (tx) => {
+        if (!targetUid) {
+          throw new Error('USER_NOT_FOUND');
+        }
+        const friendshipId = friendshipIdFor(user.id, targetUid);
+        const friendshipRef = doc(db, 'friendships', friendshipId);
+        const friendshipSnap = await tx.get(friendshipRef);
+        const friendshipData = friendshipSnap.exists() ? (friendshipSnap.data() as any) : null;
+        const status = friendshipData?.status || null;
+
+        if (status === 'accepted') {
+          return;
+        }
+
+        tx.set(
+          friendshipRef,
+          {
+            userLowId: friendshipId.split('__')[0],
+            userHighId: friendshipId.split('__')[1],
+            status: 'accepted',
+            acceptedAt: new Date().toISOString(),
+            removedAt: null,
+            everAccepted: true,
+          },
+          { merge: true }
+        );
+        tx.update(doc(db, 'users', user.id), {
+          friends: arrayUnion(canonical),
+          friendRequests: arrayRemove(usernameToAccept, canonical),
+          outgoingFriendRequests: arrayRemove(canonical),
+        });
+        tx.update(doc(db, 'users', targetUid), {
           friends: arrayUnion(user.username),
-          friendHistory: arrayUnion(user.id),
+          outgoingFriendRequests: arrayRemove(user.username),
           friendNotifications: arrayUnion({
             from: user.username,
             createdAt: new Date().toISOString(),
             type: 'friend_accepted',
           }),
         });
-        const convoId = [user.id, targetUid].sort().join('__');
-        await setDoc(
+        const convoId = friendshipIdFor(user.id, targetUid);
+        tx.set(
           doc(db, 'conversations', convoId),
           {
+            userLowId: convoId.split('__')[0],
+            userHighId: convoId.split('__')[1],
             participants: [user.id, targetUid].sort(),
+            createdAt: new Date().toISOString(),
             friendshipEstablished: true,
+            friendshipStatus: 'accepted',
           },
           { merge: true }
         );
-      }
+      });
+      setUser((prev) => {
+        if (!prev) return prev;
+        const nextFriends = Array.from(new Set([...(prev.friends || []), canonical]));
+        const nextRequests = (prev.friendRequests || []).filter((r) => normalizeUsername(r) !== normalizeUsername(usernameToAccept));
+        const nextOutgoing = (prev.outgoingFriendRequests || []).filter(
+          (n) => normalizeUsername(n) !== normalizeUsername(canonical)
+        );
+        return { ...prev, friends: nextFriends, friendRequests: nextRequests, outgoingFriendRequests: nextOutgoing };
+      });
       return true;
     } catch (error) {
+      if (error instanceof Error && error.message === 'USER_NOT_FOUND') {
+        return false;
+      }
       console.error('Failed to accept friend request', error);
       return false;
     }
