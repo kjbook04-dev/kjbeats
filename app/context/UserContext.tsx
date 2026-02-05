@@ -142,7 +142,14 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             setUser(null);
             return;
           }
-          setUser(userDocToSession(authUser.uid, userSnap.data()));
+          const data = userSnap.data();
+          const patch: Record<string, any> = {};
+          if (!data.conversationReads) patch.conversationReads = {};
+          if (typeof data.playerVolume !== 'number') patch.playerVolume = 0.5;
+          if (Object.keys(patch).length) {
+            updateDoc(doc(dbClient, 'users', authUser.uid), patch).catch(() => {});
+          }
+          setUser(userDocToSession(authUser.uid, data));
           setIsLoading(false);
         });
       } catch (error) {
@@ -255,6 +262,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         bio: '',
         website: '',
         publicProfile: false,
+        conversationReads: {} as Record<string, string>,
+        playerVolume: 0.5,
       };
 
       await setDoc(doc(dbClient, 'users', cred.user.uid), userProfile);

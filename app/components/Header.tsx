@@ -284,7 +284,7 @@ export default function Header() {
             <li>
               <Link href="/manage" className="flex flex-col items-center gap-1 text-[10px]" onClick={() => setIsMenuOpen(false)}>
                 <svg viewBox="0 0 24 24" className={`h-5 w-5 ${pathname === '/manage' ? currentTheme.text : 'text-gray-400'}`} aria-hidden="true">
-                  <path d="M12 3v12m0-12a4 4 0 0 0-4 4v9a4 4 0 1 0 8 0V7a2 2 0 1 0-4 0v8" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M9 18a3 3 0 1 1 0-6c.35 0 .68.06 1 .18V5l10-2v10.5a3 3 0 1 1-2-2.83V6.5l-6 1.2V15a3 3 0 1 1-2-2.83V5.8" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
                 <span className={`${pathname === '/manage' ? currentTheme.text : 'text-gray-400'}`}>Music</span>
               </Link>

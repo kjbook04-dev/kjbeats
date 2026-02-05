@@ -114,6 +114,12 @@ export default function FriendsPage() {
   }, [selectedFriend]);
 
   useEffect(() => {
+    if (!selectedFriend) {
+      setSelectedFriendProfile(null);
+    }
+  }, [selectedFriend]);
+
+  useEffect(() => {
     if (!db || !user) {
       setConversations([]);
       return;

@@ -245,10 +245,11 @@ export default function Home() {
                           <div className="flex items-center justify-between">
                             <div className="min-w-0">
                               <p className="text-white font-semibold truncate">{s.title}</p>
-                              <p className={`${(s.artist === 'Local Upload' || (s as any).audioUrl && (s as any).audioUrl.startsWith('blob:')) ? 'text-gray-300' : 'text-gray-400'} text-sm truncate`}>{s.artist}</p>
+                              <p className={`${(s.artist === 'Local Upload' || (s as any).audioUrl && (s as any).audioUrl.startsWith('blob:')) ? 'text-gray-300' : 'text-gray-400'} text-sm truncate`}>
+                                {s.artist}{s.duration ? ` • ${s.duration}` : ''}
+                              </p>
                             </div>
                             <div className="flex items-center space-x-3">
-                              <div className="text-gray-300 text-sm">{s.duration}</div>
                               <button
                                 onClick={() => handlePlaySong(s)}
                                 title={`Play ${s.title}`}

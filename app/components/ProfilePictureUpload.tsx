@@ -156,9 +156,9 @@ export const ProfilePictureUpload: React.FC<ProfilePictureUploadProps> = ({
   };
 
   return (
-    <div className={`relative ${className}`}>
+    <div className={`relative ${className} aspect-square`}>
       <div
-        className={`relative w-full h-full rounded-full overflow-hidden border-4 cursor-pointer transition-all duration-200 ${
+        className={`relative w-full h-full aspect-square rounded-full overflow-hidden border-4 cursor-pointer transition-all duration-200 ${
           isDragging ? `${currentTheme.border} bg-gray-100` : `border-gray-600 ${currentTheme.borderHover}`
         }`}
         onClick={() => {
@@ -170,7 +170,7 @@ export const ProfilePictureUpload: React.FC<ProfilePictureUploadProps> = ({
         }}
       >
         {displayImage ? (
-          <img src={displayImage} alt="Profile" className="w-full h-full object-cover" />
+          <img src={displayImage} alt="Profile" className="w-full h-full object-cover rounded-full" />
         ) : (
           <div
             className={`w-full h-full ${currentTheme.gradientHover.replace('from-', 'bg-gradient-to-br from-').replace('to-', 'to-')} flex items-center justify-center`}

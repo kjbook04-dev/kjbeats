@@ -23,6 +23,7 @@ export default function PersistentPlayer() {
   const [volume, setVolume] = useState(1);
   const [previousVolume, setPreviousVolume] = useState(1);
   const [isMuted, setIsMuted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [playQueue, setPlayQueue] = useState<Song[] | null>(null);
   const [queueIndex, setQueueIndex] = useState<number>(-1);
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -39,6 +40,18 @@ export default function PersistentPlayer() {
     };
   }, []);
 
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const mq = window.matchMedia('(max-width: 768px)');
+    const update = () => setIsMobile(mq.matches);
+    update();
+    if (mq.addEventListener) {
+      mq.addEventListener('change', update);
+      return () => mq.removeEventListener('change', update);
+    }
+    mq.addListener(update);
+    return () => mq.removeListener(update);
+  }, []);
 
 
   // Load new song when the song changes
@@ -104,6 +117,13 @@ export default function PersistentPlayer() {
   useEffect(() => {
     const loadVolume = async () => {
       try {
+        if (isMobile) {
+          setVolume(1);
+          setPreviousVolume(1);
+          setIsMuted(false);
+          if (audioRef.current) audioRef.current.volume = 1;
+          return;
+        }
         const stored = localStorage.getItem('playerVolume');
         if (stored !== null) {
           let v = Number(stored);
@@ -134,9 +154,10 @@ export default function PersistentPlayer() {
       }
     };
     loadVolume();
-  }, [user]);
+  }, [user, isMobile]);
 
   useEffect(() => {
+    if (isMobile) return;
     try {
       localStorage.setItem('playerVolume', String(volume));
       if (user && db) {
@@ -147,7 +168,7 @@ export default function PersistentPlayer() {
     } catch (e) {
       // ignore storage errors
     }
-  }, [volume, user]);
+  }, [volume, user, isMobile]);
 
   const togglePlay = useCallback(async () => {
     if (!currentSong) return;
@@ -562,7 +583,7 @@ export default function PersistentPlayer() {
   if (!currentSong) return null;
 
   return (
-    <div className="fixed bottom-16 md:bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-700 p-2 sm:p-3 z-50">
+    <div className="fixed bottom-[56px] md:bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-700 p-2 sm:p-3 z-50">
       <style>{`
         /* Scoped slider thumb styling for player ranges */
         [data-range] { --thumb-color: rgb(236 72 153); }
@@ -584,27 +605,93 @@ export default function PersistentPlayer() {
         preload="metadata"
       />
       
-      <div className="container mx-auto flex flex-wrap items-center gap-2 md:flex-nowrap md:justify-between">
-        {/* Song Info */}
-        <div className="flex items-center space-x-3 min-w-0 flex-1 md:flex-shrink-0 md:flex-none">
-          {currentSong.coverUrl && (
-            <img
-              src={currentSong.coverUrl}
-              alt={currentSong.title}
-              className="w-10 h-10 rounded bg-gray-800 flex-shrink-0"
+      <div className="container mx-auto">
+        {/* Mobile layout */}
+        <div className="md:hidden">
+          <div className="flex items-center justify-between gap-2">
+            <div className="min-w-0">
+              <h3 className={`${currentTheme.text} font-medium text-sm truncate`}>{currentSong.title}</h3>
+              <p className="text-gray-300 text-xs truncate">{currentSong.artist}</p>
+            </div>
+            <button
+              onClick={() => setCurrentSong(null)}
+              className={`${currentTheme.text} ${currentTheme.textHover} text-sm`}
+              aria-label="Close player"
+            >
+              ✕
+            </button>
+          </div>
+          <div className="mt-2 flex items-center space-x-2">
+            <span className="text-gray-300 text-xs w-9">{formatTime(currentTime)}</span>
+            <input
+              data-range
+              type="range"
+              min={0}
+              max={duration || 0}
+              value={currentTime}
+              onChange={handleSeek}
+              className="flex-1 h-1.5 bg-gray-700 rounded-lg appearance-none"
+              style={{
+                ['--thumb-color' as any]: currentTheme.primary,
+              } as React.CSSProperties}
             />
-          )}
-          <div className="min-w-0">
-            <h3 className={`${currentTheme.text} font-medium text-sm truncate`}>{currentSong.title}</h3>
-            <p className="text-gray-300 text-xs truncate">{currentSong.artist}</p>
+            <span className="text-gray-300 text-xs w-9">{formatTime(duration)}</span>
+          </div>
+          <div className="mt-2 flex items-center justify-center gap-5">
+            <button
+              onClick={skipToPrevious}
+              disabled={!currentSong || songs.length === 0}
+              className={`${currentTheme.text} ${currentTheme.textHover} disabled:text-gray-600 disabled:opacity-50 text-sm font-bold transition-colors`}
+              title="Previous song"
+            >
+              ⏮
+            </button>
+            <button
+              onClick={togglePlay}
+              className={`w-10 h-10 rounded-full ${currentTheme.bg} ${currentTheme.bgHover} flex items-center justify-center text-gray-900 text-base font-bold`}
+            >
+              {isPlaying ? (
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" className="w-5 h-5" aria-hidden="true">
+                  <rect x="4" y="3" width="3" height="10" rx="1" fill="currentColor" />
+                  <rect x="9" y="3" width="3" height="10" rx="1" fill="currentColor" />
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-6 h-6" fill="currentColor" aria-hidden="true">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              )}
+            </button>
+            <button
+              onClick={skipToNext}
+              disabled={!currentSong || songs.length === 0}
+              className={`${currentTheme.text} ${currentTheme.textHover} disabled:text-gray-600 disabled:opacity-50 text-sm font-bold transition-colors`}
+              title="Next song"
+            >
+              ⏭
+            </button>
           </div>
         </div>
 
-    {/* Controls */}
-    <div className="w-full md:flex-1 md:mx-6">
-      {/* Regular Audio Controls */}
+        {/* Desktop layout */}
+        <div className="hidden md:flex flex-wrap items-center gap-2 md:flex-nowrap md:justify-between">
+          {/* Song Info */}
+          <div className="flex items-center space-x-3 min-w-0 flex-1 md:flex-shrink-0 md:flex-none">
+            {currentSong.coverUrl && (
+              <img
+                src={currentSong.coverUrl}
+                alt={currentSong.title}
+                className="w-10 h-10 rounded bg-gray-800 flex-shrink-0"
+              />
+            )}
+            <div className="min-w-0">
+              <h3 className={`${currentTheme.text} font-medium text-sm truncate`}>{currentSong.title}</h3>
+              <p className="text-gray-300 text-xs truncate">{currentSong.artist}</p>
+            </div>
+          </div>
+
+          {/* Controls */}
+          <div className="w-full md:flex-1 md:mx-6">
             <div className="flex flex-row flex-wrap items-center justify-between gap-2 md:flex-row md:items-center md:justify-between md:space-x-3">
-              {/* Previous Button */}
               <button
                 onClick={skipToPrevious}
                 disabled={!currentSong || songs.length === 0}
@@ -613,8 +700,6 @@ export default function PersistentPlayer() {
               >
                 ⏮
               </button>
-              
-              {/* Play Button */}
               <button
                 onClick={togglePlay}
                 className={`w-10 h-10 rounded-full ${currentTheme.bg} ${currentTheme.bgHover} flex items-center justify-center text-gray-900 text-base font-bold flex-shrink-0`}
@@ -630,8 +715,6 @@ export default function PersistentPlayer() {
                   </svg>
                 )}
               </button>
-              
-              {/* Next Button */}
               <button
                 onClick={skipToNext}
                 disabled={!currentSong || songs.length === 0}
@@ -640,8 +723,7 @@ export default function PersistentPlayer() {
               >
                 ⏭
               </button>
-              
-              {/* Progress Bar */}
+
               <div className="flex items-center space-x-2 flex-1 min-w-0">
                 <span className="text-gray-300 text-xs w-9">{formatTime(currentTime)}</span>
                 <input
@@ -651,15 +733,14 @@ export default function PersistentPlayer() {
                   max={duration || 0}
                   value={currentTime}
                   onChange={handleSeek}
-                  className={`flex-1 h-1.5 bg-gray-700 rounded-lg appearance-none`}
+                  className="flex-1 h-1.5 bg-gray-700 rounded-lg appearance-none"
                   style={{
                     ['--thumb-color' as any]: currentTheme.primary,
                   } as React.CSSProperties}
                 />
                 <span className="text-gray-300 text-xs w-9">{formatTime(duration)}</span>
               </div>
-              
-              {/* Volume */}
+
               <div className="flex items-center space-x-2 flex-shrink-0">
                 <button
                   onClick={toggleMute}
@@ -676,7 +757,7 @@ export default function PersistentPlayer() {
                   value={volume}
                   onChange={handleVolumeChange}
                   data-range
-                  className={`w-12 sm:w-20 h-1.5 bg-gray-700 rounded-lg appearance-none`}
+                  className="w-12 sm:w-20 h-1.5 bg-gray-700 rounded-lg appearance-none"
                   style={{
                     ['--thumb-color' as any]: currentTheme.primary,
                   } as React.CSSProperties}
@@ -684,16 +765,16 @@ export default function PersistentPlayer() {
                 <span className="text-gray-300 text-xs w-7">{Math.round(volume * 100)}%</span>
               </div>
             </div>
-        </div>
+          </div>
 
-        {/* Close Button */}
-        <div className="flex-shrink-0 self-auto">
-          <button
-            onClick={() => setCurrentSong(null)}
-            className={`${currentTheme.text} ${currentTheme.textHover} text-sm`}
-          >
-            ✕
-          </button>
+          <div className="flex-shrink-0 self-auto">
+            <button
+              onClick={() => setCurrentSong(null)}
+              className={`${currentTheme.text} ${currentTheme.textHover} text-sm`}
+            >
+              ✕
+            </button>
+          </div>
         </div>
       </div>
     </div>
