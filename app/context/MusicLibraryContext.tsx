@@ -8,7 +8,7 @@ import {
   getDocs,
   setDoc,
   query,
-  orderBy,
+  where,
 } from "firebase/firestore";
 import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import type { Song } from "../types/music";
@@ -40,9 +40,28 @@ export function MusicLibraryProvider({ children }: { children: ReactNode }) {
         return;
       }
       try {
-        const songsRef = collection(db, "users", user.id, "songs");
-        const snapshot = await getDocs(query(songsRef, orderBy("uploadedAt", "desc")));
-        setSongs(snapshot.docs.map((d) => d.data() as Song));
+        const songsRef = collection(db, "songs");
+        let snapshot = await getDocs(query(songsRef, where("ownerId", "==", user.id)));
+        let loaded = snapshot.docs.map((d) => d.data() as Song);
+        if (loaded.length === 0) {
+          snapshot = await getDocs(query(songsRef, where("userId", "==", user.id)));
+          loaded = snapshot.docs.map((d) => d.data() as Song);
+        }
+        if (loaded.length === 0) {
+          try {
+            const legacyRef = collection(db, "users", user.id, "songs");
+            const legacySnap = await getDocs(legacyRef);
+            loaded = legacySnap.docs.map((d) => d.data() as Song);
+          } catch {
+            // ignore legacy permission errors
+          }
+        }
+        loaded.sort((a, b) => {
+          const aT = Date.parse(a.uploadedAt || '') || 0;
+          const bT = Date.parse(b.uploadedAt || '') || 0;
+          return bT - aT;
+        });
+        setSongs(loaded);
       } catch (error) {
         console.error("Failed loading songs from Firestore", error);
         setSongs([]);
@@ -85,7 +104,7 @@ export function MusicLibraryProvider({ children }: { children: ReactNode }) {
         Object.entries(song).filter(([, value]) => value !== undefined)
       ) as Song;
 
-      await setDoc(doc(db, "users", user.id, "songs", song.id), cleaned, { merge: true });
+      await setDoc(doc(db, "songs", song.id), cleaned, { merge: true });
       uploaded.push(song);
     }
 
@@ -103,7 +122,7 @@ export function MusicLibraryProvider({ children }: { children: ReactNode }) {
     if (!user || !db) return;
     const toDelete = songs.find((song) => song.id === songId);
     try {
-      await deleteDoc(doc(db, "users", user.id, "songs", songId));
+      await deleteDoc(doc(db, "songs", songId));
       if (toDelete?.storagePath && storage) {
         await deleteObject(ref(storage, toDelete.storagePath)).catch(() => {
           // ignore storage deletion errors
