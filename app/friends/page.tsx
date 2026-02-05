@@ -170,6 +170,19 @@ export default function FriendsPage() {
       const conversationId = await ensureConversation(false);
       if (!conversationId) return;
       try {
+        const convoSnap = await getDoc(doc(dbClient, 'conversations', conversationId));
+        const updatedAt = convoSnap.data()?.updatedAt?.seconds
+          ? convoSnap.data()?.updatedAt.seconds * 1000
+          : 0;
+        const lastReadStr = user?.conversationReads?.[conversationId];
+        const lastReadMs = lastReadStr ? Date.parse(lastReadStr) : 0;
+        if (updatedAt > lastReadMs) {
+          await markConversationRead(conversationId);
+        }
+      } catch {
+        // ignore
+      }
+      try {
         const profileSnap = await getDoc(doc(dbClient, 'users', selectedFriendUid));
         if (profileSnap.exists()) {
           const data = profileSnap.data();
@@ -213,6 +226,10 @@ export default function FriendsPage() {
       if (unsubscribe) unsubscribe();
     };
   }, [selectedFriendUid, user]);
+
+  useEffect(() => {
+    lastReadWriteAtRef.current = 0;
+  }, [selectedFriendUid]);
 
   const ensureConversation = async (touchUpdatedAt: boolean = true) => {
     if (!db || !user || !selectedFriendUid) return null;
