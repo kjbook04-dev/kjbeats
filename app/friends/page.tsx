@@ -147,6 +147,20 @@ export default function FriendsPage() {
         setSelectedFriendUid('');
         return;
       }
+      if (user) {
+        const convo = conversations.find((c) => {
+          const otherId = c.participants?.find((id) => id !== user.id) || '';
+          const name = participantNames[otherId];
+          return name && name.toLowerCase() === selectedFriend.toLowerCase();
+        });
+        if (convo) {
+          const otherId = convo.participants?.find((id) => id !== user.id) || '';
+          if (otherId) {
+            setSelectedFriendUid(otherId);
+            return;
+          }
+        }
+      }
       const uname = selectedFriend.trim().toLowerCase();
       const snap = await getDoc(doc(db, 'usernames', uname));
       if (snap.exists()) {

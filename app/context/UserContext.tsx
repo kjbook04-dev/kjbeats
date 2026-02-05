@@ -176,6 +176,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             if (!Array.isArray(data.friendRequests)) patch.friendRequests = normalizeStringList(data.friendRequests);
             if (!Array.isArray(data.friendNotifications)) patch.friendNotifications = [];
             if (!Array.isArray(data.hiddenConversations)) patch.hiddenConversations = normalizeStringList(data.hiddenConversations);
+            if (!data.usernameLower && data.username) patch.usernameLower = normalizeUsername(data.username);
             if (Object.keys(patch).length) {
               defaultsPatchedRef.current = true;
               updateDoc(doc(dbClient, 'users', authUser.uid), patch).catch(() => {});
@@ -503,8 +504,10 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
           canonical = (exactSnap.data().username as string) || canonical;
         } else {
           const usersRef = collection(db, 'users');
-          const q = query(usersRef, where('usernameLower', '==', uname), limit(1));
-          const qs = await getDocs(q);
+          let qs = await getDocs(query(usersRef, where('usernameLower', '==', uname), limit(1)));
+          if (qs.empty) {
+            qs = await getDocs(query(usersRef, where('username', '==', usernameToAccept.trim()), limit(1)));
+          }
           if (!qs.empty) {
             const docSnap = qs.docs[0];
             const data = docSnap.data();
