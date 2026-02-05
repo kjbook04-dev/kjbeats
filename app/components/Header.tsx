@@ -26,17 +26,32 @@ export default function Header() {
   // Use helper-backed gradient text style (ThemeProvider ensures --theme-gradient exists)
   const gText = gradientTextStyle();
   const friendNotificationCount = user?.friendNotifications?.length || 0;
+  const friendRequestCount = user?.friendRequests?.length || 0;
   const latestFriendNotification = user?.friendNotifications?.[user.friendNotifications.length - 1];
+  const latestFriendRequest = user?.friendRequests?.[user.friendRequests.length - 1];
   const [showFriendToast, setShowFriendToast] = useState(false);
   const [unreadMessageCount, setUnreadMessageCount] = useState(0);
   const [showMessageToast, setShowMessageToast] = useState(false);
   const lastUnreadCountRef = useRef(0);
+  const lastFriendNotificationCountRef = useRef(0);
+  const lastFriendRequestCountRef = useRef(0);
+  const suppressMessageToastRef = useRef(0);
 
   useEffect(() => {
-    if (friendNotificationCount > 0) {
+    if (friendNotificationCount > lastFriendNotificationCountRef.current) {
       setShowFriendToast(true);
+      suppressMessageToastRef.current = Date.now() + 5000;
     }
+    lastFriendNotificationCountRef.current = friendNotificationCount;
   }, [friendNotificationCount]);
+
+  useEffect(() => {
+    if (friendRequestCount > lastFriendRequestCountRef.current) {
+      setShowFriendToast(true);
+      suppressMessageToastRef.current = Date.now() + 5000;
+    }
+    lastFriendRequestCountRef.current = friendRequestCount;
+  }, [friendRequestCount]);
 
   useEffect(() => {
     if (!db || !user) {
@@ -62,7 +77,9 @@ export default function Header() {
       });
       setUnreadMessageCount(unread);
       if (hasNew && unread > lastUnreadCountRef.current) {
-        setShowMessageToast(true);
+        if (Date.now() > suppressMessageToastRef.current) {
+          setShowMessageToast(true);
+        }
       }
       if (unread === 0) {
         setShowMessageToast(false);
@@ -235,7 +252,9 @@ export default function Header() {
               ? `${latestFriendNotification.from} accepted your friend request.`
               : latestFriendNotification?.type === 'friend_request'
                 ? `New friend request from ${latestFriendNotification.from}.`
-                : `You have ${friendNotificationCount} new friend ${friendNotificationCount === 1 ? 'update' : 'updates'}.`
+                : friendRequestCount > 0 && latestFriendRequest
+                  ? `New friend request from ${latestFriendRequest}.`
+                  : `You have ${friendNotificationCount} new friend ${friendNotificationCount === 1 ? 'update' : 'updates'}.`
           }
           type="success"
           isVisible={showFriendToast}
