@@ -439,13 +439,15 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       const nextFriendNotifications = (user.friendNotifications || []).filter(
         (n) => normalizeUsername(n.from) !== uname
       );
-      await updateDoc(doc(db, 'users', user.id), {
+      const selfUpdates: Record<string, any> = {
         friends: arrayRemove(friendEntry, usernameToRemove),
         friendRequests: arrayRemove(friendEntry, usernameToRemove),
         friendNotifications: nextFriendNotifications,
-      });
+      };
       const targetSnap = await getDoc(doc(db, 'usernames', uname));
       const targetUid = targetSnap.exists() ? (targetSnap.data().uid as string) : '';
+      if (targetUid) selfUpdates.friendHistory = arrayUnion(targetUid);
+      await updateDoc(doc(db, 'users', user.id), selfUpdates);
       if (targetUid) {
         const targetUserSnap = await getDoc(doc(db, 'users', targetUid));
         const targetData = targetUserSnap.exists() ? targetUserSnap.data() : {};
@@ -462,6 +464,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
           friends: arrayRemove(targetFriendEntry, user.username),
           friendRequests: arrayRemove(user.username, targetFriendEntry),
           friendNotifications: targetFriendNotifications,
+          friendHistory: arrayUnion(user.id),
         });
       }
       setUser((prev) => {
@@ -471,6 +474,9 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
           friends: (prev.friends || []).filter((f) => normalizeUsername(f) !== uname),
           friendRequests: (prev.friendRequests || []).filter((f) => normalizeUsername(f) !== uname),
           friendNotifications: (prev.friendNotifications || []).filter((n) => normalizeUsername(n.from) !== uname),
+          friendHistory: targetUid
+            ? Array.from(new Set([...(prev.friendHistory || []), targetUid]))
+            : prev.friendHistory || [],
         };
       });
       return true;

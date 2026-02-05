@@ -13,6 +13,7 @@ import {
   serverTimestamp,
   setDoc,
   updateDoc,
+  arrayUnion,
   where,
 } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
@@ -98,6 +99,12 @@ export default function FriendsPage() {
         selectedConversation?.friendshipEstablished ||
         selectedConversation?.lastMessageSenderId)
   );
+
+  useEffect(() => {
+    if (!db || !user || !selectedFriendUid || !selectedConversation) return;
+    if (user.friendHistory?.includes(selectedFriendUid)) return;
+    updateDoc(doc(db, 'users', user.id), { friendHistory: arrayUnion(selectedFriendUid) }).catch(() => {});
+  }, [db, user, selectedFriendUid, selectedConversation]);
 
   useEffect(() => {
     if (!isSelectedFriend) {
