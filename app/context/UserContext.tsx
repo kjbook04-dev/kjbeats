@@ -14,11 +14,16 @@ import {
 import {
   arrayRemove,
   arrayUnion,
+  collection,
   doc,
   getDoc,
+  getDocs,
+  limit,
   onSnapshot,
+  query,
   setDoc,
   updateDoc,
+  where,
 } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { auth, db, firebaseConfigured, storage } from '../lib/firebase';
@@ -149,6 +154,9 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             const readsOk = data.conversationReads && typeof data.conversationReads === 'object' && !Array.isArray(data.conversationReads);
             if (!readsOk) patch.conversationReads = {};
             if (typeof data.playerVolume !== 'number') patch.playerVolume = 0.5;
+            if (!Array.isArray(data.friends)) patch.friends = [];
+            if (!Array.isArray(data.friendRequests)) patch.friendRequests = [];
+            if (!Array.isArray(data.friendNotifications)) patch.friendNotifications = [];
             if (Object.keys(patch).length) {
               defaultsPatchedRef.current = true;
               updateDoc(doc(dbClient, 'users', authUser.uid), patch).catch(() => {});
@@ -272,7 +280,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       };
 
       await setDoc(doc(dbClient, 'users', cred.user.uid), userProfile);
-      await setDoc(usernameRef, { uid: cred.user.uid, email: email.trim(), username: username.trim() });
+      await setDoc(usernameRef, { uid: cred.user.uid, email: email.trim(), username: username.trim(), usernameLower: uname });
       setIsLoading(false);
       return { success: true };
     } catch (error: any) {
@@ -323,11 +331,31 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       if (!uname) return { success: false, error: 'Enter a username' };
       if (normalizeUsername(user.username) === uname) return { success: false, error: 'You cannot add yourself' };
 
+      let targetUid = '';
+      let canonical = usernameToAdd.trim();
       const targetSnap = await getDoc(doc(db, 'usernames', uname));
-      if (!targetSnap.exists()) return { success: false, error: 'User not found' };
-
-      const canonical = (targetSnap.data().username as string) || usernameToAdd.trim();
-      const targetUid = targetSnap.data().uid as string;
+      if (targetSnap.exists()) {
+        canonical = (targetSnap.data().username as string) || canonical;
+        targetUid = targetSnap.data().uid as string;
+      } else {
+        const exactSnap = await getDoc(doc(db, 'usernames', usernameToAdd.trim()));
+        if (exactSnap.exists()) {
+          canonical = (exactSnap.data().username as string) || canonical;
+          targetUid = exactSnap.data().uid as string;
+        } else {
+          const usersRef = collection(db, 'users');
+          const q = query(usersRef, where('usernameLower', '==', uname), limit(1));
+          const qs = await getDocs(q);
+          if (!qs.empty) {
+            const docSnap = qs.docs[0];
+            const data = docSnap.data();
+            canonical = data.username || canonical;
+            targetUid = docSnap.id;
+          } else {
+            return { success: false, error: 'User not found' };
+          }
+        }
+      }
       const targetUserSnap = await getDoc(doc(db, 'users', targetUid));
       const targetData = targetUserSnap.exists() ? targetUserSnap.data() : {};
       const targetFriends = Array.isArray(targetData.friends) ? targetData.friends : [];

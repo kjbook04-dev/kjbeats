@@ -101,7 +101,7 @@ export default function ProfilePage() {
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Profile Header / Cover */}
-      <div className="rounded-lg overflow-hidden mb-6 card">
+      <div className="rounded-lg overflow-hidden mb-4 card">
             <div
               className="w-full h-36 md:h-44"
           style={currentTheme.backgroundCss ? { background: currentTheme.backgroundCss } : { background: `linear-gradient(90deg, ${currentTheme.primary}, ${currentTheme.secondary})` }}
@@ -136,7 +136,7 @@ export default function ProfilePage() {
       />
 
       {/* Profile Card */}
-  <div className="card mb-6 p-3" style={{ paddingBottom: 'calc(1rem - 10px)' }}>
+  <div className="card mb-4 -mt-2 p-3" style={{ paddingBottom: 'calc(1rem - 10px)' }}>
   <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 items-stretch">
       <div className="md:col-span-2 flex flex-col h-full justify-between md:min-h-[calc(20rem-15px)]">
         {/* Top: heading + email */}
