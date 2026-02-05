@@ -53,6 +53,7 @@ interface UserContextType {
   requestPasswordReset: (usernameOrEmail: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
   updateProfilePicture: (imageFile: File, originalFile?: File) => Promise<boolean>;
+  removeProfilePicture: () => Promise<boolean>;
   updateUserTheme: (themeColor: string) => Promise<boolean>;
   clearAllUserData: () => void;
   isLoading: boolean;
@@ -533,6 +534,23 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     }
   };
 
+  const removeProfilePicture = async (): Promise<boolean> => {
+    if (!user || !db) return false;
+    try {
+      await updateDoc(doc(db, 'users', user.id), {
+        profilePicture: null,
+        profilePictureOriginal: null,
+      });
+      setUser((prev) =>
+        prev ? { ...prev, profilePicture: undefined, profilePictureOriginal: undefined } : prev
+      );
+      return true;
+    } catch (error) {
+      console.error('Error removing profile picture:', error);
+      return false;
+    }
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -542,6 +560,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         requestPasswordReset,
         logout,
         updateProfilePicture,
+        removeProfilePicture,
         updateUserTheme,
         clearAllUserData,
         addFriend,

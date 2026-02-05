@@ -158,8 +158,8 @@ export const ProfilePictureUpload: React.FC<ProfilePictureUploadProps> = ({
   return (
     <div className={`relative ${className} aspect-square`} style={{ aspectRatio: '1 / 1' }}>
       <div
-        className={`relative w-full h-full aspect-square rounded-full overflow-hidden border-4 cursor-pointer transition-all duration-200 ${
-          isDragging ? `${currentTheme.border} bg-gray-100` : `border-gray-600 ${currentTheme.borderHover}`
+        className={`relative w-full h-full aspect-square rounded-full overflow-hidden ${displayImage ? 'border-0 bg-transparent' : 'border-4'} cursor-pointer transition-all duration-200 ${
+          displayImage ? '' : isDragging ? `${currentTheme.border} bg-gray-100` : `border-gray-600 ${currentTheme.borderHover}`
         }`}
         onClick={() => {
           if (originalImage || currentImage) {

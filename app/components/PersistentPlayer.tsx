@@ -43,6 +43,21 @@ export default function PersistentPlayer() {
   }, []);
 
   useEffect(() => {
+    if (user) return;
+    try {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    } catch {
+      // ignore
+    }
+    setIsPlaying(false);
+    setCurrentSong(null);
+    setPlayQueue(null);
+    setQueueIndex(-1);
+  }, [user, setCurrentSong, setIsPlaying]);
+
+  useEffect(() => {
     if (typeof window === 'undefined') return;
     const mq = window.matchMedia('(max-width: 768px)');
     const update = () => setIsMobile(mq.matches);
@@ -650,7 +665,7 @@ export default function PersistentPlayer() {
             />
             <span className="text-gray-300 text-xs w-9">{formatTime(duration)}</span>
           </div>
-          <div className="mt-2 flex items-center justify-center gap-5">
+          <div className="mt-2 flex items-center justify-center gap-3">
             <button
               onClick={skipToPrevious}
               disabled={!currentSong || songs.length === 0}
@@ -705,37 +720,39 @@ export default function PersistentPlayer() {
           {/* Controls */}
           <div className="w-full md:flex-1 md:mx-6">
             <div className="flex flex-row flex-wrap items-center justify-between gap-2 md:flex-row md:items-center md:justify-between md:space-x-3">
-              <button
-                onClick={skipToPrevious}
-                disabled={!currentSong || songs.length === 0}
-                className={`${currentTheme.text} ${currentTheme.textHover} disabled:text-gray-600 disabled:opacity-50 text-sm font-bold flex-shrink-0 transition-colors`}
-                title="Previous song"
-              >
-                ⏮
-              </button>
-              <button
-                onClick={togglePlay}
-                className={`w-10 h-10 rounded-full ${currentTheme.bg} ${currentTheme.bgHover} flex items-center justify-center text-gray-900 text-base font-bold flex-shrink-0`}
-              >
-                {isPlaying ? (
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" className="w-5 h-5" aria-hidden="true">
-                    <rect x="4" y="3" width="3" height="10" rx="1" fill="currentColor" />
-                    <rect x="9" y="3" width="3" height="10" rx="1" fill="currentColor" />
-                  </svg>
-                ) : (
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-6 h-6" fill="currentColor" aria-hidden="true">
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                )}
-              </button>
-              <button
-                onClick={skipToNext}
-                disabled={!currentSong || songs.length === 0}
-                className={`${currentTheme.text} ${currentTheme.textHover} disabled:text-gray-600 disabled:opacity-50 text-sm font-bold flex-shrink-0 transition-colors`}
-                title="Next song"
-              >
-                ⏭
-              </button>
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <button
+                  onClick={skipToPrevious}
+                  disabled={!currentSong || songs.length === 0}
+                  className={`${currentTheme.text} ${currentTheme.textHover} disabled:text-gray-600 disabled:opacity-50 text-sm font-bold transition-colors`}
+                  title="Previous song"
+                >
+                  ⏮
+                </button>
+                <button
+                  onClick={togglePlay}
+                  className={`w-10 h-10 rounded-full ${currentTheme.bg} ${currentTheme.bgHover} flex items-center justify-center text-gray-900 text-base font-bold`}
+                >
+                  {isPlaying ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" className="w-5 h-5" aria-hidden="true">
+                      <rect x="4" y="3" width="3" height="10" rx="1" fill="currentColor" />
+                      <rect x="9" y="3" width="3" height="10" rx="1" fill="currentColor" />
+                    </svg>
+                  ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-6 h-6" fill="currentColor" aria-hidden="true">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  )}
+                </button>
+                <button
+                  onClick={skipToNext}
+                  disabled={!currentSong || songs.length === 0}
+                  className={`${currentTheme.text} ${currentTheme.textHover} disabled:text-gray-600 disabled:opacity-50 text-sm font-bold transition-colors`}
+                  title="Next song"
+                >
+                  ⏭
+                </button>
+              </div>
 
               <div className="flex items-center space-x-2 flex-1 min-w-0">
                 <span className="text-gray-300 text-xs w-9">{formatTime(currentTime)}</span>

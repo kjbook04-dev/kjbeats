@@ -14,7 +14,7 @@ import { Notification } from '../components/Notification';
 
 
 export default function ProfilePage() {
-  const { user, logout, updateProfilePicture, updateUserProfile } = useUser();
+  const { user, logout, updateProfilePicture, removeProfilePicture, updateUserProfile } = useUser();
   const { songs } = useMusicLibrary();
   const { currentTheme } = useTheme();
   const router = useRouter();
@@ -117,6 +117,19 @@ export default function ProfilePage() {
             </div>
           </div>
           <div className="flex w-full sm:w-auto items-center justify-end gap-3 mt-2 sm:mt-5 sm:ml-auto">
+            {user.profilePicture && (
+              <button
+                onClick={async () => {
+                  const ok = await removeProfilePicture();
+                  if (!ok) {
+                    alert('Failed to remove profile picture. Please try again.');
+                  }
+                }}
+                className="bg-white/10 hover:bg-white/20 text-white px-3 py-1 rounded-md text-sm transition-colors border border-white/10"
+              >
+                Remove Photo
+              </button>
+            )}
             <button
               onClick={logout}
               className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md text-sm transition-colors"
