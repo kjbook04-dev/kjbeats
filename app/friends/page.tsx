@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import {
   addDoc,
@@ -75,6 +75,7 @@ export default function FriendsPage() {
     type: 'success',
     isVisible: false,
   });
+  const lastMarkedConversationRef = useRef<string | null>(null);
   const gText = gradientTextStyle();
   const gBg = gradientBgStyle();
   const canChat = Boolean(selectedFriend && selectedFriendUid);
@@ -168,7 +169,10 @@ export default function FriendsPage() {
     const setup = async () => {
       const conversationId = await ensureConversation(false);
       if (!conversationId) return;
-      await markConversationRead(conversationId);
+      if (lastMarkedConversationRef.current !== conversationId) {
+        lastMarkedConversationRef.current = conversationId;
+        await markConversationRead(conversationId);
+      }
       try {
         const profileSnap = await getDoc(doc(dbClient, 'users', selectedFriendUid));
         if (profileSnap.exists()) {
@@ -200,6 +204,10 @@ export default function FriendsPage() {
       if (unsubscribe) unsubscribe();
     };
   }, [selectedFriendUid, user]);
+
+  useEffect(() => {
+    lastMarkedConversationRef.current = null;
+  }, [selectedFriendUid]);
 
   const ensureConversation = async (touchUpdatedAt: boolean = true) => {
     if (!db || !user || !selectedFriendUid) return null;
