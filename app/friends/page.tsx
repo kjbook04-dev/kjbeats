@@ -41,6 +41,8 @@ type ConversationSummary = {
   id: string;
   participants: string[];
   updatedAt?: any;
+  lastMessageSenderId?: string;
+  friendshipEstablished?: boolean;
 };
 
 type FriendProfile = {
@@ -56,7 +58,7 @@ const conversationIdFor = (a: string, b: string) => [a, b].sort().join('__');
 
 export default function FriendsPage() {
   const { currentTheme } = useTheme();
-  const { user, removeFriend, acceptFriendRequest, declineFriendRequest, addFriend } = useUser();
+  const { user, removeFriend, acceptFriendRequest, declineFriendRequest, addFriend, hideConversation } = useUser();
   const { songs, addSongs } = useMusicLibrary();
   const { playlists, createPlaylist, addToPlaylist } = usePlaylist();
   const [selectedFriend, setSelectedFriend] = useState<string>('');
@@ -80,14 +82,22 @@ export default function FriendsPage() {
   const gBg = gradientBgStyle();
   const friends = user?.friends || [];
   const friendRequests = user?.friendRequests || [];
+  const hiddenConversations = user?.hiddenConversations || [];
   const isFriend = (name: string) => friends.some((f) => f.toLowerCase() === name.toLowerCase());
   const isSelectedFriend = Boolean(selectedFriend && isFriend(selectedFriend));
-  const hasConversationHistory = useMemo(() => {
-    if (!user?.id || !selectedFriendUid) return false;
+  const selectedConversation = useMemo(() => {
+    if (!user?.id || !selectedFriendUid) return null;
     const convoId = conversationIdFor(user.id, selectedFriendUid);
-    return conversations.some((c) => c.id === convoId);
+    return conversations.find((c) => c.id === convoId) || null;
   }, [conversations, selectedFriendUid, user?.id]);
-  const canChat = Boolean(selectedFriend && selectedFriendUid && (isSelectedFriend || hasConversationHistory));
+  const canChat = Boolean(
+    selectedFriend &&
+      selectedFriendUid &&
+      (isSelectedFriend ||
+        user?.friendHistory?.includes(selectedFriendUid) ||
+        selectedConversation?.friendshipEstablished ||
+        selectedConversation?.lastMessageSenderId)
+  );
 
   useEffect(() => {
     if (!isSelectedFriend) {
@@ -118,9 +128,9 @@ export default function FriendsPage() {
     return conversations.filter((convo) => {
       const otherId = convo.participants?.find((id) => id !== user.id) || '';
       const name = participantNames[otherId];
-      return !!name;
+      return !!name && !hiddenConversations.includes(convo.id);
     });
-  }, [conversations, participantNames, user]);
+  }, [conversations, participantNames, user, hiddenConversations]);
 
   useEffect(() => {
     const resolveFriend = async () => {
@@ -561,18 +571,35 @@ export default function FriendsPage() {
                   const name = participantNames[otherId] || 'Friend';
                   const isActive = selectedFriendUid === otherId;
                   return (
-                    <button
-                      key={convo.id}
-                      onClick={() => {
-                        setSelectedFriend(name);
-                        setSelectedFriendUid(otherId);
-                      }}
-                      className={`w-full text-left px-3 py-2 rounded-xl transition-colors border border-transparent ${
-                        isActive ? 'bg-gray-700 text-white border-white/10' : 'text-gray-300 hover:bg-gray-700/70'
-                      }`}
-                    >
-                      {name}
-                    </button>
+                    <div key={convo.id} className="flex items-center gap-2">
+                      <button
+                        onClick={() => {
+                          setSelectedFriend(name);
+                          setSelectedFriendUid(otherId);
+                        }}
+                        className={`flex-1 text-left px-3 py-2 rounded-xl transition-colors border border-transparent ${
+                          isActive ? 'bg-gray-700 text-white border-white/10' : 'text-gray-300 hover:bg-gray-700/70'
+                        }`}
+                      >
+                        {name}
+                      </button>
+                      <button
+                        onClick={() => {
+                          hideConversation(convo.id);
+                          if (selectedFriendUid === otherId) {
+                            setSelectedFriend('');
+                            setSelectedFriendUid('');
+                            setMessages([]);
+                          }
+                        }}
+                        className="h-8 w-8 rounded-full text-gray-300 hover:text-white border border-white/10 hover:border-white/30"
+                        aria-label={`Hide conversation with ${name}`}
+                        title="Hide chat"
+                        type="button"
+                      >
+                        ×
+                      </button>
+                    </div>
                   );
                 })}
               </div>
@@ -628,7 +655,7 @@ export default function FriendsPage() {
             )}
           </div>
 
-          {selectedFriend && !isSelectedFriend && !hasConversationHistory && (
+          {selectedFriend && !canChat && (
             <div className="mt-2 text-sm text-gray-300">
               Friend request pending — you can’t send messages until they accept.
             </div>

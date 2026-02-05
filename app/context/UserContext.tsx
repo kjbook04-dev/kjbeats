@@ -38,8 +38,10 @@ export interface User {
   profilePictureOriginal?: string;
   themeColor?: string;
   friends?: string[];
+  friendHistory?: string[];
   friendNotifications?: Array<{ from: string; createdAt?: string; type?: string }>;
   friendRequests?: string[];
+  hiddenConversations?: string[];
   conversationReads?: Record<string, string>;
   bio?: string;
   website?: string;
@@ -62,6 +64,7 @@ interface UserContextType {
   acceptFriendRequest: (username: string) => Promise<boolean>;
   declineFriendRequest: (username: string) => Promise<boolean>;
   clearFriendNotifications: () => Promise<void>;
+  hideConversation: (conversationId: string) => Promise<void>;
   updateUserProfile: (data: { bio?: string; website?: string; publicProfile?: boolean }) => Promise<boolean>;
 }
 
@@ -100,8 +103,10 @@ const userDocToSession = (uid: string, data: any): User => ({
   profilePictureOriginal: data.profilePictureOriginal,
   themeColor: data.themeColor,
   friends: normalizeStringList(data.friends),
+  friendHistory: normalizeStringList(data.friendHistory),
   friendNotifications: Array.isArray(data.friendNotifications) ? data.friendNotifications : [],
   friendRequests: normalizeStringList(data.friendRequests),
+  hiddenConversations: normalizeStringList(data.hiddenConversations),
   conversationReads: data.conversationReads && typeof data.conversationReads === 'object' ? data.conversationReads : {},
   bio: data.bio || '',
   website: data.website || '',
@@ -143,8 +148,10 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             email: authUser.email || '',
             createdAt: new Date().toISOString(),
             friends: [],
+            friendHistory: [],
             friendNotifications: [],
             friendRequests: [],
+            hiddenConversations: [],
           };
           await setDoc(doc(dbClient, 'users', authUser.uid), {
             ...fallback,
@@ -165,8 +172,10 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             if (!readsOk) patch.conversationReads = {};
             if (typeof data.playerVolume !== 'number') patch.playerVolume = 0.5;
             if (!Array.isArray(data.friends)) patch.friends = normalizeStringList(data.friends);
+            if (!Array.isArray(data.friendHistory)) patch.friendHistory = normalizeStringList(data.friendHistory);
             if (!Array.isArray(data.friendRequests)) patch.friendRequests = normalizeStringList(data.friendRequests);
             if (!Array.isArray(data.friendNotifications)) patch.friendNotifications = [];
+            if (!Array.isArray(data.hiddenConversations)) patch.hiddenConversations = normalizeStringList(data.hiddenConversations);
             if (Object.keys(patch).length) {
               defaultsPatchedRef.current = true;
               updateDoc(doc(dbClient, 'users', authUser.uid), patch).catch(() => {});
@@ -280,8 +289,10 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         email: email.trim(),
         createdAt,
         friends: [] as string[],
+        friendHistory: [] as string[],
         friendNotifications: [] as Array<{ from: string; createdAt?: string; type?: string }>,
         friendRequests: [] as string[],
+        hiddenConversations: [] as string[],
         bio: '',
         website: '',
         publicProfile: false,
@@ -477,25 +488,40 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       const canonical = targetSnap.exists()
         ? ((targetSnap.data().username as string) || usernameToAccept)
         : usernameToAccept;
-      await updateDoc(doc(db, 'users', user.id), {
+      const selfUpdates: Record<string, any> = {
         friends: arrayUnion(canonical),
         friendRequests: arrayRemove(usernameToAccept, canonical),
-      });
+      };
+      if (targetUid) selfUpdates.friendHistory = arrayUnion(targetUid);
+      await updateDoc(doc(db, 'users', user.id), selfUpdates);
       setUser((prev) => {
         if (!prev) return prev;
         const nextFriends = Array.from(new Set([...(prev.friends || []), canonical]));
         const nextRequests = (prev.friendRequests || []).filter((r) => normalizeUsername(r) !== normalizeUsername(usernameToAccept));
-        return { ...prev, friends: nextFriends, friendRequests: nextRequests };
+        const nextHistory = targetUid
+          ? Array.from(new Set([...(prev.friendHistory || []), targetUid]))
+          : prev.friendHistory || [];
+        return { ...prev, friends: nextFriends, friendRequests: nextRequests, friendHistory: nextHistory };
       });
       if (targetUid) {
         await updateDoc(doc(db, 'users', targetUid), {
           friends: arrayUnion(user.username),
+          friendHistory: arrayUnion(user.id),
           friendNotifications: arrayUnion({
             from: user.username,
             createdAt: new Date().toISOString(),
             type: 'friend_accepted',
           }),
         });
+        const convoId = [user.id, targetUid].sort().join('__');
+        await setDoc(
+          doc(db, 'conversations', convoId),
+          {
+            participants: [user.id, targetUid].sort(),
+            friendshipEstablished: true,
+          },
+          { merge: true }
+        );
       }
       return true;
     } catch (error) {
@@ -529,6 +555,22 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       setUser((prev) => (prev ? { ...prev, friendNotifications: [] } : prev));
     } catch (error) {
       console.error('Failed to clear friend notifications', error);
+    }
+  };
+
+  const hideConversation = async (conversationId: string) => {
+    if (!user || !db || !conversationId) return;
+    try {
+      await updateDoc(doc(db, 'users', user.id), {
+        hiddenConversations: arrayUnion(conversationId),
+      });
+      setUser((prev) => {
+        if (!prev) return prev;
+        const nextHidden = Array.from(new Set([...(prev.hiddenConversations || []), conversationId]));
+        return { ...prev, hiddenConversations: nextHidden };
+      });
+    } catch (error) {
+      console.error('Failed to hide conversation', error);
     }
   };
 
@@ -621,6 +663,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         acceptFriendRequest,
         declineFriendRequest,
         clearFriendNotifications,
+        hideConversation,
         updateUserProfile,
         isLoading,
       }}
