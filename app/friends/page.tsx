@@ -78,7 +78,14 @@ export default function FriendsPage() {
   const lastReadWriteAtRef = useRef<number>(0);
   const gText = gradientTextStyle();
   const gBg = gradientBgStyle();
-  const canChat = Boolean(selectedFriend && selectedFriendUid);
+  const isSelectedFriend = Boolean(selectedFriend && isFriend(selectedFriend));
+  const canChat = Boolean(selectedFriend && selectedFriendUid && isSelectedFriend);
+
+  useEffect(() => {
+    if (!isSelectedFriend) {
+      setSelectedFriendProfile(null);
+    }
+  }, [isSelectedFriend, selectedFriend]);
 
   const showNotification = (message: string, type: 'success' | 'error' | 'info' = 'success') => {
     setNotification({ message, type, isVisible: true });
@@ -159,7 +166,7 @@ export default function FriendsPage() {
   }, [conversations, user, participantNames]);
 
   useEffect(() => {
-    if (!db || !user || !selectedFriendUid) {
+    if (!db || !user || !selectedFriendUid || !isSelectedFriend) {
       setMessages([]);
       setSelectedFriendProfile(null);
       return;
@@ -271,7 +278,7 @@ export default function FriendsPage() {
   };
 
   const sendText = async () => {
-    if (!db || !user || !newText.trim() || !selectedFriendUid) return;
+    if (!db || !user || !newText.trim() || !selectedFriendUid || !isSelectedFriend) return;
     const conversationId = await ensureConversation(true);
     if (!conversationId) return;
     await addDoc(collection(db, 'conversations', conversationId, 'messages'), {
@@ -301,7 +308,7 @@ export default function FriendsPage() {
   };
 
   const sendSong = async () => {
-    if (!db || !user || !selectedFriendUid || !selectedSong) return;
+    if (!db || !user || !selectedFriendUid || !selectedSong || !isSelectedFriend) return;
     const conversationId = await ensureConversation(true);
     if (!conversationId) return;
     await addDoc(collection(db, 'conversations', conversationId, 'messages'), {
@@ -316,7 +323,7 @@ export default function FriendsPage() {
   };
 
   const sendPlaylist = async () => {
-    if (!db || !user || !selectedFriendUid || !selectedPlaylist) return;
+    if (!db || !user || !selectedFriendUid || !selectedPlaylist || !isSelectedFriend) return;
     const conversationId = await ensureConversation(true);
     if (!conversationId) return;
     await addDoc(collection(db, 'conversations', conversationId, 'messages'), {
@@ -457,7 +464,7 @@ export default function FriendsPage() {
             )}
           </div>
 
-          {selectedFriendProfile && (
+          {selectedFriendProfile && isSelectedFriend && (
             <div className="mt-4 rounded-2xl border border-white/10 bg-gray-900/70 p-3 shadow-inner">
               <div className="flex items-center gap-3">
                 {selectedFriendProfile.profilePicture ? (
@@ -481,27 +488,6 @@ export default function FriendsPage() {
                   <span className="ml-auto text-xs text-gray-400">Private</span>
                 )}
               </div>
-              {!isFriend(selectedFriendProfile.username || selectedFriend) && (
-                <div className="mt-3">
-                  <button
-                    onClick={async () => {
-                      const name = selectedFriendProfile.username || selectedFriend;
-                      const res = await addFriend(name);
-                      if (res.success) {
-                        setRequestSentFor((prev) => ({ ...prev, [name]: true }));
-                        showNotification('Friend request sent successfully!', 'success');
-                      } else {
-                        showNotification(res.error || 'Failed to send request.', 'error');
-                      }
-                    }}
-                    disabled={requestSentFor[selectedFriendProfile.username || selectedFriend]}
-                    className="px-3 py-1 rounded-md text-sm text-gray-900 disabled:opacity-60 disabled:cursor-default"
-                    style={gBg}
-                  >
-                    {requestSentFor[selectedFriendProfile.username || selectedFriend] ? 'Friend Request Sent' : 'Send Friend Request'}
-                  </button>
-                </div>
-              )}
               {isFriend(selectedFriendProfile.username || selectedFriend) && (
                 <div className="mt-3">
                   <button
@@ -629,7 +615,13 @@ export default function FriendsPage() {
             )}
           </div>
 
-          {selectedFriend && (
+          {selectedFriend && !isSelectedFriend && (
+            <div className="mt-2 text-sm text-gray-300">
+              Friend request pending — you can’t send messages until they accept.
+            </div>
+          )}
+
+          {selectedFriend && isSelectedFriend && (
             <div className="space-y-3 border-t border-white/10 pt-3">
               <div>
                 <label className="block text-xs text-gray-400 mb-1 uppercase tracking-wide">Message</label>
