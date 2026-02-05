@@ -262,7 +262,7 @@ export default function ProfilePage() {
       {/* Expanded Top Tracks (moved below stats to sit directly above the music library) */}
 
   {/* Music Library Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-7 mb-8">
         <div className="bg-gray-800 p-6 rounded-lg">
           <h3 className={`text-lg font-semibold ${currentTheme.text} mb-2`}>Total Songs</h3>
           <p className="text-3xl font-bold text-white">{songs.length}</p>
