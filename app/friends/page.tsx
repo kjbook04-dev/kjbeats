@@ -629,7 +629,7 @@ export default function FriendsPage() {
                     <select
                       value={shareSongId}
                       onChange={(e) => setShareSongId(e.target.value)}
-                      className="flex-1 min-w-0 px-3 py-2 bg-gray-900/70 border border-white/10 rounded-full text-white h-10"
+                      className="flex-1 min-w-0 px-3 pr-10 py-2 bg-gray-900/70 border border-white/10 rounded-full text-white h-10"
                     >
                       <option value="">Select a song...</option>
                       {songs.map((song) => (
@@ -648,7 +648,7 @@ export default function FriendsPage() {
                     <select
                       value={sharePlaylistId}
                       onChange={(e) => setSharePlaylistId(e.target.value)}
-                      className="flex-1 min-w-0 px-3 py-2 bg-gray-900/70 border border-white/10 rounded-full text-white h-10"
+                      className="flex-1 min-w-0 px-3 pr-10 py-2 bg-gray-900/70 border border-white/10 rounded-full text-white h-10"
                     >
                       <option value="">Select a playlist...</option>
                       {playlists.map((playlist) => (
