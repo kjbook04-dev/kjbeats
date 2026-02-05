@@ -25,6 +25,7 @@ export default function PersistentPlayer() {
   const [isMuted, setIsMuted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const lastSavedVolumeRef = useRef<number | null>(null);
+  const lastVolumeWriteAtRef = useRef<number>(0);
   const [playQueue, setPlayQueue] = useState<Song[] | null>(null);
   const [queueIndex, setQueueIndex] = useState<number>(-1);
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -162,7 +163,11 @@ export default function PersistentPlayer() {
   useEffect(() => {
     if (isMobile) return;
     try {
+      const now = Date.now();
       if (lastSavedVolumeRef.current !== null && Math.abs(volume - lastSavedVolumeRef.current) < 0.001) {
+        return;
+      }
+      if (now - lastVolumeWriteAtRef.current < 30000) {
         return;
       }
       localStorage.setItem('playerVolume', String(volume));
@@ -172,6 +177,7 @@ export default function PersistentPlayer() {
         });
       }
       lastSavedVolumeRef.current = volume;
+      lastVolumeWriteAtRef.current = now;
     } catch (e) {
       // ignore storage errors
     }
