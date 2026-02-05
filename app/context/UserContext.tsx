@@ -388,7 +388,9 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       }
       const friendshipId = friendshipIdFor(user.id, targetUid);
       const friendshipRef = doc(db, 'friendships', friendshipId);
-      await runTransaction(db, async (tx) => {
+      const dbClient = db;
+      if (!dbClient) return { success: false, error: 'Firebase is not configured yet' };
+      await runTransaction(dbClient, async (tx) => {
         const friendshipSnap = await tx.get(friendshipRef);
         const friendshipData = friendshipSnap.exists() ? (friendshipSnap.data() as any) : null;
         const status = friendshipData?.status || null;
@@ -413,12 +415,12 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             },
             { merge: true }
           );
-          tx.update(doc(db, 'users', user.id), {
+          tx.update(doc(dbClient, 'users', user.id), {
             friends: arrayUnion(canonical),
             friendRequests: arrayRemove(usernameToAdd, canonical),
             outgoingFriendRequests: arrayRemove(canonical),
           });
-          tx.update(doc(db, 'users', targetUid), {
+          tx.update(doc(dbClient, 'users', targetUid), {
             friends: arrayUnion(user.username),
             friendRequests: arrayRemove(user.username),
             outgoingFriendRequests: arrayRemove(user.username),
@@ -429,7 +431,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             }),
           });
           tx.set(
-            doc(db, 'conversations', friendshipId),
+            doc(dbClient, 'conversations', friendshipId),
             {
               userLowId: friendshipId.split('__')[0],
               userHighId: friendshipId.split('__')[1],
@@ -460,7 +462,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
           },
           { merge: true }
         );
-        tx.update(doc(db, 'users', targetUid), {
+        tx.update(doc(dbClient, 'users', targetUid), {
           friendNotifications: arrayUnion({
             from: user.username,
             createdAt: new Date().toISOString(),
@@ -468,7 +470,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
           }),
           friendRequests: arrayUnion(user.username),
         });
-        tx.update(doc(db, 'users', user.id), {
+        tx.update(doc(dbClient, 'users', user.id), {
           outgoingFriendRequests: arrayUnion(canonical),
         });
       });
@@ -508,12 +510,14 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       };
       const targetSnap = await getDoc(doc(db, 'usernames', uname));
       const targetUid = targetSnap.exists() ? (targetSnap.data().uid as string) : '';
-      await runTransaction(db, async (tx) => {
-        tx.update(doc(db, 'users', user.id), selfUpdates);
+      const dbClient = db;
+      if (!dbClient) return false;
+      await runTransaction(dbClient, async (tx) => {
+        tx.update(doc(dbClient, 'users', user.id), selfUpdates);
         if (targetUid) {
           const friendshipId = friendshipIdFor(user.id, targetUid);
           tx.set(
-            doc(db, 'friendships', friendshipId),
+            doc(dbClient, 'friendships', friendshipId),
             {
               userLowId: friendshipId.split('__')[0],
               userHighId: friendshipId.split('__')[1],
@@ -524,13 +528,13 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             { merge: true }
           );
           tx.set(
-            doc(db, 'conversations', friendshipId),
+            doc(dbClient, 'conversations', friendshipId),
             {
               friendshipStatus: 'removed',
             },
             { merge: true }
           );
-          tx.update(doc(db, 'users', targetUid), {
+          tx.update(doc(dbClient, 'users', targetUid), {
             friends: arrayRemove(user.username),
             friendRequests: arrayRemove(user.username),
           });
@@ -581,12 +585,14 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
           }
         }
       }
-      await runTransaction(db, async (tx) => {
+      const dbClient = db;
+      if (!dbClient) return false;
+      await runTransaction(dbClient, async (tx) => {
         if (!targetUid) {
           throw new Error('USER_NOT_FOUND');
         }
         const friendshipId = friendshipIdFor(user.id, targetUid);
-        const friendshipRef = doc(db, 'friendships', friendshipId);
+        const friendshipRef = doc(dbClient, 'friendships', friendshipId);
         const friendshipSnap = await tx.get(friendshipRef);
         const friendshipData = friendshipSnap.exists() ? (friendshipSnap.data() as any) : null;
         const status = friendshipData?.status || null;
@@ -607,12 +613,12 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
           },
           { merge: true }
         );
-        tx.update(doc(db, 'users', user.id), {
+        tx.update(doc(dbClient, 'users', user.id), {
           friends: arrayUnion(canonical),
           friendRequests: arrayRemove(usernameToAccept, canonical),
           outgoingFriendRequests: arrayRemove(canonical),
         });
-        tx.update(doc(db, 'users', targetUid), {
+        tx.update(doc(dbClient, 'users', targetUid), {
           friends: arrayUnion(user.username),
           outgoingFriendRequests: arrayRemove(user.username),
           friendNotifications: arrayUnion({
@@ -623,7 +629,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         });
         const convoId = friendshipIdFor(user.id, targetUid);
         tx.set(
-          doc(db, 'conversations', convoId),
+          doc(dbClient, 'conversations', convoId),
           {
             userLowId: convoId.split('__')[0],
             userHighId: convoId.split('__')[1],
