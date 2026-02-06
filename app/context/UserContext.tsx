@@ -88,6 +88,11 @@ interface UserProviderProps {
 const normalizeUsername = (value: string) => value.trim().toLowerCase();
 const friendshipIdFor = (a: string, b: string) => [a, b].sort().join('__');
 
+const intersectUsernames = (a: string[] = [], b: string[] = []) => {
+  const bSet = new Set(b.map(normalizeUsername));
+  return a.filter((name) => bSet.has(normalizeUsername(name)));
+};
+
 const normalizeStringList = (value: any): string[] => {
   if (Array.isArray(value)) return value.filter((v) => typeof v === 'string');
   if (value && typeof value === 'object') {
@@ -719,6 +724,28 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       return false;
     }
   };
+
+  const syncMutualPendingRef = useRef(false);
+  useEffect(() => {
+    if (!user || !db) return;
+    const pending = user.friendRequests || [];
+    const outgoing = user.outgoingFriendRequests || [];
+    if (pending.length === 0 || outgoing.length === 0) return;
+    if (syncMutualPendingRef.current) return;
+    const mutual = intersectUsernames(pending, outgoing);
+    if (mutual.length === 0) return;
+    syncMutualPendingRef.current = true;
+    const resolve = async () => {
+      try {
+        for (const name of mutual) {
+          await acceptFriendRequest(name);
+        }
+      } finally {
+        syncMutualPendingRef.current = false;
+      }
+    };
+    void resolve();
+  }, [user, db]);
 
   const updateProfilePicture = async (imageFile: File, originalFile?: File): Promise<boolean> => {
     if (!user || !db) return false;
