@@ -28,12 +28,27 @@ export function DynamicFavicon() {
       ctx.arc(16, 16, 14, 0, 2 * Math.PI);
       ctx.fill();
 
-      // Draw music note symbol
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 18px Arial';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('♪', 16, 16);
+      // Draw headphones icon to match the site logo mark
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      // band
+      ctx.lineWidth = 2.1;
+      ctx.beginPath();
+      ctx.arc(16, 14, 6.2, Math.PI, 2 * Math.PI);
+      ctx.stroke();
+
+      // left earcup
+      ctx.lineWidth = 1.8;
+      ctx.beginPath();
+      ctx.roundRect(7.4, 14.4, 4.1, 8.2, 2);
+      ctx.stroke();
+
+      // right earcup
+      ctx.beginPath();
+      ctx.roundRect(20.5, 14.4, 4.1, 8.2, 2);
+      ctx.stroke();
 
       // Convert canvas to data URL
       const dataURL = canvas.toDataURL('image/png');

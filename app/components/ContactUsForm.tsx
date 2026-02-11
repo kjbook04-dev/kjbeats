@@ -2,7 +2,6 @@
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { addDoc, collection } from "firebase/firestore";
-import { useTheme } from "../context/ThemeContext";
 import { gradientBgStyle } from "../context/themeHelpers";
 import { useUser } from "../context/UserContext";
 import { db, firebaseConfigured } from "../lib/firebase";
@@ -21,7 +20,6 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const collapseWhitespace = (value: string) => value.replace(/\s+/g, " ").trim();
 
 export default function ContactUsForm() {
-  useTheme();
   const gBg = gradientBgStyle();
   const { user } = useUser();
 

@@ -26,6 +26,22 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "KJBeats",
   description: "Your ultimate destination for music exploration",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3001"),
+  openGraph: {
+    title: "KJBeats",
+    description: "Your ultimate destination for music exploration",
+    type: "website",
+    siteName: "KJBeats",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "KJBeats",
+    description: "Your ultimate destination for music exploration",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

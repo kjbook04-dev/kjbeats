@@ -181,6 +181,11 @@ export default function Header() {
                   <span style={gText}>About</span>
                 </Link>
               </li>
+              <li>
+                <Link href="/contact" className={`${currentTheme.text} ${currentTheme.textHover}`} onClick={() => setIsMenuOpen(false)}>
+                  <span style={gText}>Contact</span>
+                </Link>
+              </li>
             </ul>
             
             {/* Auth Section */}
