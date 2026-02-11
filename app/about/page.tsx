@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useTheme } from "../context/ThemeContext";
 import { gradientTextStyle } from "../context/themeHelpers";
 
@@ -34,10 +35,11 @@ export default function AboutPage() {
         <div className="bg-gray-800 p-6 rounded-lg mt-8 border border-gray-700">
           <h2 className="text-2xl font-bold mb-4" style={gText}>Get in Touch</h2>
           <p className="text-gray-300 text-lg">
-            Have questions or suggestions? We&apos;d love to hear from you! Reach out to us at{' '}
-            <a href="mailto:kjbook04@gmail.com" className="transition-colors" style={gText}>
-              kjbook04@gmail.com
-            </a>
+            Have questions or suggestions? We&apos;d love to hear from you. Reach out through our{" "}
+            <Link href="/contact" className="transition-colors underline" style={gText}>
+              Contact Us form
+            </Link>
+            .
           </p>
         </div>
       </div>

@@ -19,7 +19,7 @@ export default function Footer() {
             <h4 className={`text-lg font-semibold mb-4`} style={gText}>Quick Links</h4>
             <ul className="space-y-2">
               <li><Link href="/about" className="text-gray-300 hover:text-white">About Us</Link></li>
-              <li><a href="mailto:kjbook04@gmail.com" className="text-gray-300 hover:text-white">Contact</a></li>
+              <li><Link href="/contact" className="text-gray-300 hover:text-white">Contact</Link></li>
               <li><Link href="/privacy" className="text-gray-300 hover:text-white">Privacy Policy</Link></li>
             </ul>
           </div>

@@ -1,10 +1,9 @@
 "use client";
 
-import { useTheme } from "../context/ThemeContext";
+import Link from "next/link";
 import { gradientTextStyle } from "../context/themeHelpers";
 
 export default function PrivacyPage() {
-  const { currentTheme } = useTheme();
   const gText = gradientTextStyle();
 
   return (
@@ -69,7 +68,11 @@ export default function PrivacyPage() {
           <p>
             Depending on your jurisdiction, you may have rights to access, correct,
             delete, or port your personal data. To exercise those rights or for
-            questions about this policy, contact us at <a className={`${currentTheme.text} ${currentTheme.textHover} underline`} href="mailto:kjbook04@gmail.com">kjbook04@gmail.com</a>.
+            questions about this policy, use our{" "}
+            <Link className="underline" style={gText} href="/contact">
+              Contact Us form
+            </Link>
+            .
           </p>
         </section>
 
