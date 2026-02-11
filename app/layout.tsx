@@ -24,19 +24,44 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "KJBeats",
-  description: "Your ultimate destination for music exploration",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3001"),
+  title: {
+    default: "KJBeats",
+    template: "%s | KJBeats",
+  },
+  description: "Share music, build playlists, and discover tracks with friends on KJBeats.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://kjbeats.vercel.app"),
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    apple: [
+      { url: "/apple-icon.svg", type: "image/svg+xml" },
+    ],
+    shortcut: ["/icon.svg"],
+  },
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: "KJBeats",
-    description: "Your ultimate destination for music exploration",
+    description: "Share music, build playlists, and discover tracks with friends on KJBeats.",
     type: "website",
     siteName: "KJBeats",
+    url: "/",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "KJBeats",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "KJBeats",
-    description: "Your ultimate destination for music exploration",
+    description: "Share music, build playlists, and discover tracks with friends on KJBeats.",
+    images: ["/twitter-image"],
   },
   robots: {
     index: true,
